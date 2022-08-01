@@ -13,10 +13,19 @@ const Template:StoryFn<typeof MExpertTooltip> = (args) => ({
       args,
     }
   },
+  argTypes: {
+    slotContent: {
+      control: 'text',
+      description: 'Slot content',
+      defaultValue: `
+        <h3>Sample Tooltip - Title</h3>
+        <p>Content</p>
+      `
+    }
+  },
   template: `
     <MExpertTooltip v-bind="args">
-      <h3>Sample Tooltip - Title</h3>
-      <p>Content</p>
+      {{ args.slotContent }}
     </MExpertTooltip>
   `,
 })
