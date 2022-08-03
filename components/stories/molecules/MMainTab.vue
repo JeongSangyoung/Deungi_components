@@ -47,7 +47,6 @@ const changeStyle = (idx: number) => {
     <br />
   </li>
 </ul> 
-<div>{{ route.path }}</div>
 </template>
 
 <style lang="scss" scoped>

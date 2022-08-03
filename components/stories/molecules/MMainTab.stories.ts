@@ -1,6 +1,7 @@
 import MMainTab from './MMainTab.vue';
 import { Meta, StoryFn } from '@storybook/vue3'
 import vueRouter from 'storybook-vue3-router'
+import { action } from '@storybook/addon-actions';
 
 export default {
   title: 'molecules/MMainTab',
@@ -47,7 +48,11 @@ MaintabExample.args = {
 }
 
 const mainRoute = router.map(r => {
-  return { ...r, component: MMainTab}
+  return { 
+    ...r, 
+    component: MMainTab,
+    beforeEnter: (to, from) => action('beforeEnter')({from: from.fullPath, to: to.fullPath }),
+  }
 });
 
 MaintabExample.decorators = [

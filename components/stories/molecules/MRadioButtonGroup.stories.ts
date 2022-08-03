@@ -4,6 +4,11 @@ import { Meta, StoryFn } from '@storybook/vue3'
 export default {
   title: 'molecules/MRadioButtonGroup',
   component: MRadioButtonGroup,
+  argTypes: {
+    onSelect: {
+      actions: 'onSelect'
+    }
+  }
 } as Meta<typeof MRadioButtonGroup>
 
 const Template:StoryFn<typeof MRadioButtonGroup> = (args) => ({

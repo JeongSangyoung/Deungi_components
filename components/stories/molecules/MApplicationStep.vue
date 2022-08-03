@@ -56,7 +56,6 @@ const stepStatus = (idx: number) => {
     </div>
   </li>
 </ul>
-<div>{{ route.path }}</div>
 </template>
 
 <style lang="scss" scoped>

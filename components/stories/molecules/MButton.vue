@@ -4,7 +4,6 @@ import { CSSProperties, computed } from 'vue';
 interface PropType {
   rounded?: boolean;
   backgroundColor?: string;
-  color?: string;
   width?: string;
   maxWidth?: string;
   height?: string;
@@ -13,7 +12,6 @@ interface PropType {
 const props = withDefaults(defineProps<PropType>(), {
   rounded: false,
   backgroundColor: 'transparent',
-  color: '#19A29A',
   width: '',
   maxWidth: '',
   height: '',
@@ -22,18 +20,17 @@ const props = withDefaults(defineProps<PropType>(), {
 const computedStyled = computed(() => {
   const style = {
         backgroundColor: props.backgroundColor,
-        color: props.color,
       } as CSSProperties;
-
   if (props.width) style.width = props.width
   if (props.maxWidth) style.maxWidth = props.maxWidth
   if (props.height) style.height = props.height
   if (props.rounded) {
     style.borderRadius = '50vh'
   }
-
   return style;
 })
+
+const emit = defineEmits(['click'])
 
 </script>
 
@@ -41,6 +38,7 @@ const computedStyled = computed(() => {
   <button
     class="mButton"
     :style="computedStyled"
+    @click="emit('click')"
   >
     <slot ></slot>
   </button>

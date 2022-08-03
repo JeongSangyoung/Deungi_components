@@ -1,10 +1,16 @@
 import MApplicationStep from './MApplicationStep.vue';
-import { Meta, StoryFn } from '@storybook/vue3'
-import vueRouter from 'storybook-vue3-router'
+import { Meta, StoryFn } from '@storybook/vue3';
+import vueRouter from 'storybook-vue3-router';
+import { action } from '@storybook/addon-actions';
 
 export default {
   title: 'molecules/MApplicationStep',
   component: MApplicationStep,
+  argTypes: {
+    items: {
+      description: '아이템의 원소는 { name: `string`, path: `string` }',
+    }
+  }
 } as Meta<typeof MApplicationStep>
 
 const Template:StoryFn<typeof MApplicationStep> = (args) => ({
@@ -50,7 +56,11 @@ StepExample.args = {
 }
 /* define our custom routes */
 const stepRoute = router.map(r => {
-  return { ...r, component: MApplicationStep }
+  return { 
+    ...r, 
+    component: MApplicationStep,
+    beforeEnter: (to, from) => action('beforeEnter')({ from: from.fullPath, to: to.fullPath }),
+  }
 });
 
 StepExample.decorators = [

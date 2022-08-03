@@ -1,9 +1,21 @@
 import MExecutiveCard from './MExecutiveCard.vue'
 import { Meta, StoryFn } from '@storybook/vue3'
+import { action } from '@storybook/addon-actions'
 
 export default {
   title: 'molecules/MExecutiveCard',
   component: MExecutiveCard,
+  argTypes: {
+    name: {
+      description: '주주, 임원의 이름'
+    },
+    charge: {
+      description: '담당위치'
+    },
+    onRemove: {
+      actions: 'onRemove'
+    }
+  },
 } as Meta<typeof MExecutiveCard>
 
 const Template:StoryFn<typeof MExecutiveCard> = (args) => ({
@@ -13,9 +25,7 @@ const Template:StoryFn<typeof MExecutiveCard> = (args) => ({
       args,
     }
   },
-  template: `
-    <MExecutiveCard v-bind="args" />
-  `,
+  template: '<MExecutiveCard v-bind="args" />',
 })
 
 export const CardExample = Template.bind({})
@@ -35,13 +45,17 @@ const TemplateList:StoryFn<typeof MExecutiveCard> = (args) => ({
   },
   template: `
     <div v-bind="args">
-      <div v-for="item in args.items" :key="item.name">
-        <MExecutiveCard
-          v-bind="item"
-        />
-      </div>
+      <MExecutiveCard
+        v-for="item in args.items" 
+        :key="item.name"
+        v-bind="item"
+        @remove="action"
+      />
     </div>
   `,
+  methods: {
+    action: action('clicked')
+  }
 })
 
 export const CardList = TemplateList.bind({})

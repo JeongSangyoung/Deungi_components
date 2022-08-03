@@ -30,9 +30,10 @@ const computedStyled = computed(() => {
   if (props.width) style.width = props.width
   if (props.maxWidth) style.maxWidth = props.maxWidth
   if (props.height) style.height = props.height
-
   return style;
 })
+
+const emit = defineEmits(['remove'])
 
 </script>
 
@@ -59,7 +60,7 @@ const computedStyled = computed(() => {
     </div>
   </div>
   <!-- 3 -->
-  <div class="exeCard-close">
+  <div class="exeCard-close" @click="emit('remove', name)">
     <div class="exeCard-close__btn"></div>
   </div>
 </div>
