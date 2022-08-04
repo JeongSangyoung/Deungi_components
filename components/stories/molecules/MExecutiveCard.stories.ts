@@ -46,10 +46,10 @@ const TemplateList:StoryFn<typeof MExecutiveCard> = (args) => ({
   template: `
     <div v-bind="args">
       <MExecutiveCard
-        v-for="item in args.items" 
+        v-for="(item, item_idx) in args.items" 
         :key="item.name"
         v-bind="item"
-        @remove="action"
+        @remove="action(item_idx)"
       />
     </div>
   `,

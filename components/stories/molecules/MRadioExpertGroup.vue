@@ -1,31 +1,39 @@
 <script setup lang="ts">
 import { CSSProperties, computed } from 'vue';
+import MExpertTooltip from '@/components/stories/molecules/MExpertTooltip.vue';
 
 interface PropType {
   name: string;
-  contents: string[];
-  noCheckIcon?: boolean;
-  setInline?: boolean;
-  defaultIndex?: number;
-  rearImages?: {
-    unchecked: string;
-    checked: string;
-  }[];
+  items: IExpertIems[];
   width?: number | string;
   maxWidth?: number | string;
   height?: number | string;
 }
+interface IExpertIems {
+  content: string;
+  image?: string;
+  expertName: string;
+  expertCharge: string;
+  expertContent: string; 
+}
 
 const props = withDefaults(defineProps<PropType>(), {
-  noCheckIcon: false,
-  setInline: false,
-  defaultIndex: -1,
-  rearImages: () => [
+  items: () => [
     {
-      unchecked: '',
-      checked: '',
-    }
-  ]
+      content: '유한 회사',
+      image: 'https://deungi24.com/img/illu_1.png',
+      expertName: '등기24',
+      expertCharge: '등기24 변호사',
+      expertContent: `
+        <p style="font-size:22px;margin:0;font-weight:bold;">
+        <span style="color: #3850a1">일반적인 법인</span>으로 <span style="color: #3850a1">외부 투자</span>와 <span
+          style="color: #3850a1">절세</span>에 유리합니다.
+        </p>
+        <p style="margin:0;margin-top:8px;font-size:18px">한국에서 가장 흔한 법인 유형입니다. 특수 법인이 아니면 선택하세요.<br>공개적인 투자 유치나, 상장까지도 할 수
+          있습니다.</p>
+      `
+    },
+  ],
 })
 
 const computedStyled = computed(() => {
@@ -41,32 +49,32 @@ const emit = defineEmits(['select'])
 
 <template>
   <ul 
-    class="mRadioButtonGroup" 
-    :class="{ setInline: setInline }" 
+    class="mRadioButtonGroup"
     :style="computedStyled"
   >
     <li 
-      v-for="(content, content_idx) in contents" 
-      :key="content"
+      v-for="(item, item_idx) in items" 
+      :key="item.content"
     >
       <div class="mLabel">
-        <input type="radio" :id="content" :value="content" :name="name" :checked="defaultIndex !== -1 && (content_idx === defaultIndex)" />
+        <input type="radio" :id="item.content" :value="item.content" :name="name" />
         <label
-          :class="{ mRButton: !noCheckIcon, mRNocheck: noCheckIcon }" 
-          :for="content"
-          @click="emit('select', content_idx)"
+          :for="item.content"
+          class="mRButton"
+          @click="emit('select', item_idx)"
         >
-
-          <div v-if="content_idx < rearImages.length && rearImages[content_idx].checked" class="mLabel-type-2">
-            <!-- rearImages -->
-            {{ content }}
-            <img class="rear-unchecked" :src="rearImages[content_idx].unchecked" />
-            <img class="rear-checked" :src="rearImages[content_idx].checked" />
-          </div>
-          <div v-else>
-            {{ content }}
-          </div>
+          {{ item.content }}
         </label>
+
+        <div class="tooltip">
+          <MExpertTooltip
+            :image="item.image"          
+            :name="item.expertName"          
+            :charge="item.expertCharge"          
+          >
+            <div v-html="item.expertContent"></div>
+          </MExpertTooltip>
+        </div>
       </div>  
     </li>
   </ul>
@@ -90,38 +98,6 @@ const emit = defineEmits(['select'])
     width: 100%;
   }
 
-  input[type="radio"] {
-    display: none;
-
-    &:checked {
-      + .mRButton {
-        border: 1px solid #ecf0ff;
-        background: #ecf0ff;
-        transition: 0.2s;
-      }
-
-      + .mRNocheck {
-        border: 1px solid #3a52b4;
-        background: #3a52b4;
-        transition: 0.2s;
-        color: white;
-      }
-
-      + .mRButton:before {
-        border: 1px solid #3a52b4;
-        background: #3a52b4;
-      }
-
-      + label .rear-unchecked  {
-        display: none !important;
-      }
-
-      + label .rear-checked {
-        display: block !important;
-      }
-    }
-  }
-
   label {
     padding: 20px 10px 23px 62px;
     display: block;
@@ -131,13 +107,25 @@ const emit = defineEmits(['select'])
     cursor: pointer;
   }
 
-  .mRNocheck {
-    padding: 24px 0;
-    text-align: center;
-  }
+  input[type="radio"] {
+    display: none;
 
-  .mRButton {
-    padding: 24px 10px 24px 62px;
+    &:checked {
+       + .mRButton {
+        border: 1px solid #ecf0ff;
+        background: #ecf0ff;
+        transition: 0.2s;
+      }
+
+      + .mRButton:before {
+        border: 1px solid #3a52b4;
+        background: #3a52b4;
+      }
+
+       + label + .tooltip  {
+        display: block;
+      }
+    }
   }
 
   .mRButton:before {
@@ -174,20 +162,15 @@ const emit = defineEmits(['select'])
   }
 }
 
-.setInline {
-  display: flex !important;
-}
-.setInline li {
-  flex: 1;
-}
-
-.rear-checked {
+.tooltip {
   display: none;
-}
+  width:100%;
+  margin: 20px 0;
 
-.mLabel-type-2 {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  &:after {
+    content: '';
+    clear: both;
+    display: block;
+  }
 }
 </style>

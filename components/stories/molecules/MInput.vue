@@ -44,7 +44,7 @@ const computedStyled = computed(() => {
     <input  
       type="text" 
       :placeholder="placeHolder"
-      :maxlength="maxlength"
+      :maxLength="maxlength"
       :readonly="readonly"
       :style="{
         borderRadius: rounded ? '50vh' : '',

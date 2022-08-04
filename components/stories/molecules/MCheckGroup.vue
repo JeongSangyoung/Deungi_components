@@ -1,30 +1,59 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 interface PropType {
-  name: string;
-  content: string;
-  checked?: boolean;
+  items: ICheckItem[];
+  setInline?: boolean;
 }
 
-withDefaults(defineProps<PropType>(), {
-  checked: false,
+interface ICheckItem {
+  content: string;
+  name: string;
+}
+
+const props = withDefaults(defineProps<PropType>(), {
+  setInline: false,
 })
 
 const emit = defineEmits(['check'])
+
+const checkArray = ref(new Array(props.items.length).fill(false));
+const createArray = (item_idx) => {
+  checkArray.value[item_idx] = !checkArray.value[item_idx]
+  emit('check', checkArray.value)
+}
+
 </script>
 
 <template>
-<div class="mCheck">
-  <input type="checkbox"
-    :id="name"
-    :checked="checked" 
-    @click="emit('check', $event.target.checked)" 
-  />
-  <label :for="name"><div>{{ content }}</div></label>
-</div>
+<ul class="mCheckGroup" :class="{ setInline: setInline }" >
+  <li 
+    v-for="(item, item_idx) in items" 
+    :class="{ 'pr-3': setInline && item_idx < items.length }"
+  >
+    <div class="mLabel">
+      <input type="checkbox"
+        :id="item.name"
+        @click="createArray(item_idx)" 
+      />
+      <label :for="item.name"><div>{{ item.content }}</div></label>
+    </div>
+  </li>
+</ul>
 </template>
 
 <style lang="scss" scoped>
-.mCheck {
+.mCheckGroup {
+  margin: 0;
+  padding: 0;
+  font-size: 20px;
+  display: block;
+
+  li {
+    list-style: none;
+  }
+}
+
+.mLabel {
   input[type="checkbox"] {
     display: none;
 
@@ -83,5 +112,9 @@ const emit = defineEmits(['check'])
       transform: rotate(-45deg) translate(0, 50%);
     }
   }
+}
+
+.setInline {
+  display: flex !important;
 }
 </style>

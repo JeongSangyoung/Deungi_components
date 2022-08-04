@@ -60,7 +60,7 @@ const emit = defineEmits(['remove'])
     </div>
   </div>
   <!-- 3 -->
-  <div class="exeCard-close" @click="emit('remove', name)">
+  <div class="exeCard-close" @click="emit('remove')">
     <div class="exeCard-close__btn"></div>
   </div>
 </div>
