@@ -11,7 +11,7 @@ interface PropType {
 
 const props = withDefaults(defineProps<PropType>(), {
   rounded: false,
-  backgroundColor: 'transparent',
+  backgroundColor: '#19A29A',
   width: '',
   maxWidth: '',
   height: '',

@@ -1,0 +1,37 @@
+@mixin font-face($name, $file, $weight: noraml, $style: normal) {
+  @font-face {
+    font-family: $name;
+    src: url('@/assets/font/#{$file}.woff') format('woff');
+    font-weight: $weight;
+    font-style: $style;
+  }
+}
+
+$mobile: 600px;
+$tablet: 960px;
+$desktop: 1024px;
+
+@mixin mobile{
+  @media (max-width: $mobile){
+    @content;
+  }
+}
+
+@mixin tablet{
+  @media (min-width: ($mobile + 1)) and (max-width: $tablet){
+    @content;
+  }
+}
+
+@mixin tabletAndMobile {
+  @media (max-width: $tablet){
+    @content;
+  }
+}
+
+@mixin desktop{
+  @media (min-width: ($tablet + 1)){
+    @content;
+  }
+}
+

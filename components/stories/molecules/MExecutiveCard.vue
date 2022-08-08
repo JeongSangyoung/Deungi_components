@@ -85,6 +85,7 @@ const emit = defineEmits(['remove'])
 
   &-content {
     width: calc(100% - 140px);
+    padding: 12px 0;
 
     &__div {
       display: flex;

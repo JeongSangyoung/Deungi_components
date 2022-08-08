@@ -14,7 +14,10 @@ withDefaults(defineProps<PropType>(), {
 </script>
 
 <template>
-<div class="mainCountCard" :style="{ background: `#fff url(${image}) no-repeat right bottom`}">
+<div 
+  class="mainCountCard" 
+  :style="{ background: `#fff url(${image}) no-repeat right bottom`}"
+>
   <div class="mainCountCard-header">
     {{ header }}
   </div>
@@ -36,7 +39,6 @@ withDefaults(defineProps<PropType>(), {
 
 <style lang="scss" scoped>
 .mainCountCard {
-  font-family: 'GmarketSans';
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -44,20 +46,29 @@ withDefaults(defineProps<PropType>(), {
   flex: 1;
   box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
   text-align: center;
+  font-family: 'GmarketSans';
 
   &-header {
     font-size: 24px;
     font-weight: 600;
     letter-spacing: -2.5px;
+    @include tabletAndMobile {
+      font-size: 20px;
+    }
   }
 
   &-content {
     font-weight:bold;
+    letter-spacing: -2.2px;
+    padding: 12px 0;
     span:nth-child(1) {
-      font-size:66px; 
+      font-size: 52px;
+      @include tabletAndMobile {
+        font-size: 40px;
+      }
     }
     span:nth-child(2) {
-      font-size:32px; 
+      font-size: 32px; 
     }
   }
 
