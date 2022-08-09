@@ -52,4 +52,5 @@ export const parameters = {
       ...INITIAL_VIEWPORTS
     },
   },
+  layout: 'fullscreen'
 };

@@ -20,7 +20,6 @@ const Template:StoryFn<typeof OMainReview> = (args) => ({
 
 export const Main = Template.bind({})
 Main.args = {
-  backgroundImage: 'https://deungi24.com/img/main_slider_1.gif',
   items: [
     {
       image: 'https://deungi24.com/img/user_1.png',

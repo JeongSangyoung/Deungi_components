@@ -2,7 +2,6 @@
 import MMainCountCard from '@/components/stories/molecules/main/MMainCountCard.vue';
 
 interface PropType {
-  backgroundImage: string;
   items: ICardItem[];
 }
 
@@ -19,7 +18,7 @@ withDefaults(defineProps<PropType>(), {})
 </script>
 
 <template>
-<div id="main" :style="{ background: `url(${backgroundImage}) no-repeat center` }">
+<div id="main">
   <div class="main-wrap">
     <p class="main-title">오늘만 벌써 <span style="color: red;"><b>120명</b></span>이 <b>법인설립 신청완료!</b></p>
     <div class="main-cards">
@@ -36,15 +35,19 @@ withDefaults(defineProps<PropType>(), {})
 
 <style lang="scss" scoped>
 #main {
+  background: url('https://deungi24.com/img/main_slider_1.gif') no-repeat center 0px;
   background-size: cover;
-  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 0 20px;
+  height: calc(100vh - 70px);
 
-  @include tabletAndMobile {
-    min-height: 150vh;
+  @include mdAndUp {
+    padding: 0 40px;
+  }
+
+  @include smAndDown {
     padding: 60px 12px;
   }
 }
@@ -58,35 +61,35 @@ withDefaults(defineProps<PropType>(), {})
   color: #fff;
   letter-spacing: -2px;
   text-align: center;
-  margin-bottom: 78px;
+  margin-bottom: 48px;
   word-break: keep-all;
 
-  @include tablet {
+  @include md {
     font-size: 32px;
   }
-  @include mobile {
+  @include smAndDown {
     font-size: 24px;
   }
-  @include tabletAndMobile {
+  @include mdAndDown {
     margin-bottom: 48px;
   }
 }
 .main-cards {
   display: flex;
-  @include tabletAndMobile {
+  @include mdAndDown {
     flex-direction: column;
     align-items: center;
   }
 }
 .main-card {
-  @include desktop {
+  @include lg {
     margin-right: 28px;
     &:last-child {
       margin-right: unset;
     }
   }
 
-  @include tabletAndMobile {
+  @include mdAndDown {
     max-width: 500px;
     width: 100%;
     margin-bottom: 24px;

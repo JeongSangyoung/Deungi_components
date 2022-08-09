@@ -2,7 +2,6 @@
 import MReviewGroup from '@/components/stories/molecules/main/MReviewGroup.vue';
 
 interface PropType {
-  backgroundImage: string;
   items: ICardItem[];
 }
 
@@ -16,12 +15,19 @@ withDefaults(defineProps<PropType>(), {})
 </script>
 
 <template>
-<div id="main" :style="{ background: `url(${backgroundImage}) no-repeat center` }">
+<div class="main">
   <div class="main-wrap">
-    <p class="main-title">오늘만 벌써 <span style="color: red;"><b>120명</b></span>이 <b>법인설립 신청완료!</b></p>
+    
+    <div class="main-title">
+      <div>오늘 하루만 벌써<br />
+        <span style="color: yellow;"><b>194개 </b></span>
+        <b>법인이 설립 되었습니다.</b>
+      </div>
+    </div>
+
     <div class="main-cards">
       <MReviewGroup
-        v-for="(item, item_idx) in items"
+        v-for="item in items"
         :key="item.author"
         v-bind="item"
         class="main-card"
@@ -32,61 +38,73 @@ withDefaults(defineProps<PropType>(), {})
 </template>
 
 <style lang="scss" scoped>
-#main {
+.main {
+  background: url('https://deungi24.com/img/main_slider_4.gif') no-repeat center 0px;
   background-size: cover;
-  min-height: 100vh;
+
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0 20px;
+  height: calc(100vh - 70px);
 
-  @include tabletAndMobile {
-    min-height: 150vh;
+  @include mdAndUp {
+    padding: 0 40px;
+  }
+
+  @include smAndDown {
     padding: 60px 12px;
   }
 }
 .main-wrap {
   max-width: 990px;
   width: 100%;
+  display: flex;
+
+  @include mdAndDown {
+    flex-direction: column;
+    align-items: center;
+  }
 }
 .main-title {
   font-family: "NotoSans";
   font-size: 42px;
   color: #fff;
   letter-spacing: -2px;
-  text-align: center;
-  margin-bottom: 78px;
   word-break: keep-all;
+  display: flex;
+  align-items: center;
 
-  @include tablet {
+  @include md {
     font-size: 32px;
   }
-  @include mobile {
+  @include smAndDown {
     font-size: 24px;
   }
-  @include tabletAndMobile {
+  @include mdAndDown {
+    text-align: center;
     margin-bottom: 48px;
   }
 }
 .main-cards {
-  // display: flex;
-  // @include tabletAndMobile {
-  //   flex-direction: column;
-  //   align-items: center;
-  // }
+  padding-left: 20px;
+
+  @include mdAndDown {
+    padding-left: 0;
+  }
 }
 .main-card {
-  @include desktop {
-    margin-right: 28px;
+  @include mdAndUp {
+    margin-bottom: 20px;
+
     &:last-child {
-      margin-right: unset;
+      margin-bottom: unset;
     }
   }
 
-  @include tabletAndMobile {
-    max-width: 500px;
+  @include mdAndDown {
+    max-width: 600px;
     width: 100%;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
   }
 }
 </style>

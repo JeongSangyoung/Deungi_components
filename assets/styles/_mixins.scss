@@ -7,30 +7,75 @@
   }
 }
 
+$tiny: 400px;
 $mobile: 600px;
 $tablet: 960px;
-$desktop: 1024px;
+$desktop: 1264px;
+$giant: 1904px;
 
-@mixin mobile{
-  @media (max-width: $mobile){
+// < 400px
+@mixin tiny {
+  @media (max-width: $tiny) {
     @content;
   }
 }
 
-@mixin tablet{
-  @media (min-width: ($mobile + 1)) and (max-width: $tablet){
+// < 600px
+@mixin xs{
+  @media (max-width: $mobile) {
     @content;
   }
 }
 
-@mixin tabletAndMobile {
+// 600px > < 960px
+@mixin sm{
+  @media (min-width: ($mobile + 1)) and (max-width: $tablet) {
+    @content;
+  }
+}
+
+// < 960px 
+@mixin smAndDown {
   @media (max-width: $tablet){
     @content;
   }
 }
 
-@mixin desktop{
-  @media (min-width: ($tablet + 1)){
+@mixin smAndUp {
+  @media (min-width: ($mobile + 1)) {
+    @content;
+  }
+}
+
+// 960px > < 1264px*
+@mixin md{
+  @media (min-width: ($tablet + 1)) and (max-width: $desktop) {
+    @content;
+  }
+}
+
+// < 1264px
+@mixin mdAndDown {
+  @media (max-width: $desktop){
+    @content;
+  }
+}
+
+@mixin mdAndUp {
+  @media (min-width: ($tablet + 1)) {
+    @content;
+  }
+}
+
+// 1264px >
+@mixin lg {
+  @media (min-width: $desktop) {
+    @content;
+  }
+}
+
+@mixin xl {
+  @media (min-width: $giant) {
     @content;
   }
 }

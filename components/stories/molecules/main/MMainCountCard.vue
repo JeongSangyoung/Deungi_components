@@ -52,7 +52,7 @@ withDefaults(defineProps<PropType>(), {
     font-size: 24px;
     font-weight: 600;
     letter-spacing: -2.5px;
-    @include tabletAndMobile {
+    @include smAndDown {
       font-size: 20px;
     }
   }
@@ -63,7 +63,7 @@ withDefaults(defineProps<PropType>(), {
     padding: 12px 0;
     span:nth-child(1) {
       font-size: 52px;
-      @include tabletAndMobile {
+      @include smAndDown {
         font-size: 40px;
       }
     }
