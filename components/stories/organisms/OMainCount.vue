@@ -41,7 +41,7 @@ withDefaults(defineProps<PropType>(), {})
   justify-content: center;
   align-items: center;
   padding: 0 20px;
-  height: calc(100vh - 70px);
+  min-height: calc(100vh - 70px);
 
   @include mdAndUp {
     padding: 0 40px;
@@ -82,8 +82,8 @@ withDefaults(defineProps<PropType>(), {})
   }
 }
 .main-card {
-  @include lg {
-    margin-right: 28px;
+  @include lgAndUp {
+    margin-right: 24px;
     &:last-child {
       margin-right: unset;
     }

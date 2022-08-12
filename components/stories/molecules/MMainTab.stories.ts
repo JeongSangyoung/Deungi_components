@@ -26,19 +26,19 @@ const Template:StoryFn<typeof MMainTab> = (args) => ({
 const router = [
   {
     path: '/',
-    name: '등기24 법인설립',
+    name: 'home',
   },
   {
     path: '/cost',
-    name: '비용안내',
+    name: 'cost',
   },
   {
     path: '/event',
-    name: '등기24 단독혜택',
+    name: 'event',
   },
   {
     path: '/review',
-    name: '이용 후기',
+    name: 'review',
   },
 ]
 

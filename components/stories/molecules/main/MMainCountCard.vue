@@ -39,7 +39,7 @@ withDefaults(defineProps<PropType>(), {
 
 <style lang="scss" scoped>
 .mainCountCard {
-  padding: 20px;
+  padding: 20px 12px;
   display: flex;
   flex-direction: column;
   border-radius: 8px;

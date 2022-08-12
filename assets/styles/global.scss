@@ -39,3 +39,23 @@ ul li {
   }
 }
 
+.title-type-1 {
+  font-size: 32px;
+  letter-spacing: -2px;
+  font-family: 'GmarketSans';
+  color: #333;
+  position: relative;
+  padding-left: 20px;
+
+  &:before {
+    content: '';
+    clear: both;
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 16px;
+    width: 6px;
+    height: 16px;
+    background: #3a52b4;
+  }
+}

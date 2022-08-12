@@ -45,7 +45,7 @@
   justify-content: center;
   align-items: center;
   padding: 0 20px;
-  height: calc(100vh - 70px);
+  min-height: calc(100vh - 70px);
   font-family: 'GmarketSans';
 
 

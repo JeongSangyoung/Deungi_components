@@ -4,12 +4,12 @@ import MExpertTooltip from '@/components/stories/molecules/MExpertTooltip.vue';
 
 interface PropType {
   name: string;
-  items: IExpertIems[];
+  items: IExpertItems[];
   width?: number | string;
   maxWidth?: number | string;
   height?: number | string;
 }
-interface IExpertIems {
+interface IExpertItems {
   content: string;
   image?: string;
   expertName: string;
@@ -86,11 +86,17 @@ const emit = defineEmits(['select'])
   padding: 0;
   font-size: 20px;
   display: block;
+  font-family: 'NotoSans';
 
   li {
     position: relative;
     display: list-item;
     list-style: none;
+    margin-bottom: 16px;
+
+    &:last-child {
+      margin-bottom: unset;
+    }
   }
 
   .mLabel {

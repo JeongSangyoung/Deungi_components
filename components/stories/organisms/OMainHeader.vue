@@ -47,7 +47,7 @@ import mButton from '@/components/stories/molecules/MButton.vue';
   padding: 24px;
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
 
   @include smAndUp {
     min-width: 400px;

@@ -67,12 +67,20 @@ $giant: 1904px;
   }
 }
 
-// 1264px >
+// 1264px > < 1904px
 @mixin lg {
-  @media (min-width: $desktop) {
+  @media (min-width: ($desktop + 1)) and (max-width: $giant) {
     @content;
   }
 }
+
+// 1264px >
+@mixin lgAndUp {
+  @media (min-width: ($desktop + 1)) {
+    @content;
+  }
+}
+
 
 @mixin xl {
   @media (min-width: $giant) {

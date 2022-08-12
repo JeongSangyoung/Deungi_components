@@ -54,6 +54,7 @@ const emit = defineEmits(['click'])
   display: inline-block;
   border: none;
   cursor: pointer;
+  font-family: 'NotoSans';
 
   &-pulse {
     transform:scale(1);

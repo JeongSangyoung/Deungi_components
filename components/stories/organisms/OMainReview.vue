@@ -45,7 +45,7 @@ withDefaults(defineProps<PropType>(), {})
   display: flex;
   justify-content: center;
   align-items: center;
-  height: calc(100vh - 70px);
+  min-height: calc(100vh - 70px);
 
   @include mdAndUp {
     padding: 0 40px;

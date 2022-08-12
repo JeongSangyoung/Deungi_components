@@ -16,7 +16,7 @@
 
 <style lang="scss" scoped>
 .mEvent {
-  max-width: 270px;
+  max-width: 250px;
   &-header {
     background: #3952b3;
     color: #fff;
@@ -30,6 +30,10 @@
   &-content {
     padding: 20px;
     background: #fff;
+  }
+
+  @include mdAndDown {
+    max-width: 500px;
   }
 }
 </style>

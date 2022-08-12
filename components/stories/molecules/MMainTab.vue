@@ -72,6 +72,9 @@ const changeStyle = (idx: number) => {
     text-align: center;
     color: #333;
     padding: 22px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;;
 
     @include smAndDown {
       border-top: 1px solid #e8e8e8;
