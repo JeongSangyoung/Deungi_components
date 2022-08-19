@@ -44,7 +44,7 @@ const computedStyled = computed(() => {
   return style;
 })
 
-const emit = defineEmits(['select'])
+const emit = defineEmits(['update:modelValue'])
 </script>
 
 <template>
@@ -61,7 +61,7 @@ const emit = defineEmits(['select'])
         <label
           :for="item.content"
           class="mRButton"
-          @click="emit('select', item_idx)"
+          @click="emit('update:modelValue', item_idx)"
         >
           {{ item.content }}
         </label>
@@ -86,13 +86,16 @@ const emit = defineEmits(['select'])
   padding: 0;
   font-size: 20px;
   display: block;
-  font-family: 'NotoSans';
+
+  @include smAndDown {
+    font-size: 16px;
+  }
 
   li {
     position: relative;
     display: list-item;
     list-style: none;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
 
     &:last-child {
       margin-bottom: unset;
@@ -111,6 +114,17 @@ const emit = defineEmits(['select'])
     border: 1px solid #e9e9e9;
     background: #fff;
     cursor: pointer;
+
+    @include smAndDown {
+      padding: 18px 8px 18px 52px;
+    }
+    @include tiny {
+      padding: 18px 8px 18px 40px;
+    }
+
+    &:hover {
+      background: #f5faff;
+    }
   }
 
   input[type="radio"] {
@@ -150,6 +164,17 @@ const emit = defineEmits(['select'])
     -moz-transition: 0.1s;
     -o-transition: 0.1s;
     transition: 0.1s;
+
+    @include smAndDown {
+      width: 26px;
+      height: 26px;
+      left: 18px;
+    }
+    @include tiny {
+      width: 20px;
+      height: 20px;
+      left: 14px;
+    }
   }
 
   .mRButton:after {
@@ -165,6 +190,17 @@ const emit = defineEmits(['select'])
     -webkit-transform: rotate(-45deg) translate(0, 50%);
     -ms-transform: rotate(-45deg) translate(0, 50%);
     transform: rotate(-45deg) translate(0, 50%);
+
+    @include smAndDown {
+      width: 10px;
+      height: 6px;
+      left: 23px;
+    }
+    @include tiny {
+      width: 7px;
+      height: 5px;
+      left: 18px;
+    }
   }
 }
 

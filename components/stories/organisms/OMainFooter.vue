@@ -53,7 +53,6 @@ import MButton from '../molecules/MButton.vue';
   
   address, .footer-content {
     font-size: 18px;
-    font-family: 'NotoSans';
     font-weight: 100;
     color: #fff;
     letter-spacing: -0.7px;
@@ -83,7 +82,6 @@ import MButton from '../molecules/MButton.vue';
     }
     .footer-btngroup {
       b {
-        font-family: 'NotoSans';
         font-weight: bold;
         font-size: 16px;
         color: white;
@@ -125,7 +123,6 @@ import MButton from '../molecules/MButton.vue';
           }
         }
         &:nth-of-type(3) {
-          font-family: 'NotoSans';
           color: #fff;
           font-weight: bold;
           font-size: 18px;

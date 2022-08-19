@@ -1,19 +1,40 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed, CSSProperties } from 'vue';
+interface PropType {
+  width?: string;
+  maxWidth?: string;
+  height?: string;
+}
+
+const props = withDefaults(defineProps<PropType>(), {
+  width: '',
+  maxWidth: '',
+  height: '',
+})
+
+const computedStyled = computed(() => {
+  const style = {} as CSSProperties;
+  if (props.width) style.width = props.width
+  if (props.maxWidth) style.maxWidth = props.maxWidth
+  if (props.height) style.height = props.height
+  return style;
+})
 
 const isShow = ref(false);
 const toggleShow = () => { isShow.value = !isShow.value }
 </script>
 
 <template>
-<div class="mModal-activator">
-  <slot name="activator" :on="{ click: toggleShow }"></slot>
-</div>
-
-<div v-if="isShow" class="mModal">
-  <div class="mModal-content">
-    <slot></slot>
-    <button type="button" class="mModal-close" @click="toggleShow"></button>
+<div>
+  <div class="mModal-activator">
+    <slot name="activator" :on="{ click: toggleShow }" ></slot>
+  </div>
+  
+  <div v-if="isShow" class="mModal">
+    <div class="mModal-content" :style="computedStyled">
+      <slot name="content" :on="{ click: toggleShow }"></slot>
+      <button type="button" class="mModal-close" @click="toggleShow"></button>
+    </div>
   </div>
 </div>
 </template>

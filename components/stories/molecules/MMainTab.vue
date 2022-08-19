@@ -54,7 +54,6 @@ const changeStyle = (idx: number) => {
   margin: 0;
   padding: 0;
   display: flex;
-  font-family: 'NotoSans';
 
   @include xs {
     font-size: 14px;

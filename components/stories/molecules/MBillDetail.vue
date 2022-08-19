@@ -20,27 +20,29 @@ withDefaults(defineProps<PropType>(), {
 </script>
 
 <template>
-<div class="bill-header bill">
-  <p>• {{ costName }}</p>
-  <p>{{ totalCost }}원</p>
-</div>
-<div v-if="details && details.length" class="bill-details">
-  <div 
-    v-for="detail in details" 
-    :key="detail.costName"
-    :style="{ color: detail.sale ? '#596AB1' : '#999999'}"
-  >
-    <div class="bill-detail">{{ detail.costName }}</div>
-    <div class="bill-detail-cost">
-      <span v-if="!detail.sale">+</span>
-      <span v-else>-</span>
-      {{ detail.cost }}원
+<div>
+  <div class="bill-header bill">
+    <p>• {{ costName }}</p>
+    <p>{{ totalCost }}원</p>
+  </div>
+  <div v-if="details && details.length" class="bill-details">
+    <div 
+      v-for="detail in details" 
+      :key="detail.costName"
+      :style="{ color: detail.sale ? '#596AB1' : '#999999'}"
+    >
+      <div class="bill-detail">{{ detail.costName }}</div>
+      <div class="bill-detail-cost">
+        <span v-if="!detail.sale">+</span>
+        <span v-else>-</span>
+        {{ detail.cost }}원
+      </div>
     </div>
   </div>
-</div>
-<div v-if="sale && sale.costName" class="bill-sale bill">
-  <p>• {{ sale.costName }}</p>
-  <p>-{{ sale.cost }}원</p>
+  <div v-if="sale && sale.costName" class="bill-sale bill">
+    <p>• {{ sale.costName }}</p>
+    <p>-{{ sale.cost }}원</p>
+  </div>
 </div>
 </template>
 

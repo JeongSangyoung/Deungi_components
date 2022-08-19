@@ -3,6 +3,7 @@ import { ref } from 'vue';
 interface PropType {
   items: ICheckItem[];
   setInline?: boolean;
+  name: string;
 }
 
 interface ICheckItem {
@@ -14,12 +15,12 @@ const props = withDefaults(defineProps<PropType>(), {
   setInline: false,
 })
 
-const emit = defineEmits(['check'])
+const emit = defineEmits(['update:modelValue'])
 
 const checkArray = ref(new Array(props.items.length).fill(false));
 const createArray = (item_idx) => {
   checkArray.value[item_idx] = !checkArray.value[item_idx]
-  emit('check', checkArray.value)
+  emit('update:modelValue', checkArray.value)
 }
 
 </script>
@@ -29,13 +30,14 @@ const createArray = (item_idx) => {
   <li 
     v-for="(item, item_idx) in items" 
     :class="{ 'pr-3': setInline && item_idx < items.length }"
+    :key="`${item.name}_${name}`"
   >
     <div class="mLabel">
       <input type="checkbox"
-        :id="item.name"
+        :id="`${item.name}_${name}`"
         @click="createArray(item_idx)" 
       />
-      <label :for="item.name"><div>{{ item.content }}</div></label>
+      <label :for="`${item.name}_${name}`"><div>{{ item.content }}</div></label>
     </div>
   </li>
 </ul>
@@ -47,6 +49,14 @@ const createArray = (item_idx) => {
   padding: 0;
   font-size: 20px;
   display: block;
+
+  @include smAndDown {
+    font-size: 18px;
+  }
+
+  @include xs {
+    font-size: 14px;
+  }
 
   li {
     list-style: none;
@@ -78,6 +88,10 @@ const createArray = (item_idx) => {
     > div {
       padding-left: 42px;
       line-height: 30px;
+
+      @include smAndDown {
+        padding-left: 32px;
+      }
     }
     &:before {
       content: "";
@@ -95,6 +109,11 @@ const createArray = (item_idx) => {
       -moz-transition: 0.1s;
       -o-transition: 0.1s;
       transition: 0.1s;
+
+      @include smAndDown {
+        width: 24px;
+        height: 24px;
+      }
     }
 
     &:after {
@@ -110,11 +129,29 @@ const createArray = (item_idx) => {
       -webkit-transform: rotate(-45deg) translate(0, 50%);
       -ms-transform: rotate(-45deg) translate(0, 50%);
       transform: rotate(-45deg) translate(0, 50%);
+
+      @include smAndDown {
+        width: 10px;
+        height: 5px;
+        left: 4.5px;
+      }
     }
   }
 }
 
 .setInline {
   display: flex !important;
+
+  li {
+    margin-right: 16px;
+
+    @include smAndDown {
+      margin-right: 12px;
+    }
+
+    &:last-child {
+      margin-right: unset;
+    }
+  }
 }
 </style>

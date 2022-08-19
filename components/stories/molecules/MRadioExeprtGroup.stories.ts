@@ -6,9 +6,7 @@ export default {
   title: 'molecules/MRadioExpertGroup',
   component: MRadioExpertGroup,
   argTypes: {
-    onSelect: {
-      actions: 'onSelect'
-    }
+    'onUpdate:modelValue': {}
   }
 } as Meta<typeof MRadioExpertGroup>
 
@@ -34,7 +32,7 @@ RadioExample.args = {
       expertName: '등기24',
       expertCharge: '등기24 변호사',
       expertContent: `
-        <p style="font-size:22px;margin:0;font-weight:bold;">
+        <p class="tooltip-title">
         <span style="color: #3850a1">일반적인 법인</span>으로 <span style="color: #3850a1">외부 투자</span>와 <span
           style="color: #3850a1">절세</span>에 유리합니다.
         </p>
@@ -63,7 +61,7 @@ RadioExample.args = {
         <p style="font-size:22px;margin:0;font-weight:bold;">
         <span style="color: #3850a1">주주 전원</span>이 <span style="color: #3850a1">농업인</span>이라면 선택하세요.
         </p>
-        <p style="margin:0;margin-top:8px;font-size:18px">농/어업 법인은 각종 세금 감면 혜택과 브랜드 경쟁력을 가질 수 있습니다. 단, 주주 전원의 농업인 확인서가 있어야 설립
+        <p style="margin:0;margin-top:8px;font-size:18px">농/어업 법인은 각종 세금 감면 혜택과 브랜드 경쟁력을 가질 수 있습니다.<Br/> 단, 주주 전원의 농업인 확인서가 있어야 설립
           가능 합니다.</p>
       `
     },

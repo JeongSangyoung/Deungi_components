@@ -11,32 +11,42 @@ interface PropType {
 </script>
 
 <template>
-  <div class="expertTooltip">
-    <div class="eProfile">
-      <div class="eProfile-wrap">
-        <img :src="image" />
-      </div>
-      <p class="eProfile-name">{{ name }}</p>
-      <p class="eProfile-charge">{{ charge }}</p>
+<div class="expertTooltip">
+  <div class="eProfile">
+    <div class="eProfile-wrap">
+      <img :src="image" />
     </div>
+    <p class="eProfile-name">{{ name }}</p>
+    <p class="eProfile-charge">{{ charge }}</p>
+  </div>
 
-    <div class="eContent">
-      <div class="eContent-ballon">
-        <slot></slot>
-      </div>
+  <div class="eContent">
+    <div class="eContent-ballon">
+      <slot></slot>
     </div>
   </div>
+</div>
 </template>
 
 <style lang="scss" scoped>
 .expertTooltip {
-  display: block;
+  display: flex;
 }
 /* 프로필 이미지 */
 .eProfile {
-  float: left;
   text-align: center;
-  padding-left: 21px;
+  padding-left: 20px;
+  margin-right: 30px;
+
+  @include xs {
+    padding-left: 12px;
+    margin-right: 24px;
+  }
+
+  @include tiny {
+    padding-left: 0;
+    margin-right: 12px;
+  }
 
   &-wrap {
     width: 84px;
@@ -57,29 +67,41 @@ interface PropType {
     color: #3a52b4;
     font-size: 16px;
     font-weight: bold;
-    font-family: 'GmarketSans';
     margin-top: 4px;
     margin-bottom: 0px;
+
+    @include mdAndDown {
+      font-size: 14px;
+    }
   }
 
   &-charge {
     font-size: 16px;
-    margin-top: 4px;
     margin-bottom: 0px;
     color: #333;
+    letter-spacing: -1px;
+
+    @include mdAndDown {
+      font-size: 14px;
+    }
   }
 }
 
 .eContent {
-  float: right;
-  width: calc(100% - 150px);
-
   &-ballon {
     border-radius: 18px;
     padding: 20px 30px;
     position: relative;
     background: #f5f5f5;
-    min-height: 100px
+    min-height: 100px;
+
+    @include mdAndDown {
+      padding: 16px 20px;
+    }
+
+    @include xs {
+      padding: 8px 12px;
+    }
   }
 
   &-ballon:after {
@@ -93,6 +115,11 @@ interface PropType {
     clear: both;
     display: block;
     position: absolute;
+
+    @include tiny {
+      display: none;
+    }
   }
 }
+
 </style>

@@ -6,7 +6,7 @@ export default {
   title: 'molecules/MInputSelection',
   component: MInputSelection,
   argTypes: {
-    onInputcheck: {}
+    'onUpdate:modelValue': {}
   }
 } as Meta<typeof MInputSelection>
 
@@ -26,6 +26,7 @@ export const InputExample = Template.bind({})
 InputExample.args = {
   maxWidth: '700px',
   placeHolder: '회사명을 입력해주세요',
+  name: 'example',
   checkItems: [
     {
       content: '외국인',

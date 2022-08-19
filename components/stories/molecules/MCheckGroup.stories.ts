@@ -8,7 +8,7 @@ export default {
     name: {
       description: '일종의 key 역할'
     },
-    onCheck: {}
+    'onUpdate:modelValue': {}
   }
 } as Meta<typeof MCheckGroup>
 
@@ -26,6 +26,7 @@ const Template:StoryFn<typeof MCheckGroup> = (args) => ({
 
 export const CheckExample = Template.bind({})
 CheckExample.args = {
+  name: 'service1',
   items: [
     {
       content: '서비스 이용약관 동의(필수)',
@@ -40,6 +41,7 @@ CheckExample.args = {
 
 export const SetInline = Template.bind({})
 SetInline.args = {
+  name: 'service2',
   items: [
     {
       content: '외국인',

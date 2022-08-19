@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import mButton from '@/components/stories/molecules/MButton.vue';
+import MButton from '@/components/stories/molecules/MButton.vue';
 
 </script>
 
@@ -29,9 +29,9 @@ import mButton from '@/components/stories/molecules/MButton.vue';
     </div>
 
     <div class="header-button">
-      <mButton background-color="#3952B3" :pulse="true">
+      <MButton :pulse="true">
         <div>실시간 견적 조회하기</div>
-      </mButton>
+      </MButton>
       <p>오늘만 벌써 <b>111명</b>이 <b>법인설립 신청 완료!</b></p>
     </div>
 
@@ -70,7 +70,6 @@ import mButton from '@/components/stories/molecules/MButton.vue';
       color: white; 
       padding: 0 12px; 
       font-size:15px;
-      font-family: 'NotoSans';
     }
   }
 
@@ -90,7 +89,6 @@ import mButton from '@/components/stories/molecules/MButton.vue';
 
   &-txt_2 {
     margin-top: 28px;
-    font-family: 'NotoSans';
     font-size: 20px;
     letter-spacing: -2px;
   }
@@ -104,7 +102,6 @@ import mButton from '@/components/stories/molecules/MButton.vue';
       color: white;
       font-size: 20px;
       padding: 12px 32px;
-      font-family: 'NotoSans';
 
       @include smAndDown {
         padding: 12px 110px;
@@ -116,7 +113,6 @@ import mButton from '@/components/stories/molecules/MButton.vue';
 
     }
     p {
-      font-family: 'NotoSans';
       font-size: 16px;
       margin-top: 12px;
       text-align: center;

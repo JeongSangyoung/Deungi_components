@@ -5,9 +5,7 @@ export default {
   title: 'molecules/MCostSelectGroup',
   component: MCostSelectGroup,
   argTypes: {
-    onSelect: {
-      actions: 'onSelect'
-    }
+    'onUpdate:modelValue': {}
   }
 } as Meta<typeof MCostSelectGroup>
 

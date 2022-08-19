@@ -5,9 +5,7 @@ export default {
   title: 'molecules/MRadioButtonGroup',
   component: MRadioButtonGroup,
   argTypes: {
-    onSelect: {
-      actions: 'onSelect'
-    }
+    'onUpdate:modelValue': {}
   }
 } as Meta<typeof MRadioButtonGroup>
 

@@ -4,6 +4,9 @@ import { Meta, StoryFn } from '@storybook/vue3'
 export default {
   title: 'molecules/MInput',
   component: MInput,
+  argTypes: {
+    'onUpdate:modelValue': {}
+  }
 } as Meta<typeof MInput>
 
 const Template:StoryFn<typeof MInput> = (args) => ({
