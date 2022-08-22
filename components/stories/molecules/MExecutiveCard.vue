@@ -55,12 +55,12 @@ const emit = defineEmits(['remove'])
     <!-- 2 -->
     <div class="exeCard-content__div">
       <div>{{ charge }}</div>
-      <div style="margin: 0 12px;">|</div>
+      <div style="margin: 0 12px;" class="none-tiny">|</div>
       <strong>{{ state }}</strong>
     </div>
   </div>
   <!-- 3 -->
-  <div class="exeCard-close" @click="emit('remove', name)">
+  <div class="exeCard-close" @click="emit('remove')">
     <div class="exeCard-close__btn"></div>
   </div>
 </div>
@@ -69,8 +69,13 @@ const emit = defineEmits(['remove'])
 <style lang="scss" scoped>
 .exeCard {
   width: 100%;
-  height: 100px;
+  // height: 100px;
   display: flex;
+  padding: 20px 0px;
+
+  @include xs {
+    padding: 12px 0;
+  }
 
   &-profile {
     width: 120px;
@@ -85,16 +90,32 @@ const emit = defineEmits(['remove'])
 
   &-content {
     width: calc(100% - 140px);
+    padding: 12px 0;
 
     &__div {
       display: flex;
       align-items: center;
+
+      @include tiny {
+        flex-direction: column;
+        align-items: start;
+      }
+
+      h3 {
+        @include tiny {
+          margin-bottom: 4px;
+        }
+      }
     }
 
     ul {
       margin: 0;
       margin-left: 4px;
       padding: 0;
+
+      @include tiny {
+        margin-bottom: 8px;
+      }
     }
     li {
       list-style: none;
@@ -104,6 +125,17 @@ const emit = defineEmits(['remove'])
       border-radius: 20px;
       padding: 2px 13px;
       margin-left: 8px;
+
+      @include tiny {
+        margin-left: unset;
+        font-size: 12px;
+        padding: 1px 10px;
+        margin-right: 2px;
+
+        &:last-child {
+          margin-right: unset;
+        }
+      }
     }
   }
 
@@ -113,13 +145,20 @@ const emit = defineEmits(['remove'])
     &__btn {
       display: inline-block;
       cursor: pointer;
+      position: relative;
       &:after {
         display: inline-block;
+        position: absolute;
         text-align: center;
         content: "\00d7";
-        font-size: 40px;
+        font-size: 36px;
         line-height: 40px;
         width: 40px;
+        top: -30px;
+        
+        @include xs {
+          font-size: 28px;
+        }
       }
     }
   }

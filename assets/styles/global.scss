@@ -1,1 +1,207 @@
-@import url('https://webfontworld.github.io/GmarketSans/GmarketSans.css');
+@import './mixins';
+
+@include font-face('NotoSans', 'NotoSansCJKkr-Light', normal, normal);
+@include font-face('NotoSans', 'NotoSansCJKkr-DemiLight', 200, normal);
+@include font-face('NotoSans', 'NotoSansCJKkr-Medium', 300, normal);
+@include font-face('NotoSans', 'NotoSansCJKkr-Bold', bold, normal);
+@include font-face('GmarketSans', 'GmarketSansLight', normal, normal);
+@include font-face('GmarketSans', 'GmarketSansMedium', 500, normal);
+@include font-face('GmarketSans', 'GmarketSansBold', bold, normal);
+
+h1, h2, h3, h4, h5, h6, ul, li, p, body, html {
+  padding: 0;
+  margin: 0;
+}
+
+ul li {
+  list-style: none;
+}
+
+.main-title {
+  font-size: 42px;
+  color: #fff;
+  letter-spacing: -2px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.none-smAndDown {
+  @include smAndDown {
+    display: none;
+  }
+}
+
+.none-mdAndDown {
+  @include mdAndDown {
+    display: none;
+  }
+}
+
+.none-xs {
+  @include xs {
+    display: none;
+  }
+}
+
+.none-tiny {
+  @include tiny {
+    display: none;
+  }
+}
+
+.display-xs {
+  display: none;
+  @include xs {
+    display: block;
+  }
+}
+
+.title-type-1 {
+  font-size: 32px;
+  letter-spacing: -2px;
+  font-family: 'GmarketSans';
+  color: #333;
+  position: relative;
+  padding-left: 20px;
+
+  &:before {
+    content: '';
+    clear: both;
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 16px;
+    width: 6px;
+    height: 22px;
+    background: #3a52b4;
+  }
+
+  @include smAndDown {
+    font-size: 28px;
+    padding-left: 16px;
+
+    &:before {
+      left: 0;
+      top: 16px;
+      width: 6px;
+      height: 18px;
+    }
+  }
+}
+
+.title-type-2 {
+  font-size: 20px;
+  letter-spacing: -0.7px;
+  color: #333;
+  padding-left: 16px;
+  position: relative;
+  font-weight: 500;
+  margin: 12px 0;
+
+  &:before {
+    content: '';
+    clear: both;
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 5px;
+    height: 14px;
+    background: #333;
+  }
+
+  @include smAndDown {
+    font-size: 18px;
+    padding-left: 14px;
+
+    &:before {
+      left: 0;
+      top: 6px;
+      width: 4px;
+      height: 15px;
+    }
+  }
+}
+
+.next-btn {
+  color: white;
+  font-size: 20px;
+  padding: 20px 24px;
+  position: relative;
+
+  img {
+    position: absolute;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  @include smAndDown {
+    font-size: 18px;
+    padding: 16px 20px;
+  }
+}
+
+:deep(.tooltip-title) {
+  font-size: 22px;
+  margin:0;
+  font-weight:bold;
+  letter-spacing: -1.2px;
+
+  @include smAndDown {
+    font-size: 18px;
+  }
+}
+
+:deep(.tooltip-content) {
+  margin:0;
+  margin-top: 8px;
+  font-size: 18px;
+  letter-spacing: -1.5px;
+
+  @include smAndDown {
+    font-size: 16px;
+  }
+}
+
+.txt-20 {
+  font-size: 20px;
+  margin: 12px 0;
+
+  @include smAndDown {
+    font-size: 18px;
+    margin: 8px 0;
+  }
+}
+
+.txt-28 {
+  font-size: 28px;
+  margin: 12px 0;
+
+  @include smAndDown {
+    font-size: 22px;
+    margin: 8px 0;
+  }
+}
+
+.txt-18 {
+  font-size: 18px;
+  margin: 12px 0;
+
+  @include smAndDown {
+    font-size: 16px;
+    margin: 8px 0;
+  }
+}
+
+.txt-16 {
+  font-size: 16px;
+  margin: 8px 0;
+
+  @include smAndDown {
+    font-size: 14px;
+    margin: 8px 0;
+  }
+}

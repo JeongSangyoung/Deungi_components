@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CSSProperties, computed } from 'vue';
+import { CSSProperties, computed, ref } from 'vue';
 
 interface PropType {
   rounded?: boolean;
@@ -11,6 +11,7 @@ interface PropType {
   width?: number | string;
   maxWidth?: number | string;
   height?: number | string;
+  type?: 'text' | 'number';
 }
 
 const props = withDefaults(defineProps<PropType>(), {
@@ -23,6 +24,7 @@ const props = withDefaults(defineProps<PropType>(), {
   width: '',
   maxWidth: '',
   height: '',
+  type: 'text',
 })
 
 const computedStyled = computed(() => {
@@ -36,25 +38,41 @@ const computedStyled = computed(() => {
   return style;
 })
 
+const value = ref('');
+
+const emit = defineEmits(['update:modelValue']);
+
+const onlyNumber = ($event) => {
+  if (props.type === 'number') {
+    let keyCode = ($event.keyCode ? $event.keyCode : $event.which);
+     if ((keyCode < 48 || keyCode > 57) && keyCode !== 46) { // 46 is dot
+        $event.preventDefault();
+     }
+  }
+}
+
 </script>
 
 <template>
-  <div class="mInput" :style="computedStyled">
-    <img :src="prevImage" />
-    <input  
-      type="text" 
-      :placeholder="placeHolder"
-      :maxlength="maxlength"
-      :readonly="readonly"
-      :style="{
-        borderRadius: rounded ? '50vh' : '',
-        padding: prevImage ? 
-            rounded ? '0 30px 0 70px': '0 20px 0 70px' :
-            rounded ? '0 30px' : '0 20px'
-      }"
-    />
-    <span class="mInput-unit">{{ unit }}</span>
-  </div>
+<div class="mInput" :style="computedStyled">
+  <img v-if="prevImage" :src="prevImage" />
+  <input
+    v-model="value"
+    type="text" 
+    :placeholder="placeHolder"
+    :maxLength="maxlength"
+    :readonly="readonly"
+    :style="{
+      borderRadius: rounded ? '50vh' : '',
+      padding: prevImage ? 
+          rounded ? '0 30px 0 70px': '0 20px 0 70px' :
+          rounded ? '0 30px' : '0 20px'
+    }"
+    @input="emit('update:modelValue', value)"
+    @keypress="onlyNumber($event)"
+  />
+  <span class="mInput-unit">{{ unit }}</span>
+</div>
 </template>
 
 <style lang="scss" scoped>
@@ -72,15 +90,25 @@ const computedStyled = computed(() => {
   input {
     border: 1px solid #e9e9e9;
     box-sizing: border-box;
-    // padding: 0 20px;
-    height: 70px; 
+    height: 70px;
     font-size: 20px;
     outline: none;
     width: 100%;
+    letter-spacing: -1px;
 
     &:read-only {
       background: #eee;
       cursor: default;
+    }
+
+    @include smAndDown {
+      height: 62px;
+      font-size: 18px;
+    }
+
+    @include tiny {
+      height: 52px;
+      font-size: 16px;
     }
 
   }
@@ -91,6 +119,17 @@ const computedStyled = computed(() => {
     right: 20px;
     font-size: 16px;
     color: #6d7ab2;
+
+    @include mdAndDown {
+      top: 20px;
+      right: 18px;
+    }
+
+    @include xs {
+      top: 20px;
+      right: 18px;
+      font-size: 12px;
+    }
   }
 }
 </style>

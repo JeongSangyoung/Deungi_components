@@ -55,18 +55,32 @@ const changeStyle = (idx: number) => {
   padding: 0;
   display: flex;
 
+  @include xs {
+    font-size: 14px;
+    letter-spacing: -1px;
+  }
+
   li {
     list-style: none;
     margin: 0;
     box-sizing: border-box;
     background: #fff;
-    border-top: 1px solid #e8e8e8;
     border-bottom: 4px solid #3952b3;
     border-collapse: separate;
     cursor: pointer;
     text-align: center;
     color: #333;
-    line-height: 65px;
+    padding: 22px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;;
+
+    @include smAndDown {
+      border-top: 1px solid #e8e8e8;
+    }
+    @include xs {
+      padding: 18px 8px;
+    }
   }
 
   &-bl {

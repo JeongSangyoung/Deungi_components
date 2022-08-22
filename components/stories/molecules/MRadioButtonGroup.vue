@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { CSSProperties, computed } from 'vue';
-import MExpertTooltip from './MExpertTooltip.vue';
 
 interface PropType {
   name: string;
   contents: string[];
-  expertTooltipObjects?: IExpertTooltip[];
   noCheckIcon?: boolean;
   setInline?: boolean;
   defaultIndex?: number;
@@ -18,22 +16,7 @@ interface PropType {
   height?: number | string;
 }
 
-interface IExpertTooltip {
-  image?: string;
-  name: string;
-  charge: string;
-  content: string;
-}
-
 const props = withDefaults(defineProps<PropType>(), {
-  expertTooltipObjects: () => [
-    { 
-      image: 'https://deungi24.com/img/illu_2.png', 
-      name: '등기24',
-      charge: '등기24변호사', 
-      content: '' 
-    }
-  ],
   noCheckIcon: false,
   setInline: false,
   defaultIndex: -1,
@@ -53,7 +36,7 @@ const computedStyled = computed(() => {
   return style;
 })
 
-const emit = defineEmits(['select'])
+const emit = defineEmits(['update:modelValue'])
 </script>
 
 <template>
@@ -71,7 +54,7 @@ const emit = defineEmits(['select'])
         <label
           :class="{ mRButton: !noCheckIcon, mRNocheck: noCheckIcon }" 
           :for="content"
-          @click="emit('select', content_idx)"
+          @click="emit('update:modelValue', content_idx)"
         >
 
           <div v-if="content_idx < rearImages.length && rearImages[content_idx].checked" class="mLabel-type-2">
@@ -84,19 +67,7 @@ const emit = defineEmits(['select'])
             {{ content }}
           </div>
         </label>
-        
-        <!-- expert Tooltip -->
-        <div v-if="expertTooltipObjects[content_idx] && expertTooltipObjects[content_idx].content" class="tooltip">
-          <MExpertTooltip
-            :image="expertTooltipObjects[content_idx].image"          
-            :name="expertTooltipObjects[content_idx].name"          
-            :charge="expertTooltipObjects[content_idx].charge"          
-          >
-            <div v-html="expertTooltipObjects[content_idx].content" />
-          </MExpertTooltip>
-        </div>
-      </div>
-      
+      </div>  
     </li>
   </ul>
 </template>
@@ -108,10 +79,33 @@ const emit = defineEmits(['select'])
   font-size: 20px;
   display: block;
 
+  @include smAndDown {
+    font-size: 16px;
+  }
+  @include tiny {
+    font-size: 14px;
+  }
+
   li {
     position: relative;
     display: list-item;
     list-style: none;
+    
+    margin-bottom: 12px;
+
+    &:last-child {
+      margin-bottom: unset;
+    }
+  }
+  img {
+    @include xs {
+      width: 60px;
+      height: 60px;
+    }
+    @include tiny {
+      width: 42px;
+      height: 42px;
+    }
   }
 
   .mLabel {
@@ -141,10 +135,6 @@ const emit = defineEmits(['select'])
         background: #3a52b4;
       }
 
-       + label + .tooltip  {
-        display: block;
-      }
-
       + label .rear-unchecked  {
         display: none !important;
       }
@@ -162,15 +152,25 @@ const emit = defineEmits(['select'])
     border: 1px solid #e9e9e9;
     background: #fff;
     cursor: pointer;
+    &:hover {
+      background: #f5faff;
+    }
   }
 
   .mRNocheck {
-    padding: 24px 0;
+    padding: 20px 0;
     text-align: center;
   }
 
   .mRButton {
     padding: 24px 10px 24px 62px;
+
+    @include smAndDown {
+      padding: 18px 8px 18px 52px;
+    }
+    @include tiny {
+      padding: 18px 8px 18px 40px;
+    }
   }
 
   .mRButton:before {
@@ -189,6 +189,17 @@ const emit = defineEmits(['select'])
     -moz-transition: 0.1s;
     -o-transition: 0.1s;
     transition: 0.1s;
+
+    @include smAndDown {
+      width: 26px;
+      height: 26px;
+      left: 18px;
+    }
+    @include tiny {
+      width: 20px;
+      height: 20px;
+      left: 14px;
+    }
   }
 
   .mRButton:after {
@@ -204,6 +215,17 @@ const emit = defineEmits(['select'])
     -webkit-transform: rotate(-45deg) translate(0, 50%);
     -ms-transform: rotate(-45deg) translate(0, 50%);
     transform: rotate(-45deg) translate(0, 50%);
+
+    @include smAndDown {
+      width: 10px;
+      height: 6px;
+      left: 23px;
+    }
+    @include tiny {
+      width: 7px;
+      height: 5px;
+      left: 18px;
+    }
   }
 }
 
@@ -212,6 +234,18 @@ const emit = defineEmits(['select'])
 }
 .setInline li {
   flex: 1;
+  margin-right: 16px;
+  
+  &:last-child {
+    margin-right: unset;
+  }
+
+  @include xs {
+    margin-right: 8px;
+  }
+  @include tiny {
+    margin-right: 4px;
+  }
 }
 
 .rear-checked {
@@ -222,17 +256,5 @@ const emit = defineEmits(['select'])
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.tooltip {
-  display: none;
-  width:100%;
-  margin: 20px 0;
-
-  &:after {
-    content: '';
-    clear: both;
-    display: block;
-  }
 }
 </style>

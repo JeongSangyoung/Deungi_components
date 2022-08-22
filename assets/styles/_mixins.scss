@@ -1,0 +1,90 @@
+@mixin font-face($name, $file, $weight: noraml, $style: normal) {
+  @font-face {
+    font-family: $name;
+    src: url('@/assets/font/#{$file}.woff') format('woff');
+    font-weight: $weight;
+    font-style: $style;
+  }
+}
+
+$tiny: 400px;
+$mobile: 600px;
+$tablet: 960px;
+$desktop: 1264px;
+$giant: 1904px;
+
+// < 400px
+@mixin tiny {
+  @media (max-width: $tiny) {
+    @content;
+  }
+}
+
+// < 600px
+@mixin xs{
+  @media (max-width: $mobile) {
+    @content;
+  }
+}
+
+// 600px > < 960px
+@mixin sm{
+  @media (min-width: ($mobile + 1)) and (max-width: $tablet) {
+    @content;
+  }
+}
+
+// < 960px 
+@mixin smAndDown {
+  @media (max-width: $tablet){
+    @content;
+  }
+}
+
+@mixin smAndUp {
+  @media (min-width: ($mobile + 1)) {
+    @content;
+  }
+}
+
+// 960px > < 1264px*
+@mixin md{
+  @media (min-width: ($tablet + 1)) and (max-width: $desktop) {
+    @content;
+  }
+}
+
+// < 1264px
+@mixin mdAndDown {
+  @media (max-width: $desktop){
+    @content;
+  }
+}
+
+@mixin mdAndUp {
+  @media (min-width: ($tablet + 1)) {
+    @content;
+  }
+}
+
+// 1264px > < 1904px
+@mixin lg {
+  @media (min-width: ($desktop + 1)) and (max-width: $giant) {
+    @content;
+  }
+}
+
+// 1264px >
+@mixin lgAndUp {
+  @media (min-width: ($desktop + 1)) {
+    @content;
+  }
+}
+
+
+@mixin xl {
+  @media (min-width: $giant) {
+    @content;
+  }
+}
+
