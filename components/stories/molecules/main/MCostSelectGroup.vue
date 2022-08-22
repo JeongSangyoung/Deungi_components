@@ -144,6 +144,12 @@ const imgChecker = (idx) => {
       background-position: calc(100% - 24px) 22px;
       padding: 16px 12px 12px 24px
     }
+
+    @include tiny {
+      background-size: 100px;
+      background-position: calc(100% - 10px) 32px;
+      padding: 12px 12px 12px 12px
+    }
   }
 
   input[type="radio"] {
