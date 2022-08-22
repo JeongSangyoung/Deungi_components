@@ -13,7 +13,10 @@
     "@storybook/vue3": "^6.5.9",
     "nuxt": "3.0.0-rc.6",
     "sass": "^1.54.0",
-    "storybook-builder-vite": "^0.1.23"
+    "storybook-builder-vite": "^0.1.23",
+    "storybook-vue3-router": "^2.3.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "vue-router": "^4.1.3"
+  }
 }

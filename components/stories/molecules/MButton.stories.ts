@@ -4,6 +4,14 @@ import { Meta, StoryFn } from '@storybook/vue3'
 export default {
   title: 'molecules/MButton',
   component: MButton,
+  argTypes: { 
+    backgroundColor: {
+      control: 'color'
+    },
+    onClick: {
+      action: 'clicked'
+    }
+  },
 } as Meta<typeof MButton>
 
 const Template:StoryFn<typeof MButton> = (args) => ({
@@ -15,7 +23,7 @@ const Template:StoryFn<typeof MButton> = (args) => ({
   },
   template: `
     <MButton v-bind="args">
-      <h3>Sample Button</h3>
+      <h3 style="color: white">Sample Button</h3>
     </MButton>
   `,
 })
@@ -23,12 +31,10 @@ const Template:StoryFn<typeof MButton> = (args) => ({
 export const ButtonExample = Template.bind({})
 ButtonExample.args = {
   backgroundColor: '#3952B3',
-  color: 'white',
 }
 
 export const RoundedButton = Template.bind({})
 RoundedButton.args = {
   rounded: true,
   backgroundColor: '#3952B3',
-  color: 'white',
 }

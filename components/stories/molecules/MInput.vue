@@ -27,14 +27,12 @@ const props = withDefaults(defineProps<PropType>(), {
 
 const computedStyled = computed(() => {
   const style = {} as CSSProperties;
-
   if (props.width) style.width = typeof props.width === 'number' ? props.width + 'px' : props.width
   if (props.maxWidth) style.maxWidth = typeof props.maxWidth === 'number' ? props.maxWidth + 'px' : props.maxWidth
   if (props.height) style.height = typeof props.height === 'number' ? props.height + 'px' : props.height
   if (props.rounded) {
     style.borderRadius = '50vh'
   }
-
   return style;
 })
 

@@ -4,6 +4,11 @@ import { Meta, StoryFn } from '@storybook/vue3'
 export default {
   title: 'molecules/MRadioButtonGroup',
   component: MRadioButtonGroup,
+  argTypes: {
+    onSelect: {
+      actions: 'onSelect'
+    }
+  }
 } as Meta<typeof MRadioButtonGroup>
 
 const Template:StoryFn<typeof MRadioButtonGroup> = (args) => ({
@@ -72,11 +77,7 @@ IncludeExpertTooltip.args = {
   ]
 }
 
-export const SetDefaultIndex = Template.bind({
-  args: {
-    
-  }
-})
+export const SetDefaultIndex = Template.bind({})
 SetDefaultIndex.args = {
   name: 'example3',
   contents: ['주식회사', '유한회사', '농/어업 법인', '사회적 기업, 협동조합'],

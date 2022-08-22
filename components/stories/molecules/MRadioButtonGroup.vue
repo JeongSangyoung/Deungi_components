@@ -5,7 +5,7 @@ import MExpertTooltip from './MExpertTooltip.vue';
 interface PropType {
   name: string;
   contents: string[];
-  expertTooltipObjects?: expertTooltip[];
+  expertTooltipObjects?: IExpertTooltip[];
   noCheckIcon?: boolean;
   setInline?: boolean;
   defaultIndex?: number;
@@ -18,7 +18,7 @@ interface PropType {
   height?: number | string;
 }
 
-interface expertTooltip {
+interface IExpertTooltip {
   image?: string;
   name: string;
   charge: string;
@@ -47,13 +47,13 @@ const props = withDefaults(defineProps<PropType>(), {
 
 const computedStyled = computed(() => {
   const style = {} as CSSProperties;
-
   if (props.width) style.width = typeof props.width === 'number' ? props.width + 'px' : props.width
   if (props.maxWidth) style.maxWidth = typeof props.maxWidth === 'number' ? props.maxWidth + 'px' : props.maxWidth
   if (props.height) style.height = typeof props.height === 'number' ? props.height + 'px' : props.height
-
   return style;
 })
+
+const emit = defineEmits(['select'])
 </script>
 
 <template>
@@ -71,6 +71,7 @@ const computedStyled = computed(() => {
         <label
           :class="{ mRButton: !noCheckIcon, mRNocheck: noCheckIcon }" 
           :for="content"
+          @click="emit('select', content_idx)"
         >
 
           <div v-if="content_idx < rearImages.length && rearImages[content_idx].checked" class="mLabel-type-2">
