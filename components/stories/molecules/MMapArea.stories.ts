@@ -5,7 +5,8 @@ export default {
   title: 'molecules/MMapArea',
   component: MMapArea,
   argTypes: {
-    onClick: {}
+    'onUpdate:modelValue': {},
+    onVerified: {},
   }
 } as Meta<typeof MMapArea>
 
@@ -17,7 +18,7 @@ const Template:StoryFn<typeof MMapArea> = (args) => ({
     }
   },
   template: `
-      <MMapArea v-bind="args" />
+    <MMapArea v-bind="args" />
   `,
 })
 

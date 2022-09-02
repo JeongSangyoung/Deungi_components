@@ -2,78 +2,107 @@
 import { MapHighlight, mapData, thirdCityList, gwamilDongObj, gwamilSiList, gwamilIncheon } from '@/apis/location';
 import { ref, onMounted, watch, computed } from 'vue';
 
-const mapImg = ref(null);
-const mapCanvas = ref(null);
-const sido = ref('전체'); // 1번째
-const sigungu = ref('시/군/구'); // 2번째
-const thirdCity = ref(''); // 3번재 
-let mapHighlight = null;
+interface PropType {
+  modelValue: {
+    sido: string;
+    sigungu: string;
+    third: string;
+  }
+}
 
-const sigunguList = ref(['시/군/구']);
-
-onMounted(() => {
-  mapHighlight = new MapHighlight(mapImg.value, mapCanvas.value);
+const props = withDefaults(defineProps<PropType>(), {
+  modelValue: () => {
+    return {
+      sido: '전체',
+      sigungu: '시/군/구',
+      third: '',
+    }
+  }
 })
 
-// 세번째 도시선택
-const thirdListComputed = computed(() => {
+// STATE
+const mapImg = ref(null);
+const mapCanvas = ref(null);
+const sido = ref(''); // 1번째
+const sigungu = ref(''); // 2번째
+const third = ref(''); // 3번재 
+const sigunguList = ref([]);
+const thirdList = ref([]);
+
+
+const init = ref(false);
+let mapHighlight = null;
+
+
+onMounted(() => {
+  // DATA INIT
+  if (props.modelValue.sido === '') sido.value = '전체';
+  else sido.value = props.modelValue.sido;
+  if (props.modelValue.sigungu === '') sigungu.value = '시/군/구';
+  else sigungu.value = props.modelValue.sigungu;
+  if (props.modelValue.third === '') third.value = '선택해주세요';
+  else third.value = props.modelValue.third;
+
+  // MAP INIT
+  mapHighlight = new MapHighlight(mapImg.value, mapCanvas.value);
+  mapHighlight.resetCoord();
+  mapHighlight.setCity(sido.value);
+
+  changeSigungu() // 셀렉되었을 때 테두리 표시
+})
+
+const getSigunguList = (newSelect) => {
+  if (newSelect === '시/군/구') { return }
+  if (Object.keys(mapData).includes(newSelect)) {
+    if (newSelect == '전체') {
+      sigunguList.value = ['시/군/구'];
+      return; // 전체면 시군구만하고 종료
+    }
+    sigunguList.value = mapData[newSelect].map(cityList => {
+      return cityList.city;
+    });
+    sigunguList.value.sort();
+    sigunguList.value.unshift('시/군/구');
+  }
+}
+const getThirdList = () => {
   let curCity = sigungu.value;
   if (sido.value === '인천') {
     curCity = '인천_' + curCity;
   }
   if (Object.keys(thirdCityList).includes(curCity)) {
-    thirdCity.value = '선택해주세요';
-    return ['선택해주세요'].concat(thirdCityList[curCity])
+    if (third.value === '') third.value = '선택해주세요';
+    thirdList.value = ['선택해주세요'].concat(thirdCityList[curCity])
+    return;
   }
-  return undefined;
-});
+  thirdList.value = undefined;
+}
 
 // 지도에서 선택했을 때 또는 Select에서 선택했을 때
 watch(sido, newSelect => {
   mapHighlight.resetCoord();
   mapHighlight.setCity(newSelect);
-  sigungu.value = '시/군/구'; // 시군구는 초기화
-  thirdCity.value = ''; // 시군구는 초기화
-  if (newSelect === '시/군/구') { return }
-  if (Object.keys(mapData).includes(newSelect)) {
-    if (newSelect == '전체') {
-      sigunguList.value = ['시/군/구'];
-      return // 전체면 시군구만하고 종료
-    }
-    sigunguList.value = mapData[newSelect].map(cityList => {
-      return cityList.city
-    });
-    sigunguList.value.sort();
-    sigunguList.value.unshift('시/군/구');
+  getSigunguList(newSelect);
+  if (sido.value == '전체') {
+    sigungu.value = '시/군/구';
   }
-  emitState()
+  if (init.value) emitState();
+  init.value = true;
 })
+watch(sigungu, _ => {
+  changeSigungu()
+  getThirdList();
+  if (init.value) emitState();
+  init.value = true;
+});
 
-const emit = defineEmits(['click'])
-
-// 검증단계. true false 리턴
-const verification = () => {
-  if (sigungu.value !== '' && sigungu.value !== '시/군/구') {
-    let curCity = '';
-    if (sido.value === '인천') {
-      curCity = '인천_' + sigungu.value ;
-    } else {
-      curCity = sigungu.value;
-    }
-    if (Object.keys(thirdCityList).includes(curCity)) {
-      if (thirdCity.value !== '' && thirdCity.value !== '선택해주세요') return true;
-      return false; // 세번째 선택지가 들어있지 않은경우는 거짓
-    } else { return true; } // 두번째까지만 있고 세번째는 없는경우는 참
-  }
-  return false; // 두번째가 없는경우는 거짓
+const sidoReset = () => {
+  sigungu.value = '시/군/구'; // 시군구는 초기화
+  third.value = ''; // 시군구는 초기화
 }
-const emitState = () => {
-  emit('click', { 
-    sido: sido.value, 
-    sigungu: sigungu.value.replace(/[0-9]/g, ''), 
-    thirdCity: thirdCity.value,
-    verified: verification(),
-  })
+
+const sigunguReset = () => {
+  third.value = '';
 }
 
 // 시군구 Select Tag 에서 이벤트 발생시
@@ -86,8 +115,43 @@ const changeSigungu = () => {
     });
     mapHighlight.selectArea(coords, city);
   }
-  emitState()
 }
+
+// 검증단계. true false 리턴
+const verification = () => {
+  if (sigungu.value !== '' && sigungu.value !== '시/군/구') {
+    let curCity = '';
+    if (sido.value === '인천') {
+      curCity = '인천_' + sigungu.value ;
+    } else {
+      curCity = sigungu.value;
+    }
+    if (Object.keys(thirdCityList).includes(curCity)) {
+      if (third.value !== '' && third.value !== '선택해주세요') {
+        emitVerify(true)
+        return true;
+      }
+      emitVerify(false)
+      return false; // 세번째 선택지가 들어있지 않은경우는 거짓
+    } else { emitVerify(true); return true; } // 두번째까지만 있고 세번째는 없는경우는 참
+  }
+  emitVerify(false);
+  return false; // 두번째가 없는경우는 거짓
+}
+
+const emit = defineEmits(['update:modelValue', 'verified'])
+const emitState = () => {
+  emit('update:modelValue', { 
+    sido: sido.value, 
+    sigungu: sigungu.value.replace(/[0-9]/g, ''), 
+    third: third.value,
+  })
+}
+const emitVerify = (verified) => {
+  emit('verified', { croweded: isGwamil(sido.value, sigungu.value, third.value), verified })
+}
+
+
 
 // area tag에서 hover, leave 이벤트 발생시
 const hovering = (element) => {
@@ -104,7 +168,7 @@ const clicked = (element) => {
   if (location === sigungu.value) {
     return
   }
-  thirdCity.value = ''; // 시군구는 초기화
+  third.value = ''; // 시군구는 초기화
   if (Object.keys(mapData).includes(location)) {
     if (sido.value === '전체') {
       sido.value = location;
@@ -114,7 +178,6 @@ const clicked = (element) => {
     // select 박스에 자동으로 입력되게함
     sigungu.value = location
   }
-  emitState()
 }
 
 // 3번째 select option의 배경색을 변경. 과밀 비과밀
@@ -149,10 +212,12 @@ const isGwamil = (sido, sigungu, third) => {
   }
   return false;
 }
+
 </script>
 
 <template>
 <div>
+
   <input type="hidden" id="targetRow" name="targetRow" value="" />
   <input type="hidden" name="sido_gubun" value="" />
   <input type="hidden" name="sido_map" value="" />
@@ -165,6 +230,7 @@ const isGwamil = (sido, sigungu, third) => {
       name="sido"
       title="시도 선택"
       v-model="sido"
+      @change="sidoReset()"
     >
       <option value="전체">전체보기</option>
       <option value="서울">서울특별시</option>
@@ -191,8 +257,9 @@ const isGwamil = (sido, sigungu, third) => {
       name="sigungu"
       title="시군구"
       v-model="sigungu"
-      @change="changeSigungu"
-    >
+      @change="sigunguReset()"
+      >
+      <!-- @change="changeSigungu" -->
       <option 
         v-for="sg in sigunguList"
         :key="sg"
@@ -205,12 +272,13 @@ const isGwamil = (sido, sigungu, third) => {
     <select
       id="thirdCity"
       name="thirdCity"
-      v-if="thirdListComputed"
-      v-model="thirdCity"
+      v-model="third"
       @change="emitState()"
+      v-if="thirdList"
     >
+
       <option
-        v-for="tc in thirdListComputed"
+        v-for="tc in thirdList"
         :key="tc"
         :value="tc"
         :style="{ background: setOptionColor(tc) }"
@@ -254,8 +322,8 @@ const isGwamil = (sido, sigungu, third) => {
   </div>
 
   <p v-if="verification()">
-   <span v-if="isGwamil(sido, sigungu, thirdCity)" style="color: red">과밀</span> 
-   <span v-else style="color: blue">과밀아님</span> 
+   <span v-if="isGwamil(sido, sigungu, third)" style="color: red">과밀</span>
+   <span v-else style="color: blue">과밀아님</span>
   </p>
   
 </div>
