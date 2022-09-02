@@ -65,7 +65,7 @@ const changeStyle = (idx: number) => {
     margin: 0;
     box-sizing: border-box;
     background: #fff;
-    border-bottom: 4px solid #3952b3;
+    border-bottom: 4px solid $color-basic;
     border-collapse: separate;
     cursor: pointer;
     text-align: center;
@@ -88,7 +88,7 @@ const changeStyle = (idx: number) => {
   }
 
   &-checked {
-    background: #3952b3 !important;
+    background: $color-basic !important;
     color: white !important;
   }
 

@@ -4,6 +4,9 @@ import { Meta, StoryFn } from '@storybook/vue3';
 export default {
   title: 'organisms/OApplyNaming1',
   component: OApplyNaming1,
+  argTypes: {
+    onVerify: {}
+  }
 } as Meta<typeof OApplyNaming1>
 
 const Template:StoryFn<typeof OApplyNaming1> = (args) => ({

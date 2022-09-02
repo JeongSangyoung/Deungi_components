@@ -69,12 +69,12 @@ const createArray = (item_idx) => {
 
     &:checked {
       + label:before {
-        border: 1px solid #3a52b4;
-        background: #3a52b4;
+        border: 1px solid $color-basic;
+        background: $color-basic;
       }
 
       + label {
-        color: #3a52b4;
+        color: $color-basic;
       }
     }
   }
@@ -99,7 +99,6 @@ const createArray = (item_idx) => {
       height: 30px;
       position: absolute;
       top: 50%;
-      // left: 22px;
       box-sizing: border-box;
       border-radius: 50%;
       background: #d0d0d0;

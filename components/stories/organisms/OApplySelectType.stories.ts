@@ -1,20 +1,20 @@
-import OApplyChooseType from './OApplyChooseType.vue';
+import OApplySelectType from './OApplySelectType.vue';
 import { Meta, StoryFn } from '@storybook/vue3';
 
 export default {
-  title: 'organisms/OApplyChooseType',
-  component: OApplyChooseType,
-} as Meta<typeof OApplyChooseType>
+  title: 'organisms/OApplySelectType',
+  component: OApplySelectType,
+} as Meta<typeof OApplySelectType>
 
-const Template:StoryFn<typeof OApplyChooseType> = (args) => ({
-  components: { OApplyChooseType },
+const Template:StoryFn<typeof OApplySelectType> = (args) => ({
+  components: { OApplySelectType },
   setup() {
     return {
       args,
     }
   },
   template: `
-    <OApplyChooseType v-bind="args" />
+    <OApplySelectType v-bind="args" />
   `,
 })
 

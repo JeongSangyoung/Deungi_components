@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import MCostSelectGroup from '../molecules/main/MCostSelectGroup.vue';
 import { ref } from 'vue';
-import MExpertTooltip from '../molecules/MExpertTooltip.vue';
+import MTooltip from '../molecules/MTooltip.vue';
 
 const costSelected = ref(0);
 const items = [
@@ -42,17 +42,17 @@ const items = [
 />
 
 <div v-show="costSelected === 1">
-  <MExpertTooltip name="등기24" charge="등기24변호사" image="https://deungi24.com/img/illu_3.png">
+  <MTooltip name="등기24" charge="등기24변호사" image="https://deungi24.com/img/illu_3.png">
     <p class="tooltip-title"><b>저렴하고 가장 빠른 전자등기</b> 방식을 추천해요</p>
     <p class="tooltip-content">공인(공동)인증서가 지금 없어도, 신청 후 5일 이내 만 발급하시면 됩니다.</p>
-  </MExpertTooltip>
+  </MTooltip>
 </div>
 </template>
 
 <style lang="scss" scoped>
 .tooltip-title {
   b {
-    color: #3952B3;
+    color: $color-basic;
   }
 }
 .txt-20 {

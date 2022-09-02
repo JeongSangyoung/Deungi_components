@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import MRadioExpertGroup from '../molecules/MRadioExpertGroup.vue';
+import MRadioExpandGroup from '../molecules/MRadioExpandGroup.vue';
 
 import { ref } from 'vue';
 
@@ -22,7 +22,7 @@ const radio = ref(-1);
 
 <template>
 <p class="title-type-1">법인 유형을 선택하세요.</p>
-<MRadioExpertGroup v-model="radio" :name="name" :items="items" />
+<MRadioExpandGroup v-model="radio" :name="name" :items="items" />
 </template>
 
 <style lang="scss" scoped>

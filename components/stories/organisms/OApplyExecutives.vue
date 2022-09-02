@@ -6,7 +6,7 @@ import MInputSelection from '../molecules/MInputSelection.vue';
 import MExecutiveCard from '../molecules/MExecutiveCard.vue';
 
 import { ref, watch } from 'vue';
-import MExpertTooltip from '../molecules/MExpertTooltip.vue';
+import MTooltip from '../molecules/MTooltip.vue';
 
 interface PropType {
   corpname: string;
@@ -186,7 +186,7 @@ const removeExecutive = (idx) => {
         :no-check-icon="true"
       />
       <div v-show="rankSelected > -1">
-        <MExpertTooltip 
+        <MTooltip 
           name="등기24" 
           charge="등기24변호사" 
           image="https://deungi24.com/img/illu_5.png"
@@ -204,7 +204,7 @@ const removeExecutive = (idx) => {
             <p class="tooltip-title"><b>감사</b>는 임원을 감시하는 역할을 합니다.</p>
             <p class="tooltip-content">지분이 없으며, 1인 법인 혹은 10억 이상의 자본금이 있는 법인은 반드시 선임해야 합니다.</p>
           </div>
-        </MExpertTooltip>
+        </MTooltip>
 
         <!-- 입력칸 -->
         <div v-show="rankSelected > -1">
@@ -287,12 +287,12 @@ const removeExecutive = (idx) => {
 .title-type-2 {
 }
 .txt-20 {
-  color: #3A52B4;
+  color: $color-basic;
 }
 
 .tooltip-title {
   b {
-    color: #3A52B4;
+    color: $color-basic;
   }
 }
 .exe-rcontainer {
@@ -318,7 +318,7 @@ const removeExecutive = (idx) => {
   text-align: center;
 
   b {
-    color: #3A52B4;
+    color: $color-basic;
   }
 }
 .input-desc {

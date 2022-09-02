@@ -9,16 +9,25 @@ interface PropType {
   sido: string;
   sigungu: string;
   third: string;
+  verifyFunc?: () => boolean;
 }
 
-withDefaults(defineProps<PropType>(), {})
+const props = withDefaults(defineProps<PropType>(), {
+  verifyFunc: () => {
+    console.log('검증함수를 넣으시오.')
+    return true;
+  }
+})
 
 const verified = ref(false);
 const corpname = ref('');
 const verify = () => {
   if (Math.random() > 0.5) verified.value = true
   else verified.value = false
+  props.verifyFunc()
 }
+
+const emit = defineEmits(['verify']);
 
 </script>
 
@@ -39,7 +48,7 @@ const verify = () => {
           v-on="on"
           class="search-btn"
           :disabled="corpname === ''"
-          @click="verify"
+          @click="verify()"
         >
           회사이름조회
         </MButton>
@@ -56,8 +65,8 @@ const verify = () => {
         멋진 회사이름! {{ corpname }}(으)로 결정 하시겠습니까?
         </p>
         <div class="modal-act">
-          <MButton background-color="#999999" v-on="on">이름 변경</MButton>
-          <MButton>결정</MButton>
+          <MButton background-color="#999999" v-on="on" @click="emit('verify', false)">이름 변경</MButton>
+          <MButton @click="emit('verify', true)">결정</MButton>
         </div>
       </div>
 
@@ -72,7 +81,7 @@ const verify = () => {
         </p>
 
         <div class="modal-act">
-          <MButton v-on="on">확인</MButton>
+          <MButton v-on="on" @click="emit('verify', false)">확인</MButton>
         </div>
         
       </div>

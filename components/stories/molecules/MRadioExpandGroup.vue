@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { CSSProperties, computed } from 'vue';
-import MExpertTooltip from '@/components/stories/molecules/MExpertTooltip.vue';
+import MTooltip from '@/components/stories/molecules/MTooltip.vue';
 
 interface PropType {
   name: string;
@@ -67,13 +67,13 @@ const emit = defineEmits(['update:modelValue'])
         </label>
 
         <div class="tooltip">
-          <MExpertTooltip
+          <MTooltip
             :image="item.image"          
             :name="item.expertName"          
             :charge="item.expertCharge"          
           >
             <div v-html="item.expertContent"></div>
-          </MExpertTooltip>
+          </MTooltip>
         </div>
       </div>  
     </li>
@@ -138,8 +138,8 @@ const emit = defineEmits(['update:modelValue'])
       }
 
       + .mRButton:before {
-        border: 1px solid #3a52b4;
-        background: #3a52b4;
+        border: 1px solid $color-basic;
+        background: $color-basic;
       }
 
        + label + .tooltip  {

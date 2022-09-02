@@ -5,14 +5,15 @@ import OMainFooter from '@/components/stories/organisms/OMainFooter.vue';
 </script>
 
 <template>
-<div id="container">
-  <OMainHeader id="header"/>
-  <div id="content">
-    <slot></slot>
+<div>
+  <div id="container">
+    <OMainHeader id="header"/>
+    <div id="content">
+      <slot></slot>
+    </div>
   </div>
+  <OMainFooter id="footer" />
 </div>
-<OMainFooter id="footer" />
-
 </template>
 
 <style lang="scss" scoped>

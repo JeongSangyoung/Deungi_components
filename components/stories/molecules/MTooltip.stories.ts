@@ -1,13 +1,13 @@
-import MExpertTooltip from './MExpertTooltip.vue';
+import MTooltip from './MTooltip.vue';
 import { Meta, StoryFn } from '@storybook/vue3'
 
 export default {
-  title: 'molecules/MExpertTooltip',
-  component: MExpertTooltip,
-} as Meta<typeof MExpertTooltip>
+  title: 'molecules/MTooltip',
+  component: MTooltip,
+} as Meta<typeof MTooltip>
 
-const Template:StoryFn<typeof MExpertTooltip> = (args) => ({
-  components: { MExpertTooltip },
+const Template:StoryFn<typeof MTooltip> = (args) => ({
+  components: { MTooltip },
   setup() {
     return {
       args,
@@ -24,9 +24,9 @@ const Template:StoryFn<typeof MExpertTooltip> = (args) => ({
     }
   },
   template: `
-    <MExpertTooltip v-bind="args">
+    <MTooltip v-bind="args">
       {{ args.slotContent }}
-    </MExpertTooltip>
+    </MTooltip>
   `,
 })
 

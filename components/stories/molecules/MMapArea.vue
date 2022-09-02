@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { MapHighlight, mapData, thirdCityList, gwamilDongObj, gwamilSiList, gwamilIncheon } from '@/plugins/location';
+import { MapHighlight, mapData, thirdCityList, gwamilDongObj, gwamilSiList, gwamilIncheon } from '@/apis/location';
 import { ref, onMounted, watch, computed } from 'vue';
 
 const mapImg = ref(null);
@@ -288,8 +288,11 @@ select {
   background: url(https://deungi24.com/img/bg_select1.png) no-repeat right center;
   background-size: 24px auto;
   -webkit-appearance: none;
-  // margin-left: 10px;
   min-width: 100px;
+
+  @include xs {
+    padding: 0 24px 0 8px; 
+  }
 
   &:disabled {
     cursor: not-allowed;
@@ -302,12 +305,15 @@ select {
 }
 
 .select-box {
-  max-width: 600px;
+  width: 600px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
   margin-bottom: 24px;
 
+  @include xs {
+    width: unset;
+  }
   select {
     width: 30%;
   }

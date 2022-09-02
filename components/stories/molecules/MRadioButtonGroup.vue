@@ -124,15 +124,15 @@ const emit = defineEmits(['update:modelValue'])
       }
 
       + .mRNocheck {
-        border: 1px solid #3a52b4;
-        background: #3a52b4;
+        border: 1px solid $color-basic;
+        background: $color-basic;
         transition: 0.2s;
         color: white;
       }
 
       + .mRButton:before {
-        border: 1px solid #3a52b4;
-        background: #3a52b4;
+        border: 1px solid $color-basic;
+        background: $color-basic;
       }
 
       + label .rear-unchecked  {

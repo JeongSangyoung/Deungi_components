@@ -135,7 +135,7 @@ const capital = ref();
     }
 
     b {
-      color: #3A52B4;
+      color: $color-basic;
     }
   }
 }
@@ -147,12 +147,12 @@ const capital = ref();
   text-align: center;
 
   b {
-    color: #3A52B4;
+    color: $color-basic;
   }
 }
 .title-type-2 {
   b {
-    color: #3A52B4;
+    color: $color-basic;
   }
 }
 

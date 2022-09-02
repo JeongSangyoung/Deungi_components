@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import MRadioButtonGroup from '../molecules/MRadioButtonGroup.vue';
-import MExpertTooltip from '../molecules/MExpertTooltip.vue';
+import MTooltip from '../molecules/MTooltip.vue';
 import MButton from '../molecules/MButton.vue';
 
 interface PropType {
@@ -28,7 +28,7 @@ const selectedIndex = (v: number) => {
   :default-index="0"
   @select="selectedIndex"
 />
-<MExpertTooltip 
+<MTooltip 
   v-if="selected === 0" 
   class="tooltip" 
   name="등기24" 
@@ -39,7 +39,7 @@ const selectedIndex = (v: number) => {
   <div>
     <img src="https://deungi24.com/img/img_1.png" />
   </div>
-</MExpertTooltip>
+</MTooltip>
 </template>
 
 <style lang="scss" scoped>
@@ -52,7 +52,7 @@ const selectedIndex = (v: number) => {
   justify-content: center;
   padding: 0 12px;
   b {
-    color: #3A52b4;
+    color: $color-basic;
   }
   div {
     text-align: center;

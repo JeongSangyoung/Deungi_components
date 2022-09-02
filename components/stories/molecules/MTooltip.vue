@@ -52,6 +52,11 @@ interface PropType {
     width: 84px;
     height: 84px;
     position: relative;
+
+    @include xs {
+      width: 70px;
+      height: 70px;
+    }
   }
 
   &-wrap img {

@@ -17,6 +17,7 @@
     "storybook-vue3-router": "^2.3.1"
   },
   "dependencies": {
+    "@pinia/nuxt": "^0.4.1",
     "jquery": "^3.6.0",
     "vue-router": "^4.1.3"
   }
