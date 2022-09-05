@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+
 interface PropType {
+  modelValue: number;
   name: string;
   items: ICostItem[];
-  defaultIndex?: number;
 }
 
 interface ICostItem {
@@ -14,10 +15,11 @@ interface ICostItem {
   cost: string;
 }
 const props = withDefaults(defineProps<PropType>(), {
-  defaultIndex: 0
+  modelValue: -1
 });
 
-const checked = ref(0);
+const radio = ref<number>();
+radio.value = props.modelValue;
 
 const emit = defineEmits(['update:modelValue'])
 
@@ -28,7 +30,7 @@ const clicked = (idx) => {
   emit('update:modelValue', idx)
 }
 const imgChecker = (idx) => {
-  if (checked.value === idx) {
+  if (radio.value === idx) {
     return props.items[idx].image.checked;
   }
   return props.items[idx].image.unchecked
@@ -48,8 +50,7 @@ const imgChecker = (idx) => {
       :id="item.method" 
       :value="item_idx" 
       :name="name" 
-      :checked="defaultIndex == item_idx"
-      v-model="checked"
+      v-model="radio"
     />
     <label :for="item.method" @click="clicked(item_idx)">
       <div 

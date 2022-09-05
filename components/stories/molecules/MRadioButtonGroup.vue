@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { CSSProperties, computed } from 'vue';
+import { CSSProperties, computed, ref  } from 'vue';
 
 interface PropType {
+  modelValue: number;
   name: string;
   contents: string[];
   noCheckIcon?: boolean;
   setInline?: boolean;
-  defaultIndex?: number;
   rearImages?: {
     unchecked: string;
     checked: string;
@@ -17,9 +17,9 @@ interface PropType {
 }
 
 const props = withDefaults(defineProps<PropType>(), {
+  modelValue: -1,
   noCheckIcon: false,
   setInline: false,
-  defaultIndex: -1,
   rearImages: () => [
     {
       unchecked: '',
@@ -36,7 +36,10 @@ const computedStyled = computed(() => {
   return style;
 })
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue']);
+const radio = ref<number>(-1);
+radio.value = props.modelValue;
+
 </script>
 
 <template>
@@ -50,7 +53,7 @@ const emit = defineEmits(['update:modelValue'])
       :key="content"
     >
       <div class="mLabel">
-        <input type="radio" :id="content" :value="content" :name="name" :checked="defaultIndex !== -1 && (content_idx === defaultIndex)" />
+        <input type="radio" :id="content" :value="content_idx" :name="name" v-model="radio" />
         <label
           :class="{ mRButton: !noCheckIcon, mRNocheck: noCheckIcon }" 
           :for="content"

@@ -1,10 +1,9 @@
 export interface State<T> {
-  data: T,
-  verified?: boolean;
+  [index: string]: T
 }
-export interface TemplateArgs {
-  state: { [index: string]: any },
-  propsData: { [index: string ]: any}
+export interface TransferType {
+  state?: { [index: string]: any },
+  propsData?: { [index: string ]: any}
 }
 
 export interface IStepItem {
@@ -18,4 +17,29 @@ export interface IStep1CorpItems {
   expertName: string;
   expertCharge: string;
   expertContent: string;
+}
+
+export interface IExpertItems {
+  content: string;
+  image?: string;
+  expertName: string;
+  expertCharge: string;
+  expertContent: string; 
+}
+
+export interface ILocation {
+  sido: string;
+  sigungu: string;
+  third: string;
+}
+
+export interface IRegMethodItems {
+  duration: string;
+  advantage: string;
+  method: string;
+  image: {
+    checkded: string;
+    uncheckded: string;
+  }
+  cost: string;
 }

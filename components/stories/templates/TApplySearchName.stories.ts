@@ -2,6 +2,7 @@ import TApplySearchName from './TApplySearchName.vue';
 import { Meta, StoryFn } from '@storybook/vue3'
 import vueRouter from 'storybook-vue3-router';
 import { action } from '@storybook/addon-actions';
+import { string } from 'prop-types';
 
 export default {
   title: 'templates/TApplySearchName',
@@ -25,7 +26,12 @@ const Template:StoryFn<typeof TApplySearchName> = (args) => ({
 
 export const Main = Template.bind({})
 Main.args = {
-  name: 'example1',
+  location: {
+    sido: '경기',
+    sigungu: '과천시',
+    third: '',
+  },
+  corpName: '보로노이'
 }
 
 const router = [

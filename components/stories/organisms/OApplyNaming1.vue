@@ -1,14 +1,17 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import MInput from '../molecules/MInput.vue';
 import MButton from '../molecules/MButton.vue';
 import MModal from '../molecules/MModal.vue';
 
-import { ref } from 'vue';
-
+import { ILocation } from '@/types'
 interface PropType {
-  sido: string;
-  sigungu: string;
-  third: string;
+  state: {
+    corpName: string;
+  }
+  propsData: {
+    location: ILocation
+  }
   verifyFunc?: () => boolean;
 }
 
@@ -19,13 +22,13 @@ const props = withDefaults(defineProps<PropType>(), {
   }
 })
 
-const verified = ref(false);
-const corpname = ref('');
+const verified = ref<boolean>(false);
+const corpname = ref<string>();
 const verify = () => {
-  if (Math.random() > 0.5) verified.value = true
-  else verified.value = false
-  props.verifyFunc()
+  const success = props.verifyFunc();
+  verified.value = success;
 }
+corpname.value = props.state.corpName;
 
 const emit = defineEmits(['verify']);
 
@@ -34,7 +37,7 @@ const emit = defineEmits(['verify']);
 <template>
 <div>
   <p class="title-type-1">설립하실 회사 이름은?!</p>
-  <p class="txt-20"><b>{{ sido }} {{ sigungu }} {{ third }}</b> 소재 (예정)</p>
+  <p class="txt-20"><b>{{ props.propsData.location.sido }} {{ props.propsData.location.sigungu }} {{ props.propsData.location.third }}</b> 소재 (예정)</p>
   <div class="search-container">
     <MInput 
       v-model="corpname"

@@ -24,6 +24,7 @@ const Template:StoryFn<typeof MRadioExpandGroup> = (args) => ({
 
 export const RadioExample = Template.bind({})
 RadioExample.args = {
+  modelValue: -1,
   name: 'example1',
   items: [
     {

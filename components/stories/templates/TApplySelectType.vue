@@ -1,26 +1,27 @@
 <script setup lang="ts">
+  import { ref, computed } from 'vue';
 import ApplyLayout from '@/layouts/apply.vue';
 import MButton from '@/components/stories/molecules/MButton.vue';
 import OApplySelectType from '@/components/stories/organisms/OApplySelectType.vue';
-import { IStep1CorpItems, State, TemplateArgs } from '@/types';
-import { ref } from 'vue';
-
-interface ISearchState {
-  [index: string]: number;
-}
+import { IStep1CorpItems, TransferType } from '@/types';
 
 interface PropType {
+  radio: number;
   corpItems: IStep1CorpItems[];
+}
+interface IState {
+  radio: number;
+  verified: boolean;
 }
 const props = withDefaults(defineProps<PropType>(), {});
 
-const searchState = ref<State<ISearchState>>({
-  data: { radio: -1 },
-});
+const radio = ref<number>();
+const verified = ref<boolean>(false);
+radio.value = props.radio;
 
-const searchArgs: TemplateArgs = {
+const selectTypeArgs: TransferType = {
   state: {
-    radio: -1
+    radio: radio.value
   },
   propsData: {
     name: 'selectType',
@@ -28,18 +29,18 @@ const searchArgs: TemplateArgs = {
   }
 }
 
-const updateSelect = (data) => {
-  console.log(data)
+const updateSelect = (data: IState) => {
+  verified.value = data.verified;
+  radio.value = data.radio;
 }
-
 </script>
 
 <template>
 <ApplyLayout>
   <OApplySelectType
     id="selectType"
-    v-bind="searchArgs"
-    @onSelect="updateSelect"
+    v-bind="selectTypeArgs"
+    @select="updateSelect"
   />
 
   <div style="display: flex; justify-content: center">
@@ -47,7 +48,8 @@ const updateSelect = (data) => {
       class="next-btn" 
       width="100%"
       max-width="400px"
-    >
+      :disabled="!verified"
+      >
       <div>
         다음
         <img src="https://deungi24.com/img/ico-1.png" />

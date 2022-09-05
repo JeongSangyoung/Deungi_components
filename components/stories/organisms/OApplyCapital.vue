@@ -6,17 +6,30 @@ import MButton from '../molecules/MButton.vue';
 import { ref } from 'vue';
 
 interface PropType {
-  corpname: string;
+  state: {
+    capital: number;
+  }
+  propsData: {
+    corpName: string;
+  }
 }
 
-withDefaults(defineProps<PropType>(), {})
+const props = withDefaults(defineProps<PropType>(), {});
 
-const capital = ref();
+const corpName = ref<string>();
+const capital = ref<number>();
+capital.value = props.state.capital;
+corpName.value = props.propsData.corpName;
+
+const emit = defineEmits(['verify'])
+const verify = () => {
+  emit('verify', { verify: true })
+}
 
 </script>
 
 <template>
-<p class="title-type-1">{{ corpname }}의<br /> 기초 자본금은 어떻게 되나요?</p>
+<p class="title-type-1">{{ corpName }}의<br /> 기초 자본금은 어떻게 되나요?</p>
 <p class="txt-20">:주주들이 돈을 모아, 회사를 설립할 때 기초가되는 <b>총 자본</b>입니다.</p>
 
 <!-- 자본금 정보 모달 -->
@@ -66,7 +79,7 @@ const capital = ref();
     <p class="txt-16">* 자본금 2,800만원 까지는 등록면허세가 동일합니다.</p>
     <p class="txt-16">* 자본금에 비례하여 등록면허세가 높아집니다.</p>
   </div>
-  <MButton class="input-btn">
+  <MButton class="input-btn" :disabled="!capital" @click="verify">
     입력
   </MButton>
 </div>

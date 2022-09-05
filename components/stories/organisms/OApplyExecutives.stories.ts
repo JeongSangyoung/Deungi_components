@@ -20,5 +20,10 @@ const Template:StoryFn<typeof OApplyExecutives> = (args) => ({
 
 export const Default = Template.bind({})
 Default.args = {
-  corpname: '주식회사 보로노이'
+  state: {
+    executiveList: [],
+  },
+  propsData: {
+    corpname: '주식회사 보로노이'
+  }
 }

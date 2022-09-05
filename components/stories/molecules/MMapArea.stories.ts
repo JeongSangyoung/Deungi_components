@@ -24,4 +24,10 @@ const Template:StoryFn<typeof MMapArea> = (args) => ({
 
 
 export const AreaExample = Template.bind({})
-AreaExample.args = {}
+AreaExample.args = {
+  modelValue: {
+    sido: '',
+    sigungu: '',
+    third: ''
+  }
+}

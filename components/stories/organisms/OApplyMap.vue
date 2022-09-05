@@ -3,38 +3,39 @@ import { ref, watch } from 'vue';
 import MMapArea from '@/components/stories/molecules/MMapArea.vue';
 import MTooltip from '@/components/stories/molecules/MTooltip.vue';
 
-interface PropType {
-  modelValue: {
+import { ILocation } from '@/types';
 
+interface PropType {
+  state: {
+    location: ILocation
   }
 }
+const props = withDefaults(defineProps<PropType>(), {});
 
-const location = ref({
-  sido: '경기',
-  sigungu: '과천시',
-  third: '',
-})
-const disabled = ref(true);
+const location = ref<ILocation>();
+const verified = ref<boolean>(false);
+const croweded = ref<boolean>();
+location.value = props.state.location;
 
-watch(location, newSelect => {
-  console.log(newSelect)
-})
+const emit = defineEmits(['select'])
 
-const emit = defineEmits(['update:modelValue'])
+const mapClicked = () => {
+  emit('select', { location: location.value, verified: verified.value })
+}
 
-const mapClicked = (obj) => {
-  // disabled.value = !obj.verified;
-  // emit('update:modelValue', obj)
+const verify = (obj) => {
+  verified.value = obj.verified;
+  croweded.value = obj.croweded;
 }
 
 </script>
 
 <template>
 <div>
-  {{ location }}
+  {{ location }} {{ croweded }} {{ verified }}
   <p class="title-type-1">사업은 어디서 시작하시나요?</p>
   <div class="apply-container">
-    <MMapArea v-model="location" @click="mapClicked" />
+    <MMapArea v-model="location" @change="mapClicked" @verified="verify" />
     <MTooltip class="tooltip" name="등기24" charge="등기24변호사">
       <p class="tooltip-title">
         "<b>수도권 외 지역</b>은 <b>동록 면허세 67%</b> 감면 됩니다"

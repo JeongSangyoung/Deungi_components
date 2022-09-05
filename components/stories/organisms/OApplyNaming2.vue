@@ -2,21 +2,27 @@
 import { ref } from 'vue';
 import MRadioButtonGroup from '../molecules/MRadioButtonGroup.vue';
 import MTooltip from '../molecules/MTooltip.vue';
-import MButton from '../molecules/MButton.vue';
 
 interface PropType {
-  corpname: string;
+  state: {
+    radio: number;
+  }
+  propsData: {
+    corpname: string;
+  }
 }
 
-const props = withDefaults(defineProps<PropType>(), {})
+const props = withDefaults(defineProps<PropType>(), {});
 
-const corpnaming = [`주식회사 ${props.corpname}`, `${props.corpname} 주식회사`];
+const corpnaming = [`주식회사 ${props.propsData.corpname}`, `${props.propsData.corpname} 주식회사`];
+const radio = ref<number>();
+radio.value = props.state.radio;
 
-const selected = ref(0)
-
-const selectedIndex = (v: number) => {
-  selected.value = v;
+const emit = defineEmits(['select'])
+const changeValue = () => {
+  emit('select', { radio: radio.value, verified: radio.value !== -1 })
 }
+
 </script>
 
 <template>
@@ -24,18 +30,18 @@ const selectedIndex = (v: number) => {
 <MRadioButtonGroup
   class="mGroup"
   name="naming1"
+  v-model="radio"
   :contents="corpnaming"
-  :default-index="0"
-  @select="selectedIndex"
+  @change="changeValue"
 />
 <MTooltip 
-  v-if="selected === 0" 
+  v-if="radio === 0" 
   class="tooltip" 
   name="등기24" 
   charge="등기24변호사"
   image="https://deungi24.com/img/illu_5.png"
 >
-  <p class="tooltip-title">TIP. <b>{{ corpnaming[selected] }}</b>는 <b>은행 거래 시,</b> 법인명 <b>확인</b>이 <b>어려울 수</b> 있어요</p>
+  <p class="tooltip-title">TIP. <b>{{ corpnaming[radio] }}</b>는 <b>은행 거래 시,</b> 법인명 <b>확인</b>이 <b>어려울 수</b> 있어요</p>
   <div>
     <img src="https://deungi24.com/img/img_1.png" />
   </div>
