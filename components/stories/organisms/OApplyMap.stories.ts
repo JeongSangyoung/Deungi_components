@@ -4,6 +4,9 @@ import { Meta, StoryFn } from '@storybook/vue3';
 export default {
   title: 'organisms/OApplyMap',
   component: OApplyMap,
+  argTypes: {
+    onVerify: {}
+  }
 } as Meta<typeof OApplyMap>
 
 const Template:StoryFn<typeof OApplyMap> = (args) => ({

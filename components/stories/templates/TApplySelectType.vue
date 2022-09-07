@@ -40,7 +40,7 @@ const updateSelect = (data: IState) => {
   <OApplySelectType
     id="selectType"
     v-bind="selectTypeArgs"
-    @select="updateSelect"
+    @verify="updateSelect"
   />
 
   <div style="display: flex; justify-content: center">

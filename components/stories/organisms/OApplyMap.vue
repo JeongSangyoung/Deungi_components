@@ -17,10 +17,9 @@ const verified = ref<boolean>(false);
 const croweded = ref<boolean>();
 location.value = props.state.location;
 
-const emit = defineEmits(['select'])
+const emit = defineEmits(['verify'])
 
-const mapClicked = () => {
-  emit('select', { location: location.value, verified: verified.value })
+const changeValue = () => {
 }
 
 const verify = (obj) => {
@@ -28,14 +27,17 @@ const verify = (obj) => {
   croweded.value = obj.croweded;
 }
 
+watch(location, newValue => {
+  emit('verify', { location: newValue, crowded: croweded.value ,verified: verified.value })
+})
+
 </script>
 
 <template>
 <div>
-  {{ location }} {{ croweded }} {{ verified }}
   <p class="title-type-1">사업은 어디서 시작하시나요?</p>
   <div class="apply-container">
-    <MMapArea v-model="location" @change="mapClicked" @verified="verify" />
+    <MMapArea v-model="location" @verified="verify" />
     <MTooltip class="tooltip" name="등기24" charge="등기24변호사">
       <p class="tooltip-title">
         "<b>수도권 외 지역</b>은 <b>동록 면허세 67%</b> 감면 됩니다"

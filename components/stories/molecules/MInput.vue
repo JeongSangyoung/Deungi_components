@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CSSProperties, computed, ref } from 'vue';
+import { CSSProperties, computed, ref, watch } from 'vue';
 
 interface PropType {
   modelValue: string | number;
@@ -40,41 +40,95 @@ const computedStyled = computed(() => {
   return style;
 })
 
-const value = ref('');
+const value = ref<string | number>('');
 value.value = props.modelValue;
 
-const emit = defineEmits(['update:modelValue']);
+watch(value, newValue => {
+  if (props.type !== 'number') return;
+  newValue = newValue.toString().replace(/[^0-9|?!,]/g, '' );
+  newValue = newValue.toString().replace(/,/g, '');
+  value.value = newValue.toString().replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+})
 
-const onlyNumber = ($event) => {
-  if (props.type === 'number') {
-    let keyCode = ($event.keyCode ? $event.keyCode : $event.which);
-     if ((keyCode < 48 || keyCode > 57) && keyCode !== 46) { // 46 is dot
-        $event.preventDefault();
-     }
+const numberList = ['영', '일', '이', '삼', '사', '오', '육', '칠', '팔', '구'];
+const unitList = ['', '만', '억', '조'];
+const smallUnitList = ['천', '백', '십', ''];
+const _makeHan = (text) => {
+  let str = '';
+  for (let i = 0 ; i < text.length; i++) {
+    const num = text[i];
+    if (num === '0') continue;
+    str += numberList[num] + smallUnitList[i]
   }
+  return str;
 }
+const numberToKor = computed(() => {
+  let num = value.value.toString().replace(/,/g, '');
+  if (num === '') return '';
+  let unitCnt = Math.ceil(num.length / 4);
+
+  const result = [];
+  num = num.padStart(unitCnt * 4, '0');
+  const arr = num.match(/[\w\W]{4}/g);
+
+  for (let i = arr.length - 1, unitCnt = 0; i >= 0; i--, unitCnt++) {
+    const hanValue = _makeHan(arr[i]);
+    if (hanValue === '') continue;
+    result.unshift(hanValue + unitList[unitCnt]);
+  }
+  return result.join('');
+})
+
+const emit = defineEmits(['update:modelValue']);
 
 </script>
 
 <template>
-<div class="mInput" :style="computedStyled">
-  <img v-if="prevImage" :src="prevImage" />
-  <input
-    v-model="value"
-    type="text" 
-    :placeholder="placeHolder"
-    :maxLength="maxlength"
-    :readonly="readonly"
-    :style="{
-      borderRadius: rounded ? '50vh' : '',
-      padding: prevImage ? 
-          rounded ? '0 30px 0 70px': '0 20px 0 70px' :
-          rounded ? '0 30px' : '0 20px'
-    }"
-    @input="emit('update:modelValue', value)"
-    @keypress="onlyNumber($event)"
-  />
-  <span class="mInput-unit">{{ unit }}</span>
+<div>
+
+    <div class="mInput" :style="computedStyled">
+      <img v-if="prevImage" :src="prevImage" />
+      <input
+        v-if="type!=='number'"
+        v-model="value"
+        type="text" 
+        :placeholder="placeHolder"
+        :maxLength="maxlength"
+        :readonly="readonly"
+        :style="{
+          borderRadius: rounded ? '50vh' : '',
+          padding: prevImage ? 
+              rounded ? '0 30px 0 70px': '0 20px 0 70px' :
+              rounded ? '0 30px' : '0 20px'
+        }"
+        @input="emit('update:modelValue', value)"
+      />
+      <input 
+        v-else 
+        v-model="value"
+        type="text" 
+        :placeholder="placeHolder"
+        :maxLength="maxlength"
+        :readonly="readonly"
+        :style="{
+          borderRadius: rounded ? '50vh' : '',
+          padding: prevImage ? 
+              rounded ? '0 30px 0 70px': '0 20px 0 70px' :
+              rounded ? '0 30px' : '0 20px'
+        }"
+        oninput="
+          javascript: 
+            this.value = this.value.replace(/[^0-9|?!,]/g, '' );
+          "
+        @input="emit('update:modelValue', value.toString().replace(/,/g, ''))"
+        />
+
+        <!-- this.value = this.value.replace(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣|a-z|A-Z]/g, '' ); -->
+      <span class="mInput-unit">{{ unit }}</span>
+  </div>
+  <div v-if="type==='number'" class="unitKor">
+    {{ numberToKor }}
+  </div>
 </div>
 </template>
 
@@ -123,16 +177,25 @@ const onlyNumber = ($event) => {
     font-size: 16px;
     color: #6d7ab2;
 
-    @include mdAndDown {
+    @include smAndDown {
       top: 20px;
       right: 18px;
     }
 
     @include xs {
-      top: 20px;
+      top: 16px;
       right: 18px;
-      font-size: 12px;
+      font-size: 14px;
     }
+  }
+}
+
+.unitKor {
+  color: #6d7ab2;
+  padding: 10px 20px;
+
+  @include xs {
+    font-size: 14px;
   }
 }
 </style>

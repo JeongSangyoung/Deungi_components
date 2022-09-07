@@ -19,6 +19,8 @@ const props = withDefaults(defineProps<PropType>(), {});
 const radio = ref<number>();
 radio.value = props.state.radio;
 
+const emit = defineEmits(['verify'])
+
 </script>
 
 <template>
@@ -31,6 +33,7 @@ radio.value = props.state.radio;
   :items="propsData.items"
   name="selectionCost"
   v-model="radio"
+  @change="emit('verify', { verify: true })"
 />
 
 <div v-show="radio === 1">

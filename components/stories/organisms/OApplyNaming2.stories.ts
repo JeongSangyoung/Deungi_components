@@ -5,7 +5,7 @@ export default {
   title: 'organisms/OApplyNaming2',
   component: OApplyNaming2,
   argTypes: {
-    onSelect: {}
+    onVerify: {}
   }
 } as Meta<typeof OApplyNaming2>
 
@@ -27,6 +27,6 @@ Default.args = {
     radio: 1
   },
   propsData: {
-    corpname: 'TEST보로노이'
+    corpName: 'TEST보로노이'
   }
 }

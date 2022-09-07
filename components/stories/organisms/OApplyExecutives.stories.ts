@@ -4,6 +4,9 @@ import { Meta, StoryFn } from '@storybook/vue3';
 export default {
   title: 'organisms/OApplyExecutives',
   component: OApplyExecutives,
+  argTypes: {
+    onVerify: {}
+  }
 } as Meta<typeof OApplyExecutives>
 
 const Template:StoryFn<typeof OApplyExecutives> = (args) => ({
@@ -21,9 +24,28 @@ const Template:StoryFn<typeof OApplyExecutives> = (args) => ({
 export const Default = Template.bind({})
 Default.args = {
   state: {
-    executiveList: [],
+    executives: [
+      {
+        name: '테스트감사',
+        charge: '감사',
+        underage: true,
+        foreigner: false,
+      },
+      {
+        name: '테스트법인',
+        charge: '법인',
+        underage: false,
+        foreigner: true,
+      },
+      {
+        name: '김개인',
+        charge: '개인',
+        underage: true,
+        foreigner: true,
+      }
+    ],
   },
   propsData: {
-    corpname: '주식회사 보로노이'
+    corpName: '주식회사 보로노이'
   }
 }

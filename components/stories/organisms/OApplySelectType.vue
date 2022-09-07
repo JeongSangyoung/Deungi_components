@@ -20,9 +20,9 @@ const props = withDefaults(defineProps<PropType>(), {})
 const radio = ref<number>();
 radio.value = props.state.radio;
 
-const emit = defineEmits(['select']);
+const emit = defineEmits(['verify']);
 const changeValue = () => {
-  emit('select', {
+  emit('verify', {
       radio: radio.value,
       verified: radio.value !== -1 
     }

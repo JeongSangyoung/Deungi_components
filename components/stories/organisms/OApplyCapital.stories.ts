@@ -4,6 +4,9 @@ import { Meta, StoryFn } from '@storybook/vue3';
 export default {
   title: 'organisms/OApplyCapital',
   component: OApplyCapital,
+  argTypes: {
+    onVerify: {}
+  }
 } as Meta<typeof OApplyCapital>
 
 const Template:StoryFn<typeof OApplyCapital> = (args) => ({

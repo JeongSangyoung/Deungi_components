@@ -8,19 +8,19 @@ interface PropType {
     radio: number;
   }
   propsData: {
-    corpname: string;
+    corpName: string;
   }
 }
 
 const props = withDefaults(defineProps<PropType>(), {});
 
-const corpnaming = [`주식회사 ${props.propsData.corpname}`, `${props.propsData.corpname} 주식회사`];
+const corpnaming = [`주식회사 ${props.propsData.corpName}`, `${props.propsData.corpName} 주식회사`];
 const radio = ref<number>();
 radio.value = props.state.radio;
 
-const emit = defineEmits(['select'])
+const emit = defineEmits(['verify'])
 const changeValue = () => {
-  emit('select', { radio: radio.value, verified: radio.value !== -1 })
+  emit('verify', { radio: radio.value, verified: radio.value !== -1 })
 }
 
 </script>

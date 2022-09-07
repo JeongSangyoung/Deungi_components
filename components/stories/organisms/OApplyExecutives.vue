@@ -1,49 +1,73 @@
 <script setup lang="ts">
+import { popScopeId, ref, watch } from 'vue';
 import MModal from '../molecules/MModal.vue';
 import MInput from '../molecules/MInput.vue';
+import MCheck from '../molecules/MCheck.vue';
 import MButton from '../molecules/MButton.vue';
+import MTooltip from '../molecules/MTooltip.vue';
 import MRadioButtonGroup from '../molecules/MRadioButtonGroup.vue';
-import MInputSelection from '../molecules/MInputSelection.vue';
 import MExecutiveCard from '../molecules/MExecutiveCard.vue';
 
-import { ref, watch } from 'vue';
-import MTooltip from '../molecules/MTooltip.vue';
+import { IExecutive } from '@/types';
 
 interface PropType {
   state: {
-    executiveList: IExecutive[],
-    // nameSelect1: INameSelect,
-    // nameSelect2: 
+    executives: IExecutive[],
   },
   propsData: {
-    corpname: string;
+    corpName: string;
   }
 }
 
-interface INameSelect {
-  text: string | undefined;
-  check: boolean[] | undefined;
-}
-
-interface IExecutive {
-  image: string;
-  name: string;
-  charge: string;
-  chips: string[] | [];
-  backgroundColor: string;
-  state: string;
+interface IExecutiveCard extends IExecutive {
+  image?: string;
+  backgroundColor?: string;
+  state?: string;
+  chips?: string[];
 }
 
 
-withDefaults(defineProps<PropType>(), {})
+const props = withDefaults(defineProps<PropType>(), {})
 
-const exeSelected = ref(0);
-const rankSelected = ref(-1);
-const whoSelected = ref(-1);
-const nameSelect1 = ref({ text: undefined, check: undefined } as INameSelect);
-const nameSelect2 = ref({ text: undefined, check: undefined } as INameSelect);
-const nameSelect3 = ref({ text: undefined, check: undefined } as INameSelect);
-const executiveList = ref([] as IExecutive[]);
+const exeSelected = ref<number>(0);
+const rankSelected = ref<number>(-1);
+const whoSelected = ref<number>(-1);
+const name =ref<string>();
+const underage = ref<boolean>(false);
+const foreigner = ref<boolean>(false);
+
+const executiveList = ref<IExecutiveCard[]>([]);
+
+props.state.executives.forEach(exe => {
+  const temp =  { 
+    name: exe.name, 
+    underage: exe.underage, 
+    foreigner:exe.foreigner,
+    state: '다음에입력',
+  }
+  if (exe.charge === '법인') {
+    if (exe.foreigner) temp['chips'] = ['외국법인']
+    executiveList.value.push(
+      { ...temp, backgroundColor: '#EDF9FF', charge: '임원 아닌 주주', image: 'https://deungi24.com/img/ico_list2.png' }
+    )
+  } else if (exe.charge === '개인') {
+    const tchips = [];
+    if (exe.foreigner) tchips.push('외국인');
+    if (exe.underage) tchips.push('미성년자');
+    temp['chips'] = tchips;
+    executiveList.value.push(
+      { ...temp, backgroundColor: '#EDF0FF', charge: '임원 아닌 주주', image: 'https://deungi24.com/img/ico_list1.png' }
+    )
+  } else {
+    const tchips = [];
+    if (exe.foreigner) tchips.push('외국인');
+    if (exe.underage) tchips.push('미성년자');
+    temp['chips'] = tchips;
+    executiveList.value.push(
+      { ...temp, backgroundColor: '#EDF0FF', charge: exe.charge, image: 'https://deungi24.com/img/ico_list1.png' }
+    )
+  }
+})
 
 const exes = ['임원', '임원 아닌 주주'];
 const ranks = ['대표이사', '이사', '감사'];
@@ -53,109 +77,95 @@ const rearImages = [
   { unchecked: 'https://deungi24.com/img/ico_list4.png', checked: 'https://deungi24.com/img/ico_list4_on.png'}, 
   { unchecked: 'https://deungi24.com/img/ico_list5.png', checked: 'https://deungi24.com/img/ico_list5_on.png' }
 ]
-const checkItems1 = [
-  {
-    content: "외국인",
-    name: "foreigner"
-  },
-  {
-    content: "미성년자",
-    name: "child"
-  }
-]
-const checkItems2 = [
-  {
-    content: "외국법인",
-    name: "foreignCorp"
-  }
-]
 
 watch(exeSelected, newval => {
-  nameSelect1.value = { text: undefined, check: undefined }
-  nameSelect2.value = { text: undefined, check: undefined }
-  nameSelect3.value = { text: undefined, check: undefined }
+  name.value = ''
+  underage.value = false;
+  foreigner.value = false;
+
   if (newval === 0) { 
     whoSelected.value = -1; // 임원이 선택되면, 임원아닌주주의 selectoption 초기화
   } else {
     rankSelected.value = -1;  // 위와 반대
   }
 })
-const checkDisabled = () => {
-  if (exeSelected.value === 0 && !nameSelect1.value.text) return true;
-  else {
-    if (exeSelected.value === 1 && whoSelected.value === -1) return true;
-    if (whoSelected.value === 0 && !nameSelect2.value.text) return true;
-    if (whoSelected.value === 1 && !nameSelect3.value.text) return true;
-  }
-  return false;
-}
+watch(whoSelected, _ => {
+  name.value = ''
+  underage.value = false;
+  foreigner.value = false;
+})
 
-const mapping = (target: string[], boolList: boolean[]) => {
-  const ret = [];
-  if (!boolList) return ret;
-  for (let i = 0; i < boolList.length; i += 1) {
-    if (boolList[i]) {
-      ret.push(target[i]);
-    }
-  }
-  return ret;
-}
-const addExcutive = () => {
+const addExcutive = (name, charge, underage, foreigner) => {
   // 임원아닌주주 => 법인만 이미지 색깔다름
-  const exeObj = {} as IExecutive;
+  const exeObj = {} as IExecutiveCard;
+  exeObj.charge = charge;
+  exeObj.underage = underage;
+  exeObj.foreigner = foreigner;
+  exeObj.name = name
+  return exeObj
+}
 
+const emit = defineEmits(['verify'])
+
+const addList = () => {
+  let exeObj = {} as IExecutiveCard;
   if (exeSelected.value === 0) {
-    if (nameSelect1.value.text) {
-      exeObj.backgroundColor = '#EDF0FF';
-      exeObj.image = 'https://deungi24.com/img/ico_list1.png';
-      exeObj.name = nameSelect1.value.text;
-      exeObj.chips = mapping(extra, nameSelect1.value.check)
-      exeObj.charge = ranks[rankSelected.value];
-      exeObj.state = '다음에 입력';
-      executiveList.value.push(exeObj)
-    }
+    exeObj = addExcutive(name.value, exes[exeSelected.value], underage.value, foreigner.value);
+    exeObj.backgroundColor = '#EDF0FF';
+    exeObj.image = 'https://deungi24.com/img/ico_list1.png';
+    exeObj.state = '다음에입력';
   } else {
     if (whoSelected.value === 0) {
-      if (nameSelect2.value.text) {
-        exeObj.backgroundColor = '#EDF0FF';
-        exeObj.image = 'https://deungi24.com/img/ico_list1.png';
-        exeObj.name = nameSelect2.value.text;
-        exeObj.chips = mapping(extra, nameSelect2.value.check)
-        exeObj.charge = exes[exeSelected.value];
-        exeObj.state = '다음에 입력';
-        executiveList.value.push(exeObj)
-      }
+      exeObj = addExcutive(name.value, exes[exeSelected.value], underage.value, foreigner.value);
+      exeObj.backgroundColor = '#EDF0FF';
+      exeObj.image = 'https://deungi24.com/img/ico_list1.png';
     } else {
-      if (nameSelect3.value.text) {
-        exeObj.backgroundColor = '#EDF9FF';
-        exeObj.image = 'https://deungi24.com/img/ico_list2.png';
-        exeObj.name = nameSelect3.value.text;
-        exeObj.chips = mapping(['외국법인'], nameSelect3.value.check)
-        exeObj.charge = exes[exeSelected.value];
-        exeObj.state = '다음에 입력';
-        executiveList.value.push(exeObj)
-      }
+      exeObj = addExcutive(name.value, exes[exeSelected.value], underage.value, foreigner.value);
+      exeObj.backgroundColor = '#EDF9FF';
+      exeObj.image = 'https://deungi24.com/img/ico_list2.png';
     }
   }
-  nameSelect1.value = { text: undefined, check: undefined };
-  nameSelect2.value = { text: undefined, check: undefined };
-  nameSelect3.value = { text: undefined, check: undefined };
+  exeObj.chips = getChips()
+  executiveList.value.push(exeObj)
+  name.value = '';
+  underage.value = false;
+  foreigner.value = false;
   exeSelected.value = 0;
   rankSelected.value = -1;
   whoSelected.value = -1;
+  emit('verify', { 
+      executives: executiveList.value.map(exes => {
+        return { name: exes.name, charge: exes.charge, foreigner: exes.foreigner, underage: exes.underage }
+      }),
+      verified: true,
+  })
 }
 
 const removeExecutive = (idx) => {
   executiveList.value.splice(idx, 1)
+  emit('verify', { 
+      executives: executiveList.value.map(exes => {
+        return { name: exes.name, charge: exes.charge, foreigner: exes.foreigner, underage: exes.underage }
+      }),
+      verified: true,
+  })
+}
+const getChips = () => {
+  const temp = [];
+  if (whoSelected.value === 1 && foreigner.value) {
+    temp.push('외국법인');
+    return temp;
+  }
+  if (foreigner.value) temp.push('외국인');
+  if (underage.value) temp.push('미성년자');
+  return temp
 }
 
 </script>
 
 <template>
 <div>
-<!-- <p class="title-type-1">{{ corpname }}의<br /> 첫 주주와 임원 구성은?</p> -->
-
-
+<p class="title-type-1">{{ propsData.corpName }}의<br /> 첫 주주와 임원 구성은?</p>
 <!-- 임원정보 리스트 -->
 <MExecutiveCard
   v-for="(executive, idx) in executiveList"
@@ -218,16 +228,17 @@ const removeExecutive = (idx) => {
         <!-- 입력칸 -->
         <div v-show="rankSelected > -1">
           <p class="title-type-2">이름</p>
-          <!-- <MInputSelection
-            place-holder="이름을 입력해주세요"
-            :check-items="checkItems1"
-            v-model="nameSelect1"
-            name="임원셀렉트"
-          /> -->
-          <MInput 
-            v-model="nameSelect1.text" 
-            place-holder="이름을 입력해주세요" 
-          />
+          <div class="exeName">
+            <MInput
+              class="exeName-input"
+              v-model="name" 
+              place-holder="이름을 입력해주세요" 
+            />
+            <div class="exeName-check">
+              <MCheck v-model="foreigner" label="외국인" class="exeName-check-1" />
+              <MCheck v-model="underage" label="미성년자" />
+            </div>
+          </div>
           
           <div class="input-desc">
             <p class="txt-16">* 미성년자는 법정 대리인 인증 절차와 부가 비용이 발생 합니다.</p>
@@ -249,23 +260,32 @@ const removeExecutive = (idx) => {
       />
       <div v-if="whoSelected === 0 || whoSelected === 1">
         <p class="title-type-2">이름</p>
-        <div v-show="whoSelected === 0">
-          <!-- <MInputSelection 
-            place-holder="이름을 입력해주세요"
-            :check-items="checkItems1"
-            v-model="nameSelect2"
-            name="임원아닌주주_개인"
-          /> -->
+        <div v-if="whoSelected === 0">
+          <div class="exeName">
+            <MInput
+              class="exeName-input"
+              v-model="name" 
+              place-holder="이름을 입력해주세요" 
+            />
+            <div class="exeName-check">
+              <MCheck v-model="foreigner" label="외국인" class="exeName-check-1" />
+              <MCheck v-model="underage" label="미성년자" />
+            </div>
+          </div>
         </div>
-        <div v-show="whoSelected === 1">
-          <!-- <MInputSelection 
-            place-holder="이름을 입력해주세요"
-            :check-items="checkItems2"
-            v-model="nameSelect3"
-            name="임원아닌주주_법인"
-          /> -->
+        <div v-if="whoSelected === 1">
+          <div class="exeName">
+            <MInput
+              class="exeName-input"
+              v-model="name" 
+              place-holder="이름을 입력해주세요" 
+            />
+            <div class="exeName-check">
+              <MCheck v-model="foreigner" label="외국법인" />
+            </div>
+          </div>
         </div>
-          <!-- v-model="nameSelect" -->
+
         <div class="input-desc">
           <p class="txt-16">* 미성년자는 법정 대리인 인증 절차와 부가 비용이 발생 합니다.</p>
           <p class="txt-16">* 외국인은 추가 필요서류 및 비용이 발생합니다.</p>
@@ -278,8 +298,8 @@ const removeExecutive = (idx) => {
         class="next-btn" 
         width="100%"
         max-width="400px"
-        :disabled="checkDisabled()"
-        @click="addExcutive()"
+        :disabled="!name"
+        @click="addList"
         v-on="on"
       >
         <div>
@@ -354,5 +374,36 @@ const removeExecutive = (idx) => {
 
 .exe-list {
   margin-bottom: 12px;
+}
+
+.exeName {
+  display: flex;
+  align-items: center;
+
+  @include xs {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  &-input {
+    width: 60%;
+
+    @include xs {
+      width: 100%;
+    }
+  }
+
+  &-check {
+    display: flex;
+    margin-left: 24px;
+
+    @include xs {
+      margin-left: unset;
+      margin-top: 12px;
+    }
+    &-1 {
+      margin-right: 16px;
+    }
+  }
 }
 </style>

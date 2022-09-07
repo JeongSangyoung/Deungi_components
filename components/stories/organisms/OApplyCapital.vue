@@ -23,7 +23,7 @@ corpName.value = props.propsData.corpName;
 
 const emit = defineEmits(['verify'])
 const verify = () => {
-  emit('verify', { verify: true })
+  emit('verify', { capital: Number(capital.value), verified: true })
 }
 
 </script>
@@ -74,6 +74,8 @@ const verify = () => {
     class="input-name" 
     place-holder="100원 이상 입력하세요."
     type="number"
+    unit="원"
+    :maxlength="16"
   />
   <div class="input-desc display-xs">
     <p class="txt-16">* 자본금 2,800만원 까지는 등록면허세가 동일합니다.</p>

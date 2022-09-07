@@ -24,13 +24,18 @@ const props = withDefaults(defineProps<PropType>(), {
 
 const verified = ref<boolean>(false);
 const corpname = ref<string>();
-const verify = () => {
+corpname.value = props.state.corpName;
+  
+const emit = defineEmits(['verify']);
+  
+const checkName = () => {
   const success = props.verifyFunc();
   verified.value = success;
 }
-corpname.value = props.state.corpName;
 
-const emit = defineEmits(['verify']);
+const verify = (v: boolean) => {
+  emit('verify', { verified: v, corpname: corpname.value })
+}
 
 </script>
 
@@ -52,7 +57,7 @@ const emit = defineEmits(['verify']);
             v-on="on"
             class="search-btn"
             :disabled="corpname === ''"
-            @click="verify()"
+            @click="checkName"
           >
             회사이름조회
           </MButton>
@@ -69,8 +74,8 @@ const emit = defineEmits(['verify']);
           멋진 회사이름! {{ corpname }}(으)로 결정 하시겠습니까?
           </p>
           <div class="modal-act">
-            <MButton background-color="#999999" v-on="on" @click="emit('verify', false)">이름 변경</MButton>
-            <MButton @click="emit('verify', true)">결정</MButton>
+            <MButton background-color="#999999" v-on="on" @click="verify(false)">이름 변경</MButton>
+            <MButton @click="verify(true)">결정</MButton>
           </div>
         </div>
   
@@ -85,7 +90,7 @@ const emit = defineEmits(['verify']);
           </p>
   
           <div class="modal-act">
-            <MButton v-on="on" @click="emit('verify', false)">확인</MButton>
+            <MButton v-on="on" @click="verify(false)">확인</MButton>
           </div>
           
         </div>

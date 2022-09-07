@@ -43,3 +43,10 @@ export interface IRegMethodItems {
   }
   cost: string;
 }
+
+export interface IExecutive {
+  name: string;
+  charge: string;
+  underage: boolean;
+  foreigner: boolean;
+}

@@ -13,9 +13,17 @@ interface PropType {
   corpName: string;
 }
   
-interface IState {
+interface IMapState {
   location: ILocation;
-  corpName: string;
+  croweded: boolean;
+  verified: boolean;
+}
+interface IName1State {
+  corpname: string;
+  verified: boolean;
+}
+interface IName2State {
+  radio: number;
   verified: boolean;
 }
 
@@ -25,6 +33,7 @@ const step = ref(1)
 const radio = ref<number>(-1);
 const location = ref<ILocation>();
 const corpName = ref<string>();
+const crowded = ref<boolean>();
 const verified1 = ref<boolean>(false);
 const verified2 = ref<boolean>(false);
 const verified3 = ref<boolean>(false);
@@ -54,14 +63,27 @@ const name2Args: TransferType = {
   }
 }
 
+const mapVerify = (data: IMapState) => {
+  location.value = data.location;
+  crowded.value = data.croweded;
+  verified1.value = data.verified;
+}
+const name1Verify = (data: IName1State) => {
+  corpName.value = data.corpname;
+  verified2.value = data.verified;
+  if (verified2.value) {
+    next_step()
+  }
+}
+const name2Verify = (data: IName2State) => {
+  radio.value = data.radio
+  verified3.value = data.verified;
+}
+
 
 const next_step = () => {
   window.scrollTo(0, 0);
   step.value += 1
-}
-
-const step2verify = (isVerified) => {
-  console.log(isVerified);
 }
 
 </script>
@@ -69,13 +91,14 @@ const step2verify = (isVerified) => {
 <template>
 <ApplyLayout>
   <div v-show="step === 1">
-    <OApplyMap v-bind="mapArgs" />
+    <OApplyMap v-bind="mapArgs" @verify="mapVerify"/>
     <div style="display: flex; justify-content: center">
-      <MButton 
+      <MButton
         class="next-btn" 
         width="100%"
         max-width="400px"
-        @click="next_step()"
+        @click="next_step"
+        :disabled="!verified1"
       >
         <div>
           다음
@@ -86,11 +109,25 @@ const step2verify = (isVerified) => {
   </div>
 
   <div v-show="step === 2">
-    <OApplyNaming1 v-bind="name1Args" />
+    <OApplyNaming1 v-bind="name1Args" @verify="name1Verify"/>
   </div>
 
   <div v-show="step === 3">
-    <OApplyNaming2 v-bind="name2Args" />
+    <OApplyNaming2 v-bind="name2Args" @verify="name2Verify" />
+
+    <div style="display: flex; justify-content: center">
+      <MButton
+        class="next-btn" 
+        width="100%"
+        max-width="400px"
+        :disabled="!verified3"
+        >
+        <div>
+          다음
+          <img src="https://deungi24.com/img/ico-1.png" />
+        </div>
+      </MButton>
+    </div>
   </div>
 </ApplyLayout>
 

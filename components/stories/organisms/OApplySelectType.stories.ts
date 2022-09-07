@@ -4,6 +4,9 @@ import { Meta, StoryFn } from '@storybook/vue3';
 export default {
   title: 'organisms/OApplySelectType',
   component: OApplySelectType,
+  argTypes: {
+    onVerify: {}
+  },
 } as Meta<typeof OApplySelectType>
 
 const Template:StoryFn<typeof OApplySelectType> = (args) => ({

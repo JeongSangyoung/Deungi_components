@@ -24,7 +24,7 @@ const Template:StoryFn<typeof MCostSelectGroup> = (args) => ({
 export const GroupExample = Template.bind({})
 GroupExample.args = {
   name: 'example',
-  defaultIndex: 0,
+  modelValue: 0,
   items: [
     {
       duration: '5일',

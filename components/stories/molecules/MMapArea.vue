@@ -128,16 +128,18 @@ const verification = () => {
     }
     if (Object.keys(thirdCityList).includes(curCity)) {
       if (third.value !== '' && third.value !== '선택해주세요') {
-        emitVerify(true)
         return true;
       }
-      emitVerify(false)
       return false; // 세번째 선택지가 들어있지 않은경우는 거짓
-    } else { emitVerify(true); return true; } // 두번째까지만 있고 세번째는 없는경우는 참
+    } else { 
+        return true; 
+    } // 두번째까지만 있고 세번째는 없는경우는 참
   }
-  emitVerify(false);
   return false; // 두번째가 없는경우는 거짓
 }
+const verifyComputed = computed(() => {
+  return verification()
+})
 
 const emit = defineEmits(['update:modelValue', 'verified'])
 const emitState = () => {
@@ -146,12 +148,8 @@ const emitState = () => {
     sigungu: sigungu.value.replace(/[0-9]/g, ''), 
     third: third.value,
   })
+  emit('verified', { croweded: isGwamil(sido.value, sigungu.value, third.value), verified: verification() })
 }
-const emitVerify = (verified) => {
-  emit('verified', { croweded: isGwamil(sido.value, sigungu.value, third.value), verified })
-}
-
-
 
 // area tag에서 hover, leave 이벤트 발생시
 const hovering = (element) => {
@@ -321,10 +319,10 @@ const isGwamil = (sido, sigungu, third) => {
     </div>
   </div>
 
-  <p v-if="verification()">
+  <!-- <p v-if="verifyComputed">
    <span v-if="isGwamil(sido, sigungu, third)" style="color: red">과밀</span>
    <span v-else style="color: blue">과밀아님</span>
-  </p>
+  </p> -->
   
 </div>
 </template>

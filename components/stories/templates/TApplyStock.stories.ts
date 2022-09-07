@@ -1,36 +1,40 @@
-import TApplySearchName from './TApplySearchName.vue';
+import TApplyStock from './TApplyStock.vue';
 import { Meta, StoryFn } from '@storybook/vue3'
 import vueRouter from 'storybook-vue3-router';
 import { action } from '@storybook/addon-actions';
 
 export default {
-  title: 'templates/TApplySearchName',
-  component: TApplySearchName,
+  title: 'templates/TApplyStock',
+  component: TApplyStock,
   argTypes: {
     'onUpdate:modelValue': {}
   }
-} as Meta<typeof TApplySearchName>
+} as Meta<typeof TApplyStock>
 
-const Template:StoryFn<typeof TApplySearchName> = (args) => ({
-  components: { TApplySearchName },
+const Template:StoryFn<typeof TApplyStock> = (args) => ({
+  components: { TApplyStock },
   setup() {
     return {
       args,
     }
   },
   template: `
-    <TApplySearchName v-bind="args" />
+    <TApplyStock v-bind="args" />
   `,
 })
 
 export const Main = Template.bind({})
 Main.args = {
-  location: {
-    sido: '경기',
-    sigungu: '과천시',
-    third: '',
-  },
-  corpName: '보로노이'
+  capital: 20000,
+  executives: [
+    {
+      name: '진양곤',
+      charge: '대표이사',
+      underage: false,
+      foreign: false,
+    }
+  ],
+  corpName: '에이치엘비'
 }
 
 const router = [
@@ -66,6 +70,6 @@ const stepRoute = router.map(r => {
 
 Main.decorators = [
   vueRouter(stepRoute, {
-    initialRoute: '/apply/searchName'
+    initialRoute: '/apply/enterStock'
   })
 ]
