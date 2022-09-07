@@ -20,5 +20,10 @@ const Template:StoryFn<typeof OApplyCapital> = (args) => ({
 
 export const Default = Template.bind({})
 Default.args = {
-  corpname: '주식회사 보로노이'
+  state: {
+    capital: 100,
+  },
+  propsData: {
+    corpName: '주식회사 보로노이'
+  }
 }

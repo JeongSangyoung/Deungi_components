@@ -1,29 +1,30 @@
-import MRadioExpertGroup from './MRadioExpertGroup.vue';
+import MRadioExpandGroup from './MRadioExpandGroup.vue';
 import { Meta, StoryFn } from '@storybook/vue3'
 
 
 export default {
-  title: 'molecules/MRadioExpertGroup',
-  component: MRadioExpertGroup,
+  title: 'molecules/MRadioExpandGroup',
+  component: MRadioExpandGroup,
   argTypes: {
     'onUpdate:modelValue': {}
   }
-} as Meta<typeof MRadioExpertGroup>
+} as Meta<typeof MRadioExpandGroup>
 
-const Template:StoryFn<typeof MRadioExpertGroup> = (args) => ({
-  components: { MRadioExpertGroup },
+const Template:StoryFn<typeof MRadioExpandGroup> = (args) => ({
+  components: { MRadioExpandGroup },
   setup() {
     return {
       args,
     }
   },
   template: `
-    <MRadioExpertGroup v-bind="args" />
+    <MRadioExpandGroup v-bind="args" />
   `,
 })
 
 export const RadioExample = Template.bind({})
 RadioExample.args = {
+  modelValue: -1,
   name: 'example1',
   items: [
     {

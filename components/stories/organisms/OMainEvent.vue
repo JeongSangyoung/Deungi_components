@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import MMainEventCard from '@/components/stories/molecules/main/MMainEventCard.vue';
+import MMainEventCard from '@/components/stories/molecules/MMainEventCard.vue';
 
 </script>
 

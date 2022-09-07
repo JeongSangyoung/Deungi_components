@@ -21,7 +21,7 @@ const toggleShow = () => {
 .mQuestionIcon {
   position: relative;
   text-align: center;
-  background-color: #3952b3;
+  background-color: $color-basic;
   border-radius: 50%;
   width: 24px;
   height: 24px;

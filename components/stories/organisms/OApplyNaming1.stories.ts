@@ -4,6 +4,9 @@ import { Meta, StoryFn } from '@storybook/vue3';
 export default {
   title: 'organisms/OApplyNaming1',
   component: OApplyNaming1,
+  argTypes: {
+    onVerify: {}
+  }
 } as Meta<typeof OApplyNaming1>
 
 const Template:StoryFn<typeof OApplyNaming1> = (args) => ({
@@ -20,7 +23,14 @@ const Template:StoryFn<typeof OApplyNaming1> = (args) => ({
 
 export const Default = Template.bind({})
 Default.args = {
-  sido: '경남',
-  sigungu: '창원시',
-  third: '용호동'
+  state: {
+    corpName: '보로노이',
+  },
+  propsData: {
+    location: {
+      sido: '경남',
+      sigungu: '창원시',
+      third: '용호동'
+    }
+  }
 }

@@ -1,15 +1,23 @@
 <script setup lang="ts">
 import MModal from '../molecules/MModal.vue';
+import MInput from '../molecules/MInput.vue';
 import MButton from '../molecules/MButton.vue';
 import MRadioButtonGroup from '../molecules/MRadioButtonGroup.vue';
 import MInputSelection from '../molecules/MInputSelection.vue';
 import MExecutiveCard from '../molecules/MExecutiveCard.vue';
 
 import { ref, watch } from 'vue';
-import MExpertTooltip from '../molecules/MExpertTooltip.vue';
+import MTooltip from '../molecules/MTooltip.vue';
 
 interface PropType {
-  corpname: string;
+  state: {
+    executiveList: IExecutive[],
+    // nameSelect1: INameSelect,
+    // nameSelect2: 
+  },
+  propsData: {
+    corpname: string;
+  }
 }
 
 interface INameSelect {
@@ -144,7 +152,8 @@ const removeExecutive = (idx) => {
 </script>
 
 <template>
-<p class="title-type-1">{{ corpname }}의<br /> 첫 주주와 임원 구성은?</p>
+<div>
+<!-- <p class="title-type-1">{{ corpname }}의<br /> 첫 주주와 임원 구성은?</p> -->
 
 
 <!-- 임원정보 리스트 -->
@@ -186,7 +195,7 @@ const removeExecutive = (idx) => {
         :no-check-icon="true"
       />
       <div v-show="rankSelected > -1">
-        <MExpertTooltip 
+        <MTooltip 
           name="등기24" 
           charge="등기24변호사" 
           image="https://deungi24.com/img/illu_5.png"
@@ -204,17 +213,22 @@ const removeExecutive = (idx) => {
             <p class="tooltip-title"><b>감사</b>는 임원을 감시하는 역할을 합니다.</p>
             <p class="tooltip-content">지분이 없으며, 1인 법인 혹은 10억 이상의 자본금이 있는 법인은 반드시 선임해야 합니다.</p>
           </div>
-        </MExpertTooltip>
+        </MTooltip>
 
         <!-- 입력칸 -->
         <div v-show="rankSelected > -1">
           <p class="title-type-2">이름</p>
-          <MInputSelection
+          <!-- <MInputSelection
             place-holder="이름을 입력해주세요"
             :check-items="checkItems1"
             v-model="nameSelect1"
             name="임원셀렉트"
+          /> -->
+          <MInput 
+            v-model="nameSelect1.text" 
+            place-holder="이름을 입력해주세요" 
           />
+          
           <div class="input-desc">
             <p class="txt-16">* 미성년자는 법정 대리인 인증 절차와 부가 비용이 발생 합니다.</p>
             <p class="txt-16">* 외국인은 추가 필요서류 및 비용이 발생합니다.</p>
@@ -236,20 +250,20 @@ const removeExecutive = (idx) => {
       <div v-if="whoSelected === 0 || whoSelected === 1">
         <p class="title-type-2">이름</p>
         <div v-show="whoSelected === 0">
-          <MInputSelection 
+          <!-- <MInputSelection 
             place-holder="이름을 입력해주세요"
             :check-items="checkItems1"
             v-model="nameSelect2"
             name="임원아닌주주_개인"
-          />
+          /> -->
         </div>
         <div v-show="whoSelected === 1">
-          <MInputSelection 
+          <!-- <MInputSelection 
             place-holder="이름을 입력해주세요"
             :check-items="checkItems2"
             v-model="nameSelect3"
             name="임원아닌주주_법인"
-          />
+          /> -->
         </div>
           <!-- v-model="nameSelect" -->
         <div class="input-desc">
@@ -278,6 +292,7 @@ const removeExecutive = (idx) => {
 </MModal>
 <p class="txt-16" style="color: #707899">* 주주 임원 정보는 추후 <b>제출/수정</b>이 가능합니다.</p>
 
+</div>
 </template>
 
 <style lang="scss" scoped>
@@ -287,12 +302,12 @@ const removeExecutive = (idx) => {
 .title-type-2 {
 }
 .txt-20 {
-  color: #3A52B4;
+  color: $color-basic;
 }
 
 .tooltip-title {
   b {
-    color: #3A52B4;
+    color: $color-basic;
   }
 }
 .exe-rcontainer {
@@ -318,7 +333,7 @@ const removeExecutive = (idx) => {
   text-align: center;
 
   b {
-    color: #3A52B4;
+    color: $color-basic;
   }
 }
 .input-desc {

@@ -1,84 +1,98 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import MInput from '../molecules/MInput.vue';
 import MButton from '../molecules/MButton.vue';
 import MModal from '../molecules/MModal.vue';
 
-import { ref } from 'vue';
-
+import { ILocation } from '@/types'
 interface PropType {
-  sido: string;
-  sigungu: string;
-  third: string;
+  state: {
+    corpName: string;
+  }
+  propsData: {
+    location: ILocation
+  }
+  verifyFunc?: () => boolean;
 }
 
-withDefaults(defineProps<PropType>(), {})
+const props = withDefaults(defineProps<PropType>(), {
+  verifyFunc: () => {
+    console.log('검증함수를 넣으시오.')
+    return true;
+  }
+})
 
-const verified = ref(false);
-const corpname = ref('');
+const verified = ref<boolean>(false);
+const corpname = ref<string>();
 const verify = () => {
-  if (Math.random() > 0.5) verified.value = true
-  else verified.value = false
+  const success = props.verifyFunc();
+  verified.value = success;
 }
+corpname.value = props.state.corpName;
+
+const emit = defineEmits(['verify']);
 
 </script>
 
 <template>
-<p class="title-type-1">설립하실 회사 이름은?!</p>
-<p class="txt-20"><b>{{ sido }} {{ sigungu }} {{ third }}</b> 소재 (예정)</p>
-<div class="search-container">
-  <MInput 
-    v-model="corpname"
-    class="search-input" 
-    place-holder="'주식회사', '<주>'를 제외하고 입력하세요."
-  />
-  <MModal class="search-modal">
-    <template #activator="{ on }">
-      <div class="search-btn-box">
-        <MButton 
-          width="150px"
-          v-on="on"
-          class="search-btn"
-          :disabled="corpname === ''"
-          @click="verify"
-        >
-          회사이름조회
-        </MButton>
-      </div>
-    </template>
-
-    <template #content="{ on }">
-      <div v-if="verified" class="modal-container">
-        <div class="verify-icon">
-          <img src="https://deungi24.com/img/ico_pop2.png" />
+<div>
+  <p class="title-type-1">설립하실 회사 이름은?!</p>
+  <p class="txt-20"><b>{{ props.propsData.location.sido }} {{ props.propsData.location.sigungu }} {{ props.propsData.location.third }}</b> 소재 (예정)</p>
+  <div class="search-container">
+    <MInput 
+      v-model="corpname"
+      class="search-input" 
+      place-holder="'주식회사', '<주>'를 제외하고 입력하세요."
+    />
+    <MModal class="search-modal">
+      <template #activator="{ on }">
+        <div class="search-btn-box">
+          <MButton 
+            width="150px"
+            v-on="on"
+            class="search-btn"
+            :disabled="corpname === ''"
+            @click="verify()"
+          >
+            회사이름조회
+          </MButton>
         </div>
-        <p class="txt-28 modal-title"><span style="color: #3952B3">{{ corpname }}</span>은(는) 지금 설립 가능합니다</p>
-        <p class="txt-16 modal-content">동일 지역에서 동일한 이름을 가진 회사가 없습니다. <br />
-        멋진 회사이름! {{ corpname }}(으)로 결정 하시겠습니까?
-        </p>
-        <div class="modal-act">
-          <MButton background-color="#999999" v-on="on">이름 변경</MButton>
-          <MButton>결정</MButton>
+      </template>
+  
+      <template #content="{ on }">
+        <div v-if="verified" class="modal-container">
+          <div class="verify-icon">
+            <img src="https://deungi24.com/img/ico_pop2.png" />
+          </div>
+          <p class="txt-28 modal-title"><span style="color: #3952B3">{{ corpname }}</span>은(는) 지금 설립 가능합니다</p>
+          <p class="txt-16 modal-content">동일 지역에서 동일한 이름을 가진 회사가 없습니다. <br />
+          멋진 회사이름! {{ corpname }}(으)로 결정 하시겠습니까?
+          </p>
+          <div class="modal-act">
+            <MButton background-color="#999999" v-on="on" @click="emit('verify', false)">이름 변경</MButton>
+            <MButton @click="emit('verify', true)">결정</MButton>
+          </div>
         </div>
-      </div>
-
-      <div v-else class="modal-container">
-        <div class="verify-icon">
-          <img src="https://deungi24.com/img/ico_pop1.png" />
+  
+        <div v-else class="modal-container">
+          <div class="verify-icon">
+            <img src="https://deungi24.com/img/ico_pop1.png" />
+          </div>
+  
+          <p class="txt-28 modal-title">설립하실<span style="color: #3952B3">회사 이름</span>을 입력해주세요</p>
+          <p class="txt-16 modal-content">멋진 회사 이름을 결정해주세요<br />
+          (숫자로만 된 상호는 사용할 수 없습니다.)
+          </p>
+  
+          <div class="modal-act">
+            <MButton v-on="on" @click="emit('verify', false)">확인</MButton>
+          </div>
+          
         </div>
-
-        <p class="txt-28 modal-title">설립하실<span style="color: #3952B3">회사 이름</span>을 입력해주세요</p>
-        <p class="txt-16 modal-content">멋진 회사 이름을 결정해주세요<br />
-        (숫자로만 된 상호는 사용할 수 없습니다.)
-        </p>
-
-        <div class="modal-act">
-          <MButton v-on="on">확인</MButton>
-        </div>
-        
-      </div>
-    </template>
-
-    </MModal>
+      </template>
+  
+      </MModal>
+  </div>
 </div>
 </template>
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import MMainCountCard from '@/components/stories/molecules/main/MMainCountCard.vue';
+import MMainCountCard from '@/components/stories/molecules/MMainCountCard.vue';
 
 interface PropType {
   items: ICardItem[];

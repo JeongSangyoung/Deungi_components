@@ -1,31 +1,24 @@
 <script setup lang="ts">
-import MCostSelectGroup from '../molecules/main/MCostSelectGroup.vue';
 import { ref } from 'vue';
-import MExpertTooltip from '../molecules/MExpertTooltip.vue';
+import MCostSelectGroup from '../molecules/MCostSelectGroup.vue';
+import MTooltip from '../molecules/MTooltip.vue';
 
-const costSelected = ref(0);
-const items = [
-  {
-    duration: '5일',
-    advantage: '방문없이 빠르고 편리한',
-    method: '전자 등기',
-    image: {
-      checked: 'https://deungi24.com/img/ico_list9_on.png',
-      unchecked: 'https://deungi24.com/img/ico_list9.png'
-    },
-    cost: '179,000'
-  },
-  {
-    duration: '9일',
-    advantage: '서류를 등기로 보내 주세요',
-    method: '서류 등기',
-    image: {
-      checked: 'https://deungi24.com/img/ico_list10_on.png',
-      unchecked: 'https://deungi24.com/img/ico_list10.png'
-    },
-    cost: '379,000'
-  },
-]
+import { IRegMethodItems } from '@/types';
+
+interface PropType {
+  state: {
+    radio: number;
+  }
+  propsData: {
+    items: IRegMethodItems[]
+  }
+}
+
+const props = withDefaults(defineProps<PropType>(), {});
+
+const radio = ref<number>();
+radio.value = props.state.radio;
+
 </script>
 
 <template>
@@ -34,25 +27,24 @@ const items = [
 <p class="txt-20">- 주주·임원 중 외국인이 있다면, <b>서류등기</b>만 가능해요</p>
 
 <MCostSelectGroup
-  :items="items"
-  :default-index="0"
-  name="selectionCost"
-  v-model="costSelected"
   id="selection"
+  :items="propsData.items"
+  name="selectionCost"
+  v-model="radio"
 />
 
-<div v-show="costSelected === 1">
-  <MExpertTooltip name="등기24" charge="등기24변호사" image="https://deungi24.com/img/illu_3.png">
+<div v-show="radio === 1">
+  <MTooltip name="등기24" charge="등기24변호사" image="https://deungi24.com/img/illu_3.png">
     <p class="tooltip-title"><b>저렴하고 가장 빠른 전자등기</b> 방식을 추천해요</p>
     <p class="tooltip-content">공인(공동)인증서가 지금 없어도, 신청 후 5일 이내 만 발급하시면 됩니다.</p>
-  </MExpertTooltip>
+  </MTooltip>
 </div>
 </template>
 
 <style lang="scss" scoped>
 .tooltip-title {
   b {
-    color: #3952B3;
+    color: $color-basic;
   }
 }
 .txt-20 {

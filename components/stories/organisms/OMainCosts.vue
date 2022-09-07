@@ -110,7 +110,7 @@ b {
   }
 
   &.blue {
-    background: #3952B3;
+    background: $color-basic;
   }
 
   &.red {

@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router';
 
 interface PropType {
   items: { name: string, path: string }[];
+  selecteIndex?: string | number;
   width?: string;
   maxWidth?: string;
   height?: string;
@@ -13,6 +14,7 @@ const props = withDefaults(defineProps<PropType>(), {
   width: '',
   maxWidth: '',
   height: '',
+  selecteIndex: 1,
 });
 
 const computedStyled = computed(() => {
@@ -35,6 +37,10 @@ const stepStatus = (idx: number) => {
   return 'appStep-not'
 }
 
+const routeTo = (path) => {
+  console.log(path)
+  router.push(path);
+}
 </script>
 
 <template>
@@ -42,16 +48,16 @@ const stepStatus = (idx: number) => {
   <li
     v-for="(item, idx) in items"
     :key="item.name"
-    @click="router.push(item.path)"
+    @click="routeTo(item.path)"
   >
     <div class="appStep-circle" :class="stepStatus(idx)">
       <div class="appStep-check">
-        <span class="appStep-number">{{ idx + 1}}</span>
+        <span class="appStep-number">{{ idx + 1 }}</span>
       </div>
     </div>
     <div :style="{
-      fontWeight: stepStatus(idx) === 'appStep-on' ? 'bold' : ''
-    }">
+      fontWeight: stepStatus(idx) === 'appStep-on' ? 'bold' : '',
+    }" class="appStep-name">
       {{ item.name }}
     </div>
   </li>
@@ -64,6 +70,11 @@ const stepStatus = (idx: number) => {
   margin: 0;
   position: relative;
   display: flex;
+  text-align: center;
+
+  @include xs {
+    font-size: 14px;
+  }
 
   li {
     list-style: none;
@@ -81,15 +92,23 @@ const stepStatus = (idx: number) => {
       width: 100%;
       top: 25px;
       left: 50%;
+
+      @include xs {
+        top: 15px;
+      }
     }
 
     .appStep-end:after {
       position: absolute;
       content: "";
-      border-bottom: 3px solid #3952b3;
+      border-bottom: 3px solid $color-basic;
       width: 100%;
       top: 25px;
       left: 50%;
+
+      @include xs {
+        top: 15px;
+      }
     }
 
     &:first-child:before {
@@ -109,6 +128,11 @@ const stepStatus = (idx: number) => {
     display: flex;
     justify-content: center;
     align-items: center;
+
+    @include xs {
+      width: 30px;
+      height: 30px;
+    }
     span {
       font-weight: bold;
       font-size: 18px;
@@ -116,19 +140,37 @@ const stepStatus = (idx: number) => {
     z-index: 5;
   }
 
+  &-number {
+    @include xs {
+      font-size: 12px !important;
+    }
+  }
+
+  &-name {
+    @include xs {
+      max-width: 52px;
+    }
+  }
+
   // 현재위치
   &-on {
-    background: #3952b3;
+    background: $color-basic;
     .appStep-check {
       width: 40px;
       height: 40px;
       position: absolute;
-      background: #3952b3;
+      background: $color-basic;
       border-radius: 50%;
       border: 2px solid #fff;
       display: flex;
       justify-content: center;
       align-items: center;
+
+      @include xs {
+        width: 20px;
+        height: 20px;
+        border: unset;
+      }
     }
     span {
       color: white;
@@ -137,7 +179,7 @@ const stepStatus = (idx: number) => {
 
   // 지난위치
   &-end {
-    background: #3952b3;
+    background: $color-basic;
 
     .appStep-check {
       z-index: 5;
@@ -151,6 +193,11 @@ const stepStatus = (idx: number) => {
       -webkit-transform: rotate(-45deg) translate(0, 50%);
       -ms-transform: rotate(-45deg) translate(0, 50%);
       transform: rotate(-45deg);
+
+      @include xs {
+        width: 10px;
+        height: 5px;
+      }
     }
     span {
       display: none;
@@ -170,9 +217,19 @@ const stepStatus = (idx: number) => {
       display: flex;
       justify-content: center;
       align-items: center;
+
+      @include xs {
+        width: unset;
+        height: unset;
+        background: unset;
+      }
     }
     span {
       color: #D5D5D5;
+
+      @include xs {
+        color: #fff;
+      }
     }
   }
 }

@@ -23,19 +23,14 @@ const Template:StoryFn<typeof MRadioButtonGroup> = (args) => ({
 
 export const RadioExample = Template.bind({})
 RadioExample.args = {
+  modelValue: 3,
   name: 'example1',
   contents: ['주식회사', '유한회사', '농/어업 법인', '사회적 기업, 협동조합']
 }
 
-export const SetDefaultIndex = Template.bind({})
-SetDefaultIndex.args = {
-  name: 'example3',
-  contents: ['주식회사', '유한회사', '농/어업 법인', '사회적 기업, 협동조합'],
-  defaultIndex: 1,
-}
-
 export const SetInline = Template.bind({})
 SetInline.args = {
+  modelValue: -1,
   name: 'example4',
   contents: ['임원', '임원 아닌 주주'],
   setInline: true,
@@ -44,6 +39,7 @@ SetInline.args = {
 
 export const NoIcon = Template.bind({})
 NoIcon.args = {
+  modelValue: -1,
   name: 'example5',
   contents: ['대표이사', '이사', '감사'],
   setInline: true,
@@ -53,6 +49,7 @@ NoIcon.args = {
 
 export const RearImages = Template.bind({})
 RearImages.args = {
+  modelValue: -1,
   name: 'example6',
   contents: ['개인', '법인'],
   setInline: true,

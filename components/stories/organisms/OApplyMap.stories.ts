@@ -19,4 +19,12 @@ const Template:StoryFn<typeof OApplyMap> = (args) => ({
 })
 
 export const Default = Template.bind({})
-Default.args = {}
+Default.args = {
+  state: {
+    location: {
+      sido: '경기',
+      sigungu: '과천시',
+      third: '',
+    }
+  }
+}

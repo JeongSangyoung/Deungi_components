@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import MButton from '@/components/stories/molecules/MButton.vue';
+import { useRoute, useRouter } from 'vue-router';
 
+const router = useRouter();
 </script>
 
 <template>
@@ -29,7 +31,7 @@ import MButton from '@/components/stories/molecules/MButton.vue';
     </div>
 
     <div class="header-button">
-      <MButton :pulse="true">
+      <MButton :pulse="true" @click="router.push('/apply/')">
         <div>실시간 견적 조회하기</div>
       </MButton>
       <p>오늘만 벌써 <b>111명</b>이 <b>법인설립 신청 완료!</b></p>

@@ -25,8 +25,8 @@ withDefaults(defineProps<PropType>(), {
     <p>• {{ costName }}</p>
     <p>{{ totalCost }}원</p>
   </div>
-  <div v-if="details && details.length" class="bill-details">
-    <div 
+  <ul v-if="details && details.length" class="bill-details">
+    <li 
       v-for="detail in details" 
       :key="detail.costName"
       :style="{ color: detail.sale ? '#596AB1' : '#999999'}"
@@ -37,8 +37,8 @@ withDefaults(defineProps<PropType>(), {
         <span v-else>-</span>
         {{ detail.cost }}원
       </div>
-    </div>
-  </div>
+    </li>
+  </ul>
   <div v-if="sale && sale.costName" class="bill-sale bill">
     <p>• {{ sale.costName }}</p>
     <p>-{{ sale.cost }}원</p>
@@ -58,26 +58,55 @@ withDefaults(defineProps<PropType>(), {
 .bill-header {
   font-weight: bold;
   font-size: 18px;
+
+  @include xs {
+    font-size: 16px;
+  }
 }
-
-.bill-details {}
-
 
 .bill-sale {
   color: #ff0000;
   font-size: 18px;
   font-weight: bold;
+
+  @include xs {
+    font-size: 16px;
+  }
+}
+
+.bill-details {
+  li {
+    margin-bottom: 4.5px;
+    margin-top: 4.5px;
+    display: flex;
+    align-items: center;
+    @include xs {
+      margin-bottom: 8px;
+      margin-top: 8px;
+    }
+  }
 }
 
 .bill-detail {
   display: inline-block;
   text-align: right;
   width: calc(100% - 150px);
+  
+  
+  @include xs {
+    font-size: 14px;
+    width: calc(100% - 100px);
+  }
 
 }
 .bill-detail-cost {
   width: 150px;
   display: inline-block;
   text-align: right;
+
+  @include xs {
+    font-size: 14px;
+    width: 100px;
+  }
 }
 </style>

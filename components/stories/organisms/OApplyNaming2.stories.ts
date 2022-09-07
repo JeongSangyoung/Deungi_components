@@ -4,6 +4,9 @@ import { Meta, StoryFn } from '@storybook/vue3';
 export default {
   title: 'organisms/OApplyNaming2',
   component: OApplyNaming2,
+  argTypes: {
+    onSelect: {}
+  }
 } as Meta<typeof OApplyNaming2>
 
 const Template:StoryFn<typeof OApplyNaming2> = (args) => ({
@@ -20,5 +23,10 @@ const Template:StoryFn<typeof OApplyNaming2> = (args) => ({
 
 export const Default = Template.bind({})
 Default.args = {
-  corpname: 'TEST보로노이'
+  state: {
+    radio: 1
+  },
+  propsData: {
+    corpname: 'TEST보로노이'
+  }
 }

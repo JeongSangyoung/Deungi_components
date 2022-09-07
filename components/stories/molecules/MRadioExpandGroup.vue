@@ -1,40 +1,21 @@
 <script setup lang="ts">
-import { CSSProperties, computed } from 'vue';
-import MExpertTooltip from '@/components/stories/molecules/MExpertTooltip.vue';
+import { CSSProperties, computed, ref } from 'vue';
+import MTooltip from '@/components/stories/molecules/MTooltip.vue';
+import { IExpertItems } from '@/types';
 
 interface PropType {
+  modelValue: number;
   name: string;
   items: IExpertItems[];
   width?: number | string;
   maxWidth?: number | string;
   height?: number | string;
 }
-interface IExpertItems {
-  content: string;
-  image?: string;
-  expertName: string;
-  expertCharge: string;
-  expertContent: string; 
-}
 
 const props = withDefaults(defineProps<PropType>(), {
-  items: () => [
-    {
-      content: '유한 회사',
-      image: 'https://deungi24.com/img/illu_1.png',
-      expertName: '등기24',
-      expertCharge: '등기24 변호사',
-      expertContent: `
-        <p style="font-size:22px;margin:0;font-weight:bold;">
-        <span style="color: #3850a1">일반적인 법인</span>으로 <span style="color: #3850a1">외부 투자</span>와 <span
-          style="color: #3850a1">절세</span>에 유리합니다.
-        </p>
-        <p style="margin:0;margin-top:8px;font-size:18px">한국에서 가장 흔한 법인 유형입니다. 특수 법인이 아니면 선택하세요.<br>공개적인 투자 유치나, 상장까지도 할 수
-          있습니다.</p>
-      `
-    },
-  ],
-})
+  modelValue: -1,
+  items: () => [],
+});
 
 const computedStyled = computed(() => {
   const style = {} as CSSProperties;
@@ -45,6 +26,10 @@ const computedStyled = computed(() => {
 })
 
 const emit = defineEmits(['update:modelValue'])
+const radio = ref<number>(-1);
+radio.value = props.modelValue;
+
+
 </script>
 
 <template>
@@ -57,7 +42,7 @@ const emit = defineEmits(['update:modelValue'])
       :key="item.content"
     >
       <div class="mLabel">
-        <input type="radio" :id="item.content" :value="item.content" :name="name" />
+        <input type="radio" :id="item.content" :value="item_idx" :name="name" v-model="radio" />
         <label
           :for="item.content"
           class="mRButton"
@@ -67,13 +52,13 @@ const emit = defineEmits(['update:modelValue'])
         </label>
 
         <div class="tooltip">
-          <MExpertTooltip
+          <MTooltip
             :image="item.image"          
             :name="item.expertName"          
             :charge="item.expertCharge"          
           >
             <div v-html="item.expertContent"></div>
-          </MExpertTooltip>
+          </MTooltip>
         </div>
       </div>  
     </li>
@@ -138,8 +123,8 @@ const emit = defineEmits(['update:modelValue'])
       }
 
       + .mRButton:before {
-        border: 1px solid #3a52b4;
-        background: #3a52b4;
+        border: 1px solid $color-basic;
+        background: $color-basic;
       }
 
        + label + .tooltip  {

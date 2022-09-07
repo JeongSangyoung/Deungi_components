@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import MReviewGroup from '@/components/stories/molecules/main/MReviewGroup.vue';
+import MReviewGroup from '@/components/stories/molecules/MReviewGroup.vue';
 
 interface PropType {
   items: ICardItem[];

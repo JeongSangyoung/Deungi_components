@@ -2,6 +2,7 @@
 import { CSSProperties, computed, ref } from 'vue';
 
 interface PropType {
+  modelValue: string | number;
   rounded?: boolean;
   placeHolder?: string;
   unit?: string;
@@ -15,6 +16,7 @@ interface PropType {
 }
 
 const props = withDefaults(defineProps<PropType>(), {
+  modelValue: '',
   rounded: false,
   placeHolder: '',
   unit: '',
@@ -39,6 +41,7 @@ const computedStyled = computed(() => {
 })
 
 const value = ref('');
+value.value = props.modelValue;
 
 const emit = defineEmits(['update:modelValue']);
 
