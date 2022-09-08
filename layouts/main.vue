@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import OMainHeader from '@/components/stories/organisms/OMainHeader.vue';
-import OMainFooter from '@/components/stories/organisms/OMainFooter.vue';
+import OMainHeader from '@/components/stories/organisms/OMainHeader/OMainHeader.vue';
+import OMainFooter from '@/components/stories/organisms/OMainFooter/OMainFooter.vue';
 
 </script>
 

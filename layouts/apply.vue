@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import MApplicationStep from '@/components/stories/molecules/MApplicationStep.vue';
-import OMainFooter from '@/components/stories/organisms/OMainFooter.vue';
+import MApplicationStep from '@/components/stories/molecules/MApplicationStep/MApplicationStep.vue';
+import OMainFooter from '@/components/stories/organisms/OMainFooter/OMainFooter.vue';
 
 const stepItems = [
   { 

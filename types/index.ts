@@ -11,7 +11,7 @@ export interface IStepItem {
   path: string;
 }
 
-export interface IStep1CorpItems {
+export interface IStep1CorpItem {
   content: string;
   image?: string;
   expertName: string;

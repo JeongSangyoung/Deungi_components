@@ -1,9 +1,9 @@
 <script setup lang="ts">
-  import MMainTab from '@/components/stories/molecules/MMainTab.vue';
-  import OMainCosts from '@/components/stories/organisms/OMainCosts.vue';
-  import OMainCount from '@/components/stories/organisms/OMainCount.vue';
-  import OMainEvent from '@/components/stories/organisms/OMainEvent.vue';
-  import OMainReview from '@/components/stories/organisms/OMainReview.vue';
+    import MMainTab from '@/components/stories/molecules/MMainTab/MMainTab.vue';
+  import OMainCosts from '@/components/stories/organisms/OMainCosts/OMainCosts.vue';
+  import OMainCount from '@/components/stories/organisms/OMainCount/OMainCount.vue';
+  import OMainEvent from '@/components/stories/organisms/OMainEvent/OMainEvent.vue';
+  import OMainReview from '@/components/stories/organisms/OMainReview/OMainReview.vue';
   import MainLayout from '@/layouts/main.vue';
   
   import { ref, watch } from 'vue'; 
