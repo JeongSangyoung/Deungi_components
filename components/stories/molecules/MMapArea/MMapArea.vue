@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { MapHighlight, mapData, thirdCityList, gwamilDongObj, gwamilSiList, gwamilIncheon } from '@/apis/location';
-import { ref, onMounted, watch, computed } from 'vue';
+import { MapHighlight, mapData, thirdCityList, gwamilDongObj, gwamilSiList, gwamilIncheon, sidoDataList } from '@/apis/location';
+import { ref, onMounted, watch, computed, watchEffect } from 'vue';
 
 interface PropType {
-  modelValue: {
+  location: {
     sido: string;
     sigungu: string;
     third: string;
@@ -11,7 +11,7 @@ interface PropType {
 }
 
 const props = withDefaults(defineProps<PropType>(), {
-  modelValue: () => {
+  location: () => {
     return {
       sido: '전체',
       sigungu: '시/군/구',
@@ -36,12 +36,12 @@ let mapHighlight = null;
 
 onMounted(() => {
   // DATA INIT
-  if (props.modelValue.sido === '') sido.value = '전체';
-  else sido.value = props.modelValue.sido;
-  if (props.modelValue.sigungu === '') sigungu.value = '시/군/구';
-  else sigungu.value = props.modelValue.sigungu;
-  if (props.modelValue.third === '') third.value = '선택해주세요';
-  else third.value = props.modelValue.third;
+  if (props.location.sido === '') sido.value = '전체';
+  else sido.value = props.location.sido;
+  if (props.location.sigungu === '') sigungu.value = '시/군/구';
+  else sigungu.value = props.location.sigungu;
+  if (props.location.third === '') third.value = '선택해주세요';
+  else third.value = props.location.third;
 
   // MAP INIT
   mapHighlight = new MapHighlight(mapImg.value, mapCanvas.value);
@@ -53,6 +53,7 @@ onMounted(() => {
 
 const getSigunguList = (newSelect) => {
   if (newSelect === '시/군/구') { return }
+  if (newSelect === '') { return }
   if (Object.keys(mapData).includes(newSelect)) {
     if (newSelect == '전체') {
       sigunguList.value = ['시/군/구'];
@@ -77,6 +78,13 @@ const getThirdList = () => {
   }
   thirdList.value = undefined;
 }
+watchEffect(() => {
+  sido.value = props.location.sido;
+  sigungu.value = props.location.sigungu;
+  third.value = props.location.third;
+})
+getSigunguList(sido.value)
+getThirdList()
 
 // 지도에서 선택했을 때 또는 Select에서 선택했을 때
 watch(sido, newSelect => {
@@ -137,13 +145,10 @@ const verification = () => {
   }
   return false; // 두번째가 없는경우는 거짓
 }
-const verifyComputed = computed(() => {
-  return verification()
-})
 
-const emit = defineEmits(['update:modelValue', 'verified'])
+const emit = defineEmits(['update:location', 'verified'])
 const emitState = () => {
-  emit('update:modelValue', { 
+  emit('update:location', { 
     sido: sido.value, 
     sigungu: sigungu.value.replace(/[0-9]/g, ''), 
     third: third.value,
@@ -215,39 +220,20 @@ const isGwamil = (sido, sigungu, third) => {
 
 <template>
 <div>
-
-  <input type="hidden" id="targetRow" name="targetRow" value="" />
-  <input type="hidden" name="sido_gubun" value="" />
-  <input type="hidden" name="sido_map" value="" />
-  <input type="hidden" name="sigungu_map" value="" />
-  
   <div class="select-box">
     <!-- First -->
-    <select 
+    <select
       id="sido"
       name="sido"
       title="시도 선택"
       v-model="sido"
       @change="sidoReset()"
-    >
-      <option value="전체">전체보기</option>
-      <option value="서울">서울특별시</option>
-      <option value="부산">부산광역시</option>
-      <option value="대구">대구광역시</option>
-      <option value="인천">인천광역시</option>
-      <option value="광주">광주광역시</option>
-      <option value="대전">대전광역시</option>
-      <option value="울산">울산광역시</option>
-      <option value="세종">세종특별자치시</option>
-      <option value="강원">강원도</option>
-      <option value="경기">경기도</option>
-      <option value="경남">경상남도</option>
-      <option value="경북">경상북도</option>
-      <option value="전남">전라남도</option>
-      <option value="전북">전라북도</option>
-      <option value="제주">제주특별자치도</option>
-      <option value="충남">충청남도</option>
-      <option value="충북">충청북도</option>
+      >
+      <option 
+        v-for="sidoData in sidoDataList"
+        :key="sidoData.value"
+        :value="sidoData.value"
+        >{{ sidoData.text }}</option>
     </select>
     <!-- Second -->
     <select 
@@ -262,7 +248,7 @@ const isGwamil = (sido, sigungu, third) => {
         v-for="sg in sigunguList"
         :key="sg"
         :value="sg"
-      >
+        >
         {{ sg }}
       </option>
     </select>
@@ -280,7 +266,7 @@ const isGwamil = (sido, sigungu, third) => {
         :key="tc"
         :value="tc"
         :style="{ background: setOptionColor(tc) }"
-      >
+        >
         {{ tc }}
       </option>
     </select>
@@ -319,11 +305,6 @@ const isGwamil = (sido, sigungu, third) => {
     </div>
   </div>
 
-  <!-- <p v-if="verifyComputed">
-   <span v-if="isGwamil(sido, sigungu, third)" style="color: red">과밀</span>
-   <span v-else style="color: blue">과밀아님</span>
-  </p> -->
-  
 </div>
 </template>
 

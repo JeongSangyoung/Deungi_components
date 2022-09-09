@@ -1,22 +1,13 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import ApplyLayout from '@/layouts/apply.vue';
 import MButton from '@/components/stories/molecules/MButton/MButton.vue';
 import OApplySelectType from '@/components/stories/organisms/OApplySelectType/OApplySelectType.vue';
-import { IStep1CorpItem, TransferType } from '@/types';
-import Dummy, { dummy } from '@/components/composable/useDummy';
+import { IStep1CorpItem } from '@/types';
+import Dummy from '@/components/composable/useDummy';
 
-
-interface ISelectState {
-  radio: number;
-  verified: boolean;
-}
-
-const radio = ref<number>();
-const verified = ref<boolean>(false);
+const radio = ref<number>(-1);
 const corpItems = ref<IStep1CorpItem[]>([]);
-
-let corpType = '';
 
 // Fetch
 Dummy<IStep1CorpItem[]>('corpItems').then((result) => corpItems.value = result);
@@ -26,19 +17,15 @@ Dummy<string>('corpType').then((result) => {
   });
 });
 
-const updateSelect = (data: ISelectState) => {
-  verified.value = data.verified;
-  radio.value = data.radio;
-}
 </script>
 
 <template>
 <ApplyLayout>
   <OApplySelectType
     id="selectType"
-    :state="{ radio }"
-    :propsData="{ name: 'selectType', items: corpItems }"
-    @verify="updateSelect"
+    v-model:radio="radio"
+    name="selectType"
+    :items="corpItems"
   />
 
   <div style="display: flex; justify-content: center">
@@ -46,7 +33,7 @@ const updateSelect = (data: ISelectState) => {
       class="next-btn" 
       width="100%"
       max-width="400px"
-      :disabled="!verified"
+      :disabled="radio === -1"
       >
       <div>
         다음

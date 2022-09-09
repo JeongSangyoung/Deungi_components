@@ -35,13 +35,7 @@ const verified3 = ref<boolean>(false);
 Dummy<string>('corpName').then((result) => corpName.value = result);
 Dummy<ILocation>('location').then((result) => location.value = result);
 
-const mapArgs = computed(():TransferType => {
-  return {
-    state: {
-      location: location.value
-    }
-  }
-})
+
 const name1Args = computed(():TransferType => {
   return {
     state: {
@@ -91,9 +85,8 @@ const next_step = () => {
 
 <template>
 <ApplyLayout>
-  {{ mapArgs }}
   <div v-if="step === 1">
-    <OApplyMap v-bind="mapArgs" @verify="mapVerify"/>
+    <OApplyMap v-model:location="location" @verify="mapVerify"/>
     <div style="display: flex; justify-content: center">
       <MButton
         class="next-btn" 

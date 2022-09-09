@@ -5,7 +5,7 @@ export default {
   title: 'molecules/MMapArea',
   component: MMapArea,
   argTypes: {
-    'onUpdate:modelValue': {},
+    'onUpdate:location': {},
     onVerified: {},
   }
 } as Meta<typeof MMapArea>
@@ -25,9 +25,9 @@ const Template:StoryFn<typeof MMapArea> = (args) => ({
 
 export const AreaExample = Template.bind({})
 AreaExample.args = {
-  modelValue: {
-    sido: '',
-    sigungu: '',
+  location: {
+    sido: '경기',
+    sigungu: '과천시',
     third: ''
   }
 }

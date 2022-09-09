@@ -5,7 +5,8 @@ export default {
   title: 'organisms/OApplyMap',
   component: OApplyMap,
   argTypes: {
-    onVerify: {}
+    onVerify: {},
+    'onUpdate:location': {}
   }
 } as Meta<typeof OApplyMap>
 
@@ -23,11 +24,9 @@ const Template:StoryFn<typeof OApplyMap> = (args) => ({
 
 export const Default = Template.bind({})
 Default.args = {
-  state: {
-    location: {
-      sido: '경기',
-      sigungu: '과천시',
-      third: '',
-    }
+  location: {
+    sido: '경기',
+    sigungu: '남양주시',
+    third: '일패동',
   }
 }

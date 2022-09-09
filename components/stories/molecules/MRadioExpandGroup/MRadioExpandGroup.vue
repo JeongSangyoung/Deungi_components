@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { CSSProperties, computed, ref } from 'vue';
+import { CSSProperties, computed } from 'vue';
 import MTooltip from '@/components/stories/molecules/MTooltip/MTooltip.vue';
 import { IExpertItems } from '@/types';
 
 interface PropType {
-  modelValue: number;
+  radio: number;
   name: string;
   items: IExpertItems[];
   width?: number | string;
@@ -12,9 +12,7 @@ interface PropType {
   height?: number | string;
 }
 
-const props = withDefaults(defineProps<PropType>(), {
-  modelValue: -1,
-});
+const props = withDefaults(defineProps<PropType>(), {});
 
 const computedStyled = computed(() => {
   const style = {} as CSSProperties;
@@ -24,10 +22,7 @@ const computedStyled = computed(() => {
   return style;
 })
 
-const emit = defineEmits(['update:modelValue'])
-const radio = ref<number>();
-radio.value = props.modelValue;
-
+const emit = defineEmits(['update:radio'])
 
 </script>
 
@@ -41,11 +36,17 @@ radio.value = props.modelValue;
       :key="item.content"
     >
       <div class="mLabel">
-        <input type="radio" :id="item.content" :value="item_idx" :name="name" v-model="radio" />
+        <input 
+          type="radio" 
+          :id="item.content" 
+          :value="item_idx" 
+          :name="name"
+          @input="emit('update:radio', item_idx)"
+          :checked="radio === item_idx"
+        />
         <label
           :for="item.content"
           class="mRButton"
-          @click="emit('update:modelValue', item_idx)"
         >
           {{ item.content }}
         </label>

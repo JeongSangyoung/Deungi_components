@@ -5,4 +5,5 @@
       "vite/client"
     ]
   },
+  "includes": ["./components/**"]
 }

@@ -2,8 +2,8 @@ import { ref } from 'vue';
 export const dummy = {
   location: {
     sido: '경기',
-    sigungu: '과천시',
-    third: '',
+    sigungu: '남양주시',
+    third: '일패동',
   },
   corpName: '보로노이',
   corpType: '유한회사',

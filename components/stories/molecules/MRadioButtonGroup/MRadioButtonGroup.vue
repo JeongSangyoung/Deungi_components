@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CSSProperties, computed, ref  } from 'vue';
+import { CSSProperties, computed  } from 'vue';
 
 interface PropType {
   modelValue: number;
@@ -37,8 +37,6 @@ const computedStyled = computed(() => {
 })
 
 const emit = defineEmits(['update:modelValue']);
-const radio = ref<number>(-1);
-radio.value = props.modelValue;
 
 </script>
 
@@ -53,11 +51,17 @@ radio.value = props.modelValue;
       :key="content"
     >
       <div class="mLabel">
-        <input type="radio" :id="content" :value="content_idx" :name="name" v-model="radio" />
+        <input 
+          type="radio" 
+          :id="content" 
+          :value="content_idx" 
+          :name="name"
+          @input="emit('update:modelValue', content_idx)"
+          :checked="modelValue === item_idx"
+        />
         <label
           :class="{ mRButton: !noCheckIcon, mRNocheck: noCheckIcon }" 
           :for="content"
-          @click="emit('update:modelValue', content_idx)"
         >
 
           <div v-if="content_idx < rearImages.length && rearImages[content_idx].checked" class="mLabel-type-2">

@@ -2,50 +2,31 @@
 import MRadioExpandGroup from '@/components/stories/molecules/MRadioExpandGroup/MRadioExpandGroup.vue';
 
 import { IStep1CorpItem } from '@/types';
-
-import { ref, watchEffect } from 'vue';
-
+  
 interface PropType {
-  state: {
-    radio: number;
-  }
-  propsData: {
-    name: string;
-    items: IStep1CorpItem[];
-  }
+  radio: number;
+  name: string;
+  items: IStep1CorpItem[];
 }
+  
+withDefaults(defineProps<PropType>(), {}) 
 
-const props = withDefaults(defineProps<PropType>(), {}) 
-
-const radio = ref<number>();
-
-watchEffect(() => {
-  if (props.state.radio) {
-    console.log(props.state.radio, 'zz')
-    radio.value = props.state.radio;
-  }
-}, )
-
-const emit = defineEmits(['verify']);
-const changeValue = () => {
-  emit('verify', {
-      radio: radio.value,
-      verified: radio.value !== -1 
-    }
-  );
+const emit = defineEmits(['update:radio']);
+const changeValue = (idx) => {
+  emit('update:radio', idx);
 }
 
 </script>
-
+  
 <template>
 <div>
   {{ radio }}
   <p class="title-type-1">법인 유형을 선택하세요.</p>
   <MRadioExpandGroup
-    v-model="radio" 
-    :name="propsData.name" 
-    :items="propsData.items"
-    @change="changeValue"
+    :radio="radio" 
+    :name="name" 
+    :items="items"
+    @update:radio="changeValue"
   />
 </div>
 </template>
