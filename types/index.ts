@@ -11,7 +11,7 @@ export interface IStepItem {
   path: string;
 }
 
-export interface IStep1CorpItems {
+export interface IStep1CorpItem {
   content: string;
   image?: string;
   expertName: string;
@@ -42,4 +42,11 @@ export interface IRegMethodItems {
     uncheckded: string;
   }
   cost: string;
+}
+
+export interface IExecutive {
+  name: string;
+  charge: string;
+  underage: boolean;
+  foreigner: boolean;
 }
