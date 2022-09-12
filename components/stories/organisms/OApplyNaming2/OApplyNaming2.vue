@@ -1,26 +1,28 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watchEffect } from 'vue';
 import MRadioButtonGroup from '@/components/stories/molecules/MRadioButtonGroup/MRadioButtonGroup.vue';
 import MTooltip from '@/components/stories/molecules/MTooltip/MTooltip.vue';
 
 interface PropType {
-  state: {
-    radio: number;
-  }
-  propsData: {
-    corpName: string;
-  }
+  modelValue: number;
+  corpName: string;
 }
 
 const props = withDefaults(defineProps<PropType>(), {});
 
-const corpnaming = [`주식회사 ${props.propsData.corpName}`, `${props.propsData.corpName} 주식회사`];
 const radio = ref<number>();
-radio.value = props.state.radio;
+const corpName = ref<string>();
+const corpnaming = ref<string[]>([]);
+watchEffect(() => {
+  corpName.value = props.corpName;
+  corpnaming.value = [`주식회사 ${props.corpName}`, `${props.corpName} 주식회사`];
+  radio.value = props.modelValue;
+})
 
-const emit = defineEmits(['verify'])
-const changeValue = () => {
-  emit('verify', { radio: radio.value, verified: radio.value !== -1 })
+const emit = defineEmits(['verify', 'update:modelValue'])
+const changeValue = (idx) => {
+  emit('update:modelValue', idx)
+  emit('verify', { verified: idx !== -1 })
 }
 
 </script>
@@ -28,11 +30,11 @@ const changeValue = () => {
 <template>
 <p class="title-type-1">"주식회사"는 어디로 붙일까요?</p>
 <MRadioButtonGroup
+  v-model="radio"
   class="mGroup"
   name="naming1"
-  v-model="radio"
   :contents="corpnaming"
-  @change="changeValue"
+  @update:modelValue="changeValue"
 />
 <MTooltip 
   v-if="radio === 0" 

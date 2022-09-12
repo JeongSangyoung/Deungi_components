@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CSSProperties, computed  } from 'vue';
+import { CSSProperties, computed, ref, watchEffect  } from 'vue';
 
 interface PropType {
   modelValue: number;
@@ -26,6 +26,10 @@ const props = withDefaults(defineProps<PropType>(), {
       checked: '',
     }
   ]
+})
+const radio = ref<number>(-1);
+watchEffect(() => {
+  radio.value = props.modelValue;
 })
 
 const computedStyled = computed(() => {
@@ -57,7 +61,7 @@ const emit = defineEmits(['update:modelValue']);
           :value="content_idx" 
           :name="name"
           @input="emit('update:modelValue', content_idx)"
-          :checked="modelValue === item_idx"
+          :checked="modelValue === content_idx"
         />
         <label
           :class="{ mRButton: !noCheckIcon, mRNocheck: noCheckIcon }" 

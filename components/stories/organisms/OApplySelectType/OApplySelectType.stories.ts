@@ -5,7 +5,7 @@ export default {
   title: 'organisms/OApplySelectType',
   component: OApplySelectType,
   argTypes: {
-    'onUpdate:radio': {},
+    'onUpdate:modelValue': {},
   },
 } as Meta<typeof OApplySelectType>
 
@@ -23,7 +23,7 @@ const Template:StoryFn<typeof OApplySelectType> = (args) => ({
 
 export const Default = Template.bind({})
 Default.args = {
-  radio: 3,
+  modelValue: 3,
   name: 'example',
   items: [
     {

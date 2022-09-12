@@ -5,6 +5,7 @@ export default {
   title: 'organisms/OApplyNaming2',
   component: OApplyNaming2,
   argTypes: {
+    'onUpdate:modelValue': {},
     onVerify: {}
   }
 } as Meta<typeof OApplyNaming2>
@@ -23,10 +24,6 @@ const Template:StoryFn<typeof OApplyNaming2> = (args) => ({
 
 export const Default = Template.bind({})
 Default.args = {
-  state: {
-    radio: 1
-  },
-  propsData: {
-    corpName: 'TEST보로노이'
-  }
+  modelValue: -1,
+  corpName: 'TEST보로노이'
 }

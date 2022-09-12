@@ -1,29 +1,26 @@
 <script setup lang="ts">
+import { ref, watchEffect } from 'vue';
 import MModal from '@/components/stories/molecules/MModal/MModal.vue';
 import MInput from '@/components/stories/molecules/MInput/MInput.vue';
 import MButton from '@/components/stories/molecules/MButton/MButton.vue';
 
-import { ref } from 'vue';
-
 interface PropType {
-  state: {
-    capital: number;
-  }
-  propsData: {
-    corpName: string;
-  }
+  modelValue: number | '';
+  corpName: string;
 }
-
 const props = withDefaults(defineProps<PropType>(), {});
 
-const corpName = ref<string>();
-const capital = ref<number>();
-capital.value = props.state.capital;
-corpName.value = props.propsData.corpName;
+const input = ref<string|number>('');
+watchEffect(() => {
+  input.value = props.modelValue;
+})
 
-const emit = defineEmits(['verify'])
-const verify = () => {
-  emit('verify', { capital: Number(capital.value), verified: true })
+const emit = defineEmits(['verify', 'update:modelValue'])
+const clickBtn = () => {
+  emit('verify', { verified: true })
+}
+const changeValue = (input) => {
+  emit('update:modelValue', input)
 }
 
 </script>
@@ -70,18 +67,19 @@ const verify = () => {
 <!-- 입력칸 -->
 <div class="input-container">
   <MInput 
-    v-model="capital"
+    v-model="input"
     class="input-name" 
     place-holder="100원 이상 입력하세요."
     type="number"
     unit="원"
     :maxlength="16"
+    @update:modelValue="changeValue"
   />
   <div class="input-desc display-xs">
     <p class="txt-16">* 자본금 2,800만원 까지는 등록면허세가 동일합니다.</p>
     <p class="txt-16">* 자본금에 비례하여 등록면허세가 높아집니다.</p>
   </div>
-  <MButton class="input-btn" :disabled="!capital" @click="verify">
+  <MButton class="input-btn" :disabled="!input" @click="clickBtn">
     입력
   </MButton>
 </div>

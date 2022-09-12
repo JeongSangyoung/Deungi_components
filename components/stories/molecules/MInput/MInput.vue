@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CSSProperties, computed, ref, watch } from 'vue';
+import { CSSProperties, computed, ref, watch, watchEffect } from 'vue';
 
 interface PropType {
   modelValue: string | number;
@@ -40,14 +40,16 @@ const computedStyled = computed(() => {
   return style;
 })
 
-const value = ref<string | number>('');
-value.value = props.modelValue;
+const input = ref<string | number>('');
+watchEffect(() => {
+  input.value = props.modelValue;
+})
 
-watch(value, newValue => {
+watch(input, newValue => {
   if (props.type !== 'number') return;
   newValue = newValue.toString().replace(/[^0-9|?!,]/g, '' );
   newValue = newValue.toString().replace(/,/g, '');
-  value.value = newValue.toString().replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+  input.value = newValue.toString().replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
 })
 
 const numberList = ['영', '일', '이', '삼', '사', '오', '육', '칠', '팔', '구'];
@@ -63,7 +65,7 @@ const _makeHan = (text) => {
   return str;
 }
 const numberToKor = computed(() => {
-  let num = value.value.toString().replace(/,/g, '');
+  let num = input.value.toString().replace(/,/g, '');
   if (num === '') return '';
   let unitCnt = Math.ceil(num.length / 4);
 
@@ -89,7 +91,7 @@ const emit = defineEmits(['update:modelValue']);
       <img v-if="prevImage" :src="prevImage" />
       <input
         v-if="type!=='number'"
-        v-model="value"
+        v-model="input"
         type="text" 
         :placeholder="placeHolder"
         :maxLength="maxlength"
@@ -100,11 +102,11 @@ const emit = defineEmits(['update:modelValue']);
               rounded ? '0 30px 0 70px': '0 20px 0 70px' :
               rounded ? '0 30px' : '0 20px'
         }"
-        @input="emit('update:modelValue', value)"
+        @input="emit('update:modelValue', input)"
       />
       <input 
         v-else 
-        v-model="value"
+        v-model="input"
         type="text" 
         :placeholder="placeHolder"
         :maxLength="maxlength"
@@ -119,7 +121,7 @@ const emit = defineEmits(['update:modelValue']);
           javascript: 
             this.value = this.value.replace(/[^0-9|?!,]/g, '' );
           "
-        @input="emit('update:modelValue', value.toString().replace(/,/g, ''))"
+        @input="emit('update:modelValue', input.toString().replace(/,/g, ''))"
         />
 
         <!-- this.value = this.value.replace(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣|a-z|A-Z]/g, '' ); -->

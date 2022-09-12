@@ -1,6 +1,10 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+
 import MApplicationStep from '@/components/stories/molecules/MApplicationStep/MApplicationStep.vue';
 import OMainFooter from '@/components/stories/organisms/OMainFooter/OMainFooter.vue';
+
 
 const stepItems = [
   { 
@@ -25,6 +29,11 @@ const stepItems = [
   },
 ]
 
+const route = useRoute()
+console.log(route.path, '^^')
+
+const test = ref('TEST');
+
 </script>
 
 <template>
@@ -35,6 +44,7 @@ const stepItems = [
   <MApplicationStep id="step" :items="stepItems" />
   <div id="content">
     <slot></slot>
+    <slot name="loading"></slot>
   </div>
   <OMainFooter id="footer" />
 </div>

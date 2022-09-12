@@ -5,7 +5,8 @@ export default {
   title: 'organisms/OApplyCapital',
   component: OApplyCapital,
   argTypes: {
-    onVerify: {}
+    onVerify: {},
+    'onUpdate:modelValue': {}
   }
 } as Meta<typeof OApplyCapital>
 
@@ -23,10 +24,6 @@ const Template:StoryFn<typeof OApplyCapital> = (args) => ({
 
 export const Default = Template.bind({})
 Default.args = {
-  state: {
-    capital: 100,
-  },
-  propsData: {
-    corpName: '주식회사 보로노이'
-  }
+  modelValue: 100,
+  corpName: '주식회사 보로노이'
 }

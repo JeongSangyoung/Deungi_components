@@ -63,10 +63,22 @@ export const dummy = {
   capital: 20000000,
   executives: [
     {
-      name: '진양곤',
-      charge: '대표이사',
+      name: '테스트감사',
+      charge: '감사',
+      underage: true,
+      foreigner: false,
+    },
+    {
+      name: '테스트법인',
+      charge: '법인',
       underage: false,
-      foreign: false,
+      foreigner: true,
+    },
+    {
+      name: '김개인',
+      charge: '개인',
+      underage: true,
+      foreigner: true,
     }
   ],
 }

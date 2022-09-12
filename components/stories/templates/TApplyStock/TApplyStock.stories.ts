@@ -7,7 +7,7 @@ export default {
   title: 'templates/TApplyStock',
   component: TApplyStock,
   argTypes: {
-    'onUpdate:modelValue': {}
+    'onSubmit': {}
   }
 } as Meta<typeof TApplyStock>
 
@@ -25,16 +25,6 @@ const Template:StoryFn<typeof TApplyStock> = (args) => ({
 
 export const Main = Template.bind({})
 Main.args = {
-  capital: 20000,
-  executives: [
-    {
-      name: '진양곤',
-      charge: '대표이사',
-      underage: false,
-      foreign: false,
-    }
-  ],
-  corpName: '에이치엘비'
 }
 
 const router = [

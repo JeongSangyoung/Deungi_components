@@ -7,7 +7,7 @@ export default {
   title: 'templates/TApplySelectType',
   component: TApplySelectType,
   argTypes: {
-    'onUpdate:modelValue': {}
+    'onSubmit': {}
   }
 } as Meta<typeof TApplySelectType>
 

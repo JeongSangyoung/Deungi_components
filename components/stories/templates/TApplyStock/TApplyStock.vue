@@ -1,59 +1,40 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { IExecutive, TransferType } from '@/types';
+import { IExecutive } from '@/types';
 import MButton from '@/components/stories/molecules/MButton/MButton.vue';
 import ApplyLayout from '@/layouts/apply.vue';
 import OApplyCapital from '@/components/stories/organisms/OApplyCapital/OApplyCapital.vue';
 import OApplyExecutives from '@/components/stories/organisms/OApplyExecutives/OApplyExecutives.vue';
-
-interface PropType {
-  capital: number;
-  executives: IExecutive[];
-  corpName: string;
-}
-interface ICapitalState {
-  capital: number;
-  verified: boolean;
-}
-interface IExeState {
-  executives: IExecutive[];
-  verified: boolean;
-}
-
-const props = withDefaults(defineProps<PropType>(), {})
+import Dummy from '@/components/composable/useDummy';
 
 const step = ref<number>(1);
-const capital = ref<number>();
-const executives = ref<IExecutive[]>([]);
-const verified = ref<boolean>(false);
-capital.value = props.capital;
-executives.value = props.executives;
+const capital = ref<number|''>('');
 
-const capitalArgs: TransferType = {
-  state: {
-    capital: props.capital
-  },
-  propsData: {
-    corpName: props.corpName
+const verified1 = ref<boolean>(false);
+const verified2 = ref<boolean>(false);
+const corpName = ref<string>('');
+const executiveList = ref<IExecutive[]>([]);
+
+Dummy<string>('corpName').then(result => corpName.value = result);
+Dummy<number>('capital').then(result => capital.value = result);
+Dummy<IExecutive[]>('executives').then(result => executiveList.value = result);
+
+const capitalVerify = (data) => {
+  verified1.value = data.verified;
+  if (data.verified) {
+    step.value = 2;
   }
 }
-const exeArgs: TransferType = {
-  state: {
-    executives: props.executives
-  },
-  propsData: {
-    corpName: props.corpName
-  }
+const exeVerify = (data) => {
+  verified2.value = data.verified;
 }
 
-const capitalVerify = (data: ICapitalState) => {
-  step.value = 2;
-  capital.value = data.capital;
-}
-
-const exeVerify = (data: IExeState) => {
-  executives.value = data.executives;
-  verified.value = data.verified;
+const emit = defineEmits(['submit'])
+const submit = () => {
+  emit('submit', {
+    capital: capital.value,
+    executives: executiveList.value,
+  })
 }
 
 </script>
@@ -61,22 +42,25 @@ const exeVerify = (data: IExeState) => {
 <template>
 <ApplyLayout>
   <div v-show="step >= 1">
-    <OApplyCapital 
-      v-bind="capitalArgs" @verify="capitalVerify"
+    <OApplyCapital
+      v-model="capital"
+      :corp-name="corpName"
+      @verify="capitalVerify"
     />
   </div>
 
   <div v-show="step === 2">
-    <OApplyExecutives v-bind="exeArgs" @verify="exeVerify" />
+    <OApplyExecutives v-model="executiveList" :corp-name="corpName" @verify="exeVerify" />
   
     <div style="display: flex; justify-content: center">
       <MButton 
         class="next-btn" 
         width="100%"
         max-width="400px"
+        @click="submit"
       >
         <div>
-          <span v-if="executives.length">
+          <span v-if="executiveList.length">
             다음
           </span>
           <span v-else>

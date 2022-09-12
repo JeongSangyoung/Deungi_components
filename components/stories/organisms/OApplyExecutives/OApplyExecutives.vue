@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { popScopeId, ref, watch } from 'vue';
+import { ref, watch, watchEffect, computed } from 'vue';
 import MModal from '@/components/stories/molecules/MModal/MModal.vue';
 import MInput from '@/components/stories/molecules/MInput/MInput.vue';
 import MCheck from '@/components/stories/molecules/MCheck/MCheck.vue';
@@ -11,12 +11,8 @@ import MExecutiveCard from '@/components/stories/molecules/MExecutiveCard/MExecu
 import { IExecutive } from '@/types';
 
 interface PropType {
-  state: {
-    executives: IExecutive[],
-  },
-  propsData: {
-    corpName: string;
-  }
+  modelValue: IExecutive[],
+  corpName: string;
 }
 
 interface IExecutiveCard extends IExecutive {
@@ -25,7 +21,6 @@ interface IExecutiveCard extends IExecutive {
   state?: string;
   chips?: string[];
 }
-
 
 const props = withDefaults(defineProps<PropType>(), {})
 
@@ -36,43 +31,52 @@ const name =ref<string>();
 const underage = ref<boolean>(false);
 const foreigner = ref<boolean>(false);
 
-const executiveList = ref<IExecutiveCard[]>([]);
+const executiveList = ref<IExecutive[]>([]);
+const executiveCardList = ref<IExecutiveCard[]>([]);
 
-props.state.executives.forEach(exe => {
-  const temp =  { 
-    name: exe.name, 
-    underage: exe.underage, 
-    foreigner:exe.foreigner,
-    state: '다음에입력',
-  }
-  if (exe.charge === '법인') {
-    if (exe.foreigner) temp['chips'] = ['외국법인']
-    executiveList.value.push(
-      { ...temp, backgroundColor: '#EDF9FF', charge: '임원 아닌 주주', image: 'https://deungi24.com/img/ico_list2.png' }
-    )
-  } else if (exe.charge === '개인') {
-    const tchips = [];
-    if (exe.foreigner) tchips.push('외국인');
-    if (exe.underage) tchips.push('미성년자');
-    temp['chips'] = tchips;
-    executiveList.value.push(
-      { ...temp, backgroundColor: '#EDF0FF', charge: '임원 아닌 주주', image: 'https://deungi24.com/img/ico_list1.png' }
-    )
-  } else {
-    const tchips = [];
-    if (exe.foreigner) tchips.push('외국인');
-    if (exe.underage) tchips.push('미성년자');
-    temp['chips'] = tchips;
-    executiveList.value.push(
-      { ...temp, backgroundColor: '#EDF0FF', charge: exe.charge, image: 'https://deungi24.com/img/ico_list1.png' }
-    )
-  }
+const setExecutiveCards = (exes) => {
+  const tempList = [];
+  exes.forEach(exe => {
+    const temp =  { 
+      name: exe.name, 
+      underage: exe.underage, 
+      foreigner:exe.foreigner,
+      state: '다음에입력',
+    }
+    if (exe.charge === '법인') {
+      if (exe.foreigner) temp['chips'] = ['외국법인']
+      tempList.push(
+        { ...temp, backgroundColor: '#EDF9FF', charge: '임원 아닌 주주', image: 'https://deungi24.com/img/ico_list2.png' }
+      )
+    } else if (exe.charge === '개인') {
+      const tchips = [];
+      if (exe.foreigner) tchips.push('외국인');
+      if (exe.underage) tchips.push('미성년자');
+      temp['chips'] = tchips;
+      tempList.push(
+        { ...temp, backgroundColor: '#EDF0FF', charge: '임원 아닌 주주', image: 'https://deungi24.com/img/ico_list1.png' }
+      )
+    } else {
+      const tchips = [];
+      if (exe.foreigner) tchips.push('외국인');
+      if (exe.underage) tchips.push('미성년자');
+      temp['chips'] = tchips;
+      tempList.push(
+        { ...temp, backgroundColor: '#EDF0FF', charge: exe.charge, image: 'https://deungi24.com/img/ico_list1.png' }
+      )
+    }
+  })
+  return tempList;
+}
+
+watchEffect(() => {
+  executiveList.value = props.modelValue;
 })
 
 const exes = ['임원', '임원 아닌 주주'];
 const ranks = ['대표이사', '이사', '감사'];
 const who = ['개인', '법인'];
-const extra = ['외국인', '미성년자'];
+
 const rearImages = [
   { unchecked: 'https://deungi24.com/img/ico_list4.png', checked: 'https://deungi24.com/img/ico_list4_on.png'}, 
   { unchecked: 'https://deungi24.com/img/ico_list5.png', checked: 'https://deungi24.com/img/ico_list5_on.png' }
@@ -101,31 +105,24 @@ const addExcutive = (name, charge, underage, foreigner) => {
   exeObj.charge = charge;
   exeObj.underage = underage;
   exeObj.foreigner = foreigner;
-  exeObj.name = name
-  return exeObj
+  exeObj.name = name;
+  return exeObj;
 }
 
-const emit = defineEmits(['verify'])
+const emit = defineEmits(['verify', 'update:modelValue']);
 
 const addList = () => {
   let exeObj = {} as IExecutiveCard;
   if (exeSelected.value === 0) {
     exeObj = addExcutive(name.value, exes[exeSelected.value], underage.value, foreigner.value);
-    exeObj.backgroundColor = '#EDF0FF';
-    exeObj.image = 'https://deungi24.com/img/ico_list1.png';
-    exeObj.state = '다음에입력';
   } else {
     if (whoSelected.value === 0) {
-      exeObj = addExcutive(name.value, exes[exeSelected.value], underage.value, foreigner.value);
-      exeObj.backgroundColor = '#EDF0FF';
-      exeObj.image = 'https://deungi24.com/img/ico_list1.png';
+      exeObj = addExcutive(name.value, who[whoSelected.value], underage.value, foreigner.value);
     } else {
-      exeObj = addExcutive(name.value, exes[exeSelected.value], underage.value, foreigner.value);
-      exeObj.backgroundColor = '#EDF9FF';
-      exeObj.image = 'https://deungi24.com/img/ico_list2.png';
+      exeObj = addExcutive(name.value, who[whoSelected.value], underage.value, foreigner.value);
     }
   }
-  exeObj.chips = getChips()
+
   executiveList.value.push(exeObj)
   name.value = '';
   underage.value = false;
@@ -133,42 +130,28 @@ const addList = () => {
   exeSelected.value = 0;
   rankSelected.value = -1;
   whoSelected.value = -1;
-  emit('verify', { 
-      executives: executiveList.value.map(exes => {
-        return { name: exes.name, charge: exes.charge, foreigner: exes.foreigner, underage: exes.underage }
-      }),
-      verified: true,
-  })
+
+  emit('update:modelValue', executiveList.value)
+  emit('verify', { verified: true })
 }
 
 const removeExecutive = (idx) => {
   executiveList.value.splice(idx, 1)
-  emit('verify', { 
-      executives: executiveList.value.map(exes => {
-        return { name: exes.name, charge: exes.charge, foreigner: exes.foreigner, underage: exes.underage }
-      }),
-      verified: true,
-  })
-}
-const getChips = () => {
-  const temp = [];
-  if (whoSelected.value === 1 && foreigner.value) {
-    temp.push('외국법인');
-    return temp;
-  }
-  if (foreigner.value) temp.push('외국인');
-  if (underage.value) temp.push('미성년자');
-  return temp
+  emit('update:modelValue', executiveList.value)
+  emit('verify', { verified: true })
 }
 
+const executiveListComputed = computed(() => {
+  return setExecutiveCards(executiveList.value);
+})
 </script>
 
 <template>
 <div>
-<p class="title-type-1">{{ propsData.corpName }}의<br /> 첫 주주와 임원 구성은?</p>
+<p class="title-type-1">{{ props.corpName }}의<br /> 첫 주주와 임원 구성은?</p>
 <!-- 임원정보 리스트 -->
 <MExecutiveCard
-  v-for="(executive, idx) in executiveList"
+  v-for="(executive, idx) in executiveListComputed"
   :key="`${executive.name}_${idx}`"
   v-bind="executive"
   @remove="removeExecutive(idx)"
@@ -189,19 +172,18 @@ const getChips = () => {
     <p class="txt-28 modal-title"><b>주주 · 임원 정보</b>를 입력하세요.</p>
     <hr />
     <MRadioButtonGroup 
+      v-model="exeSelected"
       :contents="exes"
       :set-inline="true"
       name="isExe"
-      v-model="exeSelected"
-      :default-index="exeSelected"
     />
     <!-- 임원 -->
     <div v-if="exeSelected === 0">
       <MRadioButtonGroup
+        v-model="rankSelected"
         :contents="ranks"
         :set-inline="true"
         name="exeCharge"
-        v-model="rankSelected"
         :no-check-icon="true"
       />
       <div v-show="rankSelected > -1">
@@ -252,11 +234,11 @@ const getChips = () => {
     <div v-if="exeSelected === 1">
       <p class="title-type-2">주주유형</p>
       <MRadioButtonGroup
+        v-model="whoSelected"
         :rear-images="rearImages"
         :contents="who"
         :set-inline="true"
         name="who"
-        v-model="whoSelected"
       />
       <div v-if="whoSelected === 0 || whoSelected === 1">
         <p class="title-type-2">이름</p>

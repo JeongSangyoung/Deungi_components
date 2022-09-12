@@ -17,23 +17,30 @@ Dummy<string>('corpType').then((result) => {
   });
 });
 
+const emit = defineEmits(['submit'])
+const submit = () => {
+  emit('submit', {
+    corpType: corpItems.value[radio.value].content
+  })
+}
+
 </script>
 
 <template>
 <ApplyLayout>
   <OApplySelectType
     id="selectType"
-    v-model:radio="radio"
+    v-model="radio"
     name="selectType"
     :items="corpItems"
   />
-
   <div style="display: flex; justify-content: center">
     <MButton 
       class="next-btn" 
       width="100%"
       max-width="400px"
       :disabled="radio === -1"
+      @click="submit"
       >
       <div>
         다음

@@ -23,14 +23,10 @@ const Template:StoryFn<typeof OApplyNaming1> = (args) => ({
 
 export const Default = Template.bind({})
 Default.args = {
-  state: {
-    corpName: '보로노이',
-  },
-  propsData: {
-    location: {
-      sido: '경남',
-      sigungu: '창원시',
-      third: '용호동'
-    }
+  modelValue: '보로노이',
+  location: {
+    sido: '경남',
+    sigungu: '창원시',
+    third: '용호동'
   }
 }

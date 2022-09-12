@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { CSSProperties, computed } from 'vue';
+import { CSSProperties, computed, ref, watchEffect } from 'vue';
 import MTooltip from '@/components/stories/molecules/MTooltip/MTooltip.vue';
 import { IExpertItems } from '@/types';
 
 interface PropType {
-  radio: number;
+  modelValue: number;
   name: string;
   items: IExpertItems[];
   width?: number | string;
@@ -13,6 +13,11 @@ interface PropType {
 }
 
 const props = withDefaults(defineProps<PropType>(), {});
+const radio = ref<number>(-1);
+
+watchEffect(() => {
+  radio.value = props.modelValue;
+})
 
 const computedStyled = computed(() => {
   const style = {} as CSSProperties;
@@ -22,7 +27,10 @@ const computedStyled = computed(() => {
   return style;
 })
 
-const emit = defineEmits(['update:radio'])
+const emit = defineEmits(['update:modelValue'])
+const changeValue = (item_idx) => {
+  emit('update:modelValue', item_idx)
+}
 
 </script>
 
@@ -41,8 +49,8 @@ const emit = defineEmits(['update:radio'])
           :id="item.content" 
           :value="item_idx" 
           :name="name"
-          @input="emit('update:radio', item_idx)"
-          :checked="radio === item_idx"
+          @input="changeValue(item_idx)"
+          :checked="modelValue === item_idx"
         />
         <label
           :for="item.content"

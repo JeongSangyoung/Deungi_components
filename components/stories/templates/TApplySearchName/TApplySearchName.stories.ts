@@ -7,7 +7,7 @@ export default {
   title: 'templates/TApplySearchName',
   component: TApplySearchName,
   argTypes: {
-    'onUpdate:modelValue': {}
+    onSubmit: {}
   }
 } as Meta<typeof TApplySearchName>
 

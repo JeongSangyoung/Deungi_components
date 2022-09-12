@@ -7,21 +7,7 @@ import OApplyNaming1 from '@/components/stories/organisms/OApplyNaming1/OApplyNa
 import OApplyNaming2 from '@/components/stories/organisms/OApplyNaming2/OApplyNaming2.vue';
 
 import Dummy from '@/components/composable/useDummy';
-import { ILocation, TransferType } from '@/types';
-
-interface IMapState {
-  location: ILocation;
-  croweded: boolean;
-  verified: boolean;
-}
-interface IName1State {
-  corpName: string;
-  verified: boolean;
-}
-interface IName2State {
-  radio: number;
-  verified: boolean;
-}
+import { ILocation } from '@/types';
 
 const step = ref(1);
 const radio = ref<number>(-1);
@@ -32,53 +18,38 @@ const verified1 = ref<boolean>(false);
 const verified2 = ref<boolean>(false);
 const verified3 = ref<boolean>(false);
 
-Dummy<string>('corpName').then((result) => corpName.value = result);
-Dummy<ILocation>('location').then((result) => location.value = result);
+Dummy<string>('corpName').then(result => corpName.value = result);
+Dummy<ILocation>('location').then(result => location.value = result);
 
-
-const name1Args = computed(():TransferType => {
-  return {
-    state: {
-      corpName: corpName.value
-    },
-    propsData: {
-      location: location.value
-    }
-  }
-})
-const name2Args = computed(():TransferType => {
-  return {
-    state: {
-      radio: radio.value
-    },
-    propsData: {
-      corpName: corpName.value
-    }
-  }
-})
-
-const mapVerify = (data: IMapState) => {
-  location.value = data.location;
+const mapVerify = (data) => {
   crowded.value = data.croweded;
   verified1.value = data.verified;
 }
-const name1Verify = (data: IName1State) => {
-  console.log(data);
-  corpName.value = data.corpName;
+const name1Verify = (data) => {
+  corpName.value = data.corpName
   verified2.value = data.verified;
   if (verified2.value) {
-    next_step()
+    nextStep()
   }
 }
-const name2Verify = (data: IName2State) => {
-  radio.value = data.radio
+const name2Verify = (data) => {
   verified3.value = data.verified;
 }
 
-
-const next_step = () => {
+const nextStep = () => {
   window.scrollTo(0, 0);
   step.value += 1
+  // 뒤로가기일 때 고려해야함.
+}
+
+const emit = defineEmits(['submit'])
+const submit = () => {
+  emit('submit', {
+    location: location.value,
+    croweded: crowded.value,
+    corpName: corpName.value,
+    rear: radio.value ? true : false,
+  });
 }
 
 </script>
@@ -86,13 +57,13 @@ const next_step = () => {
 <template>
 <ApplyLayout>
   <div v-if="step === 1">
-    <OApplyMap v-model:location="location" @verify="mapVerify"/>
+    <OApplyMap v-model="location" @verify="mapVerify"/>
     <div style="display: flex; justify-content: center">
       <MButton
         class="next-btn" 
         width="100%"
         max-width="400px"
-        @click="next_step"
+        @click="nextStep"
         :disabled="!verified1"
       >
         <div>
@@ -104,11 +75,11 @@ const next_step = () => {
   </div>
 
   <div v-if="step === 2">
-    <OApplyNaming1 v-bind="name1Args" @verify="name1Verify"/>
+    <OApplyNaming1 v-model="corpName" :location="location" @verify="name1Verify"/>
   </div>
 
   <div v-if="step === 3">
-    <OApplyNaming2 v-bind="name2Args" @verify="name2Verify" />
+    <OApplyNaming2 v-model="radio" :corp-name="corpName" @verify="name2Verify" />
 
     <div style="display: flex; justify-content: center">
       <MButton
@@ -116,6 +87,7 @@ const next_step = () => {
         width="100%"
         max-width="400px"
         :disabled="!verified3"
+        @click="submit"
         >
         <div>
           다음

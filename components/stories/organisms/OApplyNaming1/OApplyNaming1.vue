@@ -1,17 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watchEffect } from 'vue';
 import MInput from '@/components/stories/molecules/MInput/MInput.vue';
 import MButton from '@/components/stories/molecules/MButton/MButton.vue';
 import MModal from '@/components/stories/molecules/MModal/MModal.vue';
 
 import { ILocation } from '@/types'
 interface PropType {
-  state: {
-    corpName: string;
-  }
-  propsData: {
-    location: ILocation
-  }
+  modelValue: string;
+  location: ILocation
   verifyFunc?: () => boolean;
 }
 
@@ -24,8 +20,10 @@ const props = withDefaults(defineProps<PropType>(), {
 
 const verified = ref<boolean>(false);
 const corpName = ref<string>();
-corpName.value = props.state.corpName;
-  
+watchEffect(() => {
+  corpName.value = props.modelValue
+})
+
 const emit = defineEmits(['verify']);
   
 const checkName = () => {
@@ -42,7 +40,7 @@ const verify = (v: boolean) => {
 <template>
 <div>
   <p class="title-type-1">설립하실 회사 이름은?!</p>
-  <p class="txt-20"><b>{{ props.propsData.location.sido }} {{ props.propsData.location.sigungu }} {{ props.propsData.location.third }}</b> 소재 (예정)</p>
+  <p class="txt-20"><b>{{ props.location.sido }} {{ props.location.sigungu }} {{ props.location.third }}</b> 소재 (예정)</p>
   <div class="search-container">
     <MInput 
       v-model="corpName"
@@ -56,7 +54,7 @@ const verify = (v: boolean) => {
             width="150px"
             v-on="on"
             class="search-btn"
-            :disabled="corpName === ''"
+            :disabled="!corpName"
             @click="checkName"
           >
             회사이름조회

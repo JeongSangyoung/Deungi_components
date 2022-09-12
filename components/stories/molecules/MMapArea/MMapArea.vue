@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { MapHighlight, mapData, thirdCityList, gwamilDongObj, gwamilSiList, gwamilIncheon, sidoDataList } from '@/apis/location';
-import { ref, onMounted, watch, computed, watchEffect } from 'vue';
+import { ref, onMounted, watch, watchEffect } from 'vue';
 
 interface PropType {
-  location: {
+  modelValue: {
     sido: string;
     sigungu: string;
     third: string;
@@ -11,7 +11,7 @@ interface PropType {
 }
 
 const props = withDefaults(defineProps<PropType>(), {
-  location: () => {
+  modelValue: () => {
     return {
       sido: '전체',
       sigungu: '시/군/구',
@@ -36,12 +36,12 @@ let mapHighlight = null;
 
 onMounted(() => {
   // DATA INIT
-  if (props.location.sido === '') sido.value = '전체';
-  else sido.value = props.location.sido;
-  if (props.location.sigungu === '') sigungu.value = '시/군/구';
-  else sigungu.value = props.location.sigungu;
-  if (props.location.third === '') third.value = '선택해주세요';
-  else third.value = props.location.third;
+  if (props.modelValue.sido === '') sido.value = '전체';
+  else sido.value = props.modelValue.sido;
+  if (props.modelValue.sigungu === '') sigungu.value = '시/군/구';
+  else sigungu.value = props.modelValue.sigungu;
+  if (props.modelValue.third === '') third.value = '선택해주세요';
+  else third.value = props.modelValue.third;
 
   // MAP INIT
   mapHighlight = new MapHighlight(mapImg.value, mapCanvas.value);
@@ -79,9 +79,9 @@ const getThirdList = () => {
   thirdList.value = undefined;
 }
 watchEffect(() => {
-  sido.value = props.location.sido;
-  sigungu.value = props.location.sigungu;
-  third.value = props.location.third;
+  sido.value = props.modelValue.sido;
+  sigungu.value = props.modelValue.sigungu;
+  third.value = props.modelValue.third;
 })
 getSigunguList(sido.value)
 getThirdList()
@@ -146,9 +146,9 @@ const verification = () => {
   return false; // 두번째가 없는경우는 거짓
 }
 
-const emit = defineEmits(['update:location', 'verified'])
+const emit = defineEmits(['update:modelValue', 'verified'])
 const emitState = () => {
-  emit('update:location', { 
+  emit('update:modelValue', { 
     sido: sido.value, 
     sigungu: sigungu.value.replace(/[0-9]/g, ''), 
     third: third.value,

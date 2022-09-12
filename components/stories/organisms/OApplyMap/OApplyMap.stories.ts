@@ -6,7 +6,7 @@ export default {
   component: OApplyMap,
   argTypes: {
     onVerify: {},
-    'onUpdate:location': {}
+    'onUpdate:modelValue': {}
   }
 } as Meta<typeof OApplyMap>
 
@@ -24,7 +24,7 @@ const Template:StoryFn<typeof OApplyMap> = (args) => ({
 
 export const Default = Template.bind({})
 Default.args = {
-  location: {
+  modelValue: {
     sido: '경기',
     sigungu: '남양주시',
     third: '일패동',
