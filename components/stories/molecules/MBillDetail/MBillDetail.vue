@@ -50,6 +50,7 @@ withDefaults(defineProps<PropType>(), {
 .bill {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 8.5px;
   p {
     margin: 0;
   }
@@ -77,7 +78,7 @@ withDefaults(defineProps<PropType>(), {
 .bill-details {
   li {
     margin-bottom: 4.5px;
-    margin-top: 4.5px;
+    margin-top: 8.5px;
     display: flex;
     align-items: center;
     @include xs {

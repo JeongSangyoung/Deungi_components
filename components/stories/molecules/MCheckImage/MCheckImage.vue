@@ -78,6 +78,12 @@ const emit = defineEmits(['update:modelValue'])
   border: 3px solid $color-basic;
   border-radius: 12px;
 
+  @include xs {
+    border: 2px solid $color-basic;
+    border-radius: 6px;
+  }
+
+
   input[type="checkbox"] {
     display: none;
   }
@@ -89,11 +95,23 @@ const emit = defineEmits(['update:modelValue'])
   &-image {
     background: #fff;
     border-radius: 12px;
-    padding: 36px 48px;
+ 
+    position: relative;
+    height: 190px;
+    overflow: hidden;
     position: relative;
 
+    @include xs {
+      border-radius: 6px;
+      height: 145px;
+    }
+
     .mCheck-main {
-      max-width: 150px;
+      text-align: center;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 36px;
     }
     .mCheck-check {
       width: 36px;
@@ -106,6 +124,10 @@ const emit = defineEmits(['update:modelValue'])
   &-content {
     padding: 20px;
     text-align: center;
+
+    @include md {
+      height: 130px;
+    }
 
     .txt-title {
       font-size: 20px;

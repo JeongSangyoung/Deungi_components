@@ -59,7 +59,8 @@ const test = ref('TEST');
 #step {
   max-width: 1264px;
 
-  margin: 24px auto;
+  margin: 48px auto;
+  // margin-bottom: 
 }
 
 #content {
@@ -69,7 +70,7 @@ const test = ref('TEST');
 
   margin: 0 auto;
   padding: 0 24px;
-  padding-bottom: 48px;
+  // padding-bottom: 48px;
 
   @include smAndDown {
     padding: 0 12px;

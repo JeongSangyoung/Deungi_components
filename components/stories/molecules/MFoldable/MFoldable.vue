@@ -8,7 +8,7 @@ const isShow = ref(false);
 <template>
 <div class="mFold-header" :class="{ 'mFold-active': isShow }" @click="isShow = !isShow">
   <div class="mFold-accessory"></div>
-  <div class="pl-6 pr-10">
+  <div class="mFold-title">
     <slot name="header"></slot>
   </div>
   <!-- <div class="mFold-v" :class="{ 'mFold-v-active': isShow }"></div> -->
@@ -19,6 +19,10 @@ const isShow = ref(false);
 </template>
 
 <style lang="scss" scoped>
+.mFold-title {
+  padding-left: 24px;
+  padding-right: 40px;
+}
 .mFold-header {
   cursor: pointer;
   position: relative;

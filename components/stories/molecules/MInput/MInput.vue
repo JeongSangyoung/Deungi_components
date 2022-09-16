@@ -12,7 +12,9 @@ interface PropType {
   width?: number | string;
   maxWidth?: number | string;
   height?: number | string;
-  type?: 'text' | 'number';
+  type?: 'text' | 'number' | 'password';
+  convert?: boolean;
+  locale?: boolean;
 }
 
 const props = withDefaults(defineProps<PropType>(), {
@@ -27,6 +29,8 @@ const props = withDefaults(defineProps<PropType>(), {
   maxWidth: '',
   height: '',
   type: 'text',
+  convert: false,
+  locale: false,
 })
 
 const computedStyled = computed(() => {
@@ -47,6 +51,7 @@ watchEffect(() => {
 
 watch(input, newValue => {
   if (props.type !== 'number') return;
+  if (!props.locale) return;
   newValue = newValue.toString().replace(/[^0-9|?!,]/g, '' );
   newValue = newValue.toString().replace(/,/g, '');
   input.value = newValue.toString().replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
@@ -92,7 +97,7 @@ const emit = defineEmits(['update:modelValue']);
       <input
         v-if="type!=='number'"
         v-model="input"
-        type="text" 
+        :type="type" 
         :placeholder="placeHolder"
         :maxLength="maxlength"
         :readonly="readonly"
@@ -127,7 +132,7 @@ const emit = defineEmits(['update:modelValue']);
         <!-- this.value = this.value.replace(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣|a-z|A-Z]/g, '' ); -->
       <span class="mInput-unit">{{ unit }}</span>
   </div>
-  <div v-if="type==='number'" class="unitKor">
+  <div v-if="type==='number' && convert" class="unitKor">
     {{ numberToKor }}
   </div>
 </div>

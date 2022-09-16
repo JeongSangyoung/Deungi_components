@@ -28,7 +28,7 @@ const toggleShow = () => {
   font-size: 14px;
   line-height: 26px;
   cursor: pointer;
-
+  
   &:before {
     content: '?';
     position: relative;
@@ -36,13 +36,21 @@ const toggleShow = () => {
     color: #fff;
     top: -2px;
   }
-
+  
   &-content {
+    z-index: 2;
     text-align: left;
     background-color: #333;
     position: absolute;
+    transform: translateX(calc(-100% + 24px));
     width: 500px;
     transition: .5s all;
+    color: white;
+    padding: 12px;
+    @include xs {
+      
+    }
   }
+
 }
 </style>

@@ -1,4 +1,3 @@
-import { ref } from 'vue'; 
 export const dummy = {
   location: {
     sido: '경기',
@@ -81,9 +80,128 @@ export const dummy = {
       foreigner: true,
     }
   ],
+  billItems: [
+    {
+      costName: '설립공과금',
+      totalCost: '155,000',
+      details: [
+        {
+          costName: '법인 설립 공과금',
+          cost: '425,000',
+          sale: false,
+        },
+        {
+          costName: '과밀지역 외 설립 공과금 절약',
+          cost: '270,000',
+          sale: true,
+        }
+      ],
+    },
+    {
+      costName: '수수료',
+      totalCost: '979,000',
+      details: [
+        {
+          costName: '서류등기 수수료',
+          cost: '700,000',
+          sale: false,
+        },
+        {
+          costName: '등기24 8월 할인',
+          cost: '321,000',
+          sale: true,
+        },
+        {
+          costName: '농어업법인 설립 추가 수수료',
+          cost: '200,000',
+          sale: false,
+        },
+        {
+          costName: '미성년자 추가 수수료',
+          cost: '200,000',
+          sale: false,
+        },
+        {
+          costName: '외국인 주주 추가 수수료',
+          cost: '200,000',
+          sale: false,
+        },
+      ],
+    },
+    {
+      costName: 'VAT',
+      totalCost: '97,900'
+    },
+    {
+      costName: '합계',
+      totalCost: '4,790,870',
+      sale: {
+        costName: '등기24 할인',
+        cost: '2,569,650'
+      }
+    }
+  ],
+  service: '전자등기',
+  serviceGroup: [
+    {
+      duration: '5일',
+      advantage: '방문없이 빠르고 편리한',
+      method: '전자 등기',
+      image: {
+        checked: 'https://deungi24.com/img/ico_list9_on.png',
+        unchecked: 'https://deungi24.com/img/ico_list9.png'
+      },
+      cost: '179,000'
+    },
+    {
+      duration: '9일',
+      advantage: '서류를 등기로 보내 주세요',
+      method: '서류 등기',
+      image: {
+        checked: 'https://deungi24.com/img/ico_list10_on.png',
+        unchecked: 'https://deungi24.com/img/ico_list10.png'
+      },
+      cost: '379,000'
+    },
+  ],
+  benefitItems:[
+    {
+      name: 'example1',
+      image: 'https://deungi24.com/img/gift3_1.png',
+      title: '절세에 유리한 정관 제작',
+      cost: '220,000원',
+      sale: true,
+      saleCost: '0원'
+    },
+    {
+      name: 'example2',
+      image: 'https://deungi24.com/img/gift4.png',
+      title: '변호사 직접 검수',
+      cost: '220,000원',
+      sale: true,
+      saleCost: '0원'
+    },
+    {
+      name: 'example3',
+      image: 'https://deungi24.com/img/gift1.png',
+      title: '법인서류 및 보관 바인더',
+      cost: '220,000원',
+      sale: true,
+      saleCost: '0원'
+    },
+    {
+      name: 'example4',
+      image: 'https://deungi24.com/img/gift2.png',
+      title: '가죽 인감 도장',
+      cost: '220,000원',
+      sale: true,
+      saleCost: '0원'
+    }
+  ],
+  
 }
 
-export default async function Dummy<T>(key: keyof typeof dummy) {
+export default async function Data<T>(key: keyof typeof dummy) {
   return await new Promise((resolve) => {
       setTimeout(() => resolve(dummy[key] as T), 2000)}) as T
 }

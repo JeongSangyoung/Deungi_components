@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watchEffect } from 'vue';
 
 interface PropType {
   modelValue: number;
@@ -14,14 +14,14 @@ interface ICostItem {
   image: { checked: string, unchecked: string },
   cost: string;
 }
-const props = withDefaults(defineProps<PropType>(), {
-  modelValue: -1
-});
+const props = withDefaults(defineProps<PropType>(), {});
 
 const radio = ref<number>();
-radio.value = props.modelValue;
+watchEffect(() => {
+  radio.value = props.modelValue;
+})
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue']);
 
 const clicked = (idx) => {
   if (idx === 0) {
@@ -91,12 +91,17 @@ const imgChecker = (idx) => {
   @include smAndDown {
     flex-direction: column;
     margin: 0 auto;
-    max-width: 500px;
+    max-width: 550px;
   }
 
   li {
     list-style: none;
     margin-right: 20px;
+
+    @include md {
+      width: 100%;
+      margin-right: 12px;
+    }
 
     @include smAndDown {
       margin-right: unset;
@@ -116,7 +121,7 @@ const imgChecker = (idx) => {
   @include smAndDown {
     text-align: unset;
   }
-  
+
   label {
     cursor: pointer;
     display: block;
@@ -137,6 +142,12 @@ const imgChecker = (idx) => {
     background-size: auto;
     background-position: center 210px;
     background-repeat: no-repeat;
+
+    @include md {
+      width: 100%;
+      height: 360px;
+      background-size: 160px;
+    }
 
     @include smAndDown {
       width: unset;
@@ -184,6 +195,10 @@ const imgChecker = (idx) => {
     border-top: 2px solid #9B9B9B;
     border-bottom: 2px solid #9B9B9B;
     display: inline-block;
+    
+    @include md {
+      font-size: 16px;
+    }
     @include smAndDown {
       font-size: 16px;
       margin-bottom: 16px;
@@ -193,7 +208,7 @@ const imgChecker = (idx) => {
   &-advantage {
     font-size: 20px;
     color: #9b9b9b;
-    @include smAndDown {
+    @include mdAndDown {
       font-size: 16px;
     }
   }
@@ -202,6 +217,10 @@ const imgChecker = (idx) => {
     font-size: 36px;
     font-weight: bold;
     margin-bottom: 24px;
+
+    @include md {
+      font-size: 28px;
+    }
 
     @include smAndDown {
       margin-bottom: unset;
@@ -215,6 +234,11 @@ const imgChecker = (idx) => {
     color: #fff;
     padding: 20px 0;
     text-align: center;
+    @include md {
+      padding: 16px 0;
+      font-size: 24px;
+    }
+
     @include smAndDown {
       padding: 12px 0;
       font-size: 24px;
@@ -228,8 +252,6 @@ const imgChecker = (idx) => {
         font-size: 16px;
       }
     }
-
-
   }
 }
 

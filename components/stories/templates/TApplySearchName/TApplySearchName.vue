@@ -6,7 +6,7 @@ import OApplyMap from '@/components/stories/organisms/OApplyMap/OApplyMap.vue';
 import OApplyNaming1 from '@/components/stories/organisms/OApplyNaming1/OApplyNaming1.vue';
 import OApplyNaming2 from '@/components/stories/organisms/OApplyNaming2/OApplyNaming2.vue';
 
-import Dummy from '@/components/composable/useDummy';
+import Data from '@/components/composable/useData';
 import { ILocation } from '@/types';
 
 const step = ref(1);
@@ -18,8 +18,8 @@ const verified1 = ref<boolean>(false);
 const verified2 = ref<boolean>(false);
 const verified3 = ref<boolean>(false);
 
-Dummy<string>('corpName').then(result => corpName.value = result);
-Dummy<ILocation>('location').then(result => location.value = result);
+Data<string>('corpName').then(result => corpName.value = result);
+Data<ILocation>('location').then(result => location.value = result);
 
 const mapVerify = (data) => {
   crowded.value = data.croweded;
@@ -103,5 +103,6 @@ const submit = () => {
 <style lang="scss" scoped>
 .next-btn {
   margin-top: 48px;
+  margin-bottom: 48px;
 }
 </style>

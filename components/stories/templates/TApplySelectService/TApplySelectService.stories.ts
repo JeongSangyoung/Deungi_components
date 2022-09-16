@@ -1,25 +1,25 @@
-import TApplySelectType from './TApplySelectType.vue';
+import TApplySelectService from './TApplySelectService.vue';
 import { Meta, StoryFn } from '@storybook/vue3'
 import vueRouter from 'storybook-vue3-router';
 import { action } from '@storybook/addon-actions';
 
 export default {
-  title: 'templates/TApplySelectType',
-  component: TApplySelectType,
+  title: 'templates/TApplySelectService',
+  component: TApplySelectService,
   argTypes: {
     'onSubmit': {}
   }
-} as Meta<typeof TApplySelectType>
+} as Meta<typeof TApplySelectService>
 
-const Template:StoryFn<typeof TApplySelectType> = (args) => ({
-  components: { TApplySelectType },
+const Template:StoryFn<typeof TApplySelectService> = (args) => ({
+  components: { TApplySelectService },
   setup() {
     return {
       args,
     }
   },
   template: `
-    <TApplySelectType v-bind="args" />
+    <TApplySelectService v-bind="args" />
   `,
 })
 
@@ -59,6 +59,9 @@ const stepRoute = router.map(r => {
 
 Main.decorators = [
   vueRouter(stepRoute, {
-    initialRoute: '/apply/selectType'
+    initialRoute: '/apply/selectService'
   })
 ]
+
+Main.args = {
+}

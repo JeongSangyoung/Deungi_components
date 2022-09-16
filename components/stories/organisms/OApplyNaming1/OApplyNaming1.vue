@@ -143,7 +143,6 @@ const verify = (v: boolean) => {
     margin-left: 12px;
 
     @include xs {
-      flex-direction: column;
       margin: 0 auto;
       margin-top: 12px;
       padding: 16px 24px;

@@ -50,7 +50,7 @@ if (props.checked) { isChecked.value = true; }
   position: relative;
   width: 100%;
   display: block;
-  border: 1px solid #e9e9e9;
+  // border: 1px solid #e9e9e9;
   background: #fff;
   cursor: pointer;
   &:hover {

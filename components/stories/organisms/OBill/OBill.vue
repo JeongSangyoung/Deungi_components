@@ -1,85 +1,18 @@
 <script setup lang="ts">
 import MBillDetail from '@/components/stories/molecules/MBillDetail/MBillDetail.vue';
+import { IBill } from '@/types';
 
-interface IBillItem {
-  costName: string;
-  totalCost: string;
-  details?: IBillDetail[] | undefined;
-  sale?: IBillDetail | undefined;
+interface PropType {
+  items: IBill[]
 }
 
-interface IBillDetail {
-  costName: string;
-  cost: string;
-  sale?: boolean;
-}
+const props = withDefaults(defineProps<PropType>(), {}) 
 
-const items = [
-  {
-    costName: '설립공과금',
-    totalCost: '155,000',
-    details: [
-      {
-        costName: '법인 설립 공과금',
-        cost: '425,000',
-        sale: false,
-      },
-      {
-        costName: '과밀지역 외 설립 공과금 절약',
-        cost: '270,000',
-        sale: true,
-      }
-    ],
-  },
-  {
-    costName: '수수료',
-    totalCost: '979,000',
-    details: [
-      {
-        costName: '서류등기 수수료',
-        cost: '700,000',
-        sale: false,
-      },
-      {
-        costName: '등기24 8월 할인',
-        cost: '321,000',
-        sale: true,
-      },
-      {
-        costName: '농어업법인 설립 추가 수수료',
-        cost: '200,000',
-        sale: false,
-      },
-      {
-        costName: '미성년자 추가 수수료',
-        cost: '200,000',
-        sale: false,
-      },
-      {
-        costName: '외국인 주주 추가 수수료',
-        cost: '200,000',
-        sale: false,
-      },
-    ],
-  },
-  {
-    costName: 'VAT',
-    totalCost: '97,900'
-  },
-  {
-    costName: '합계',
-    totalCost: '4,790,870',
-    sale: {
-      costName: '등기24 할인',
-      cost: '2,569,650'
-    }
-  }
-] as IBillItem[]
 </script>
 
 <template>
 <div class="bill">
-  <div v-for="item in items" class="bDetail-one">
+  <div v-for="item in props.items" class="bDetail-one">
     <MBillDetail
       :key="item.costName"
       v-bind="item"
@@ -111,10 +44,11 @@ const items = [
 
 .bill-total {
   font-size: 24px;
+  
   font-weight: bold;
   text-align: center;
-  margin-top: 24px;
-  margin-bottom: 24px;
+  margin-top: 32px;
+
   b {
     color: $color-basic;
   }
@@ -126,6 +60,7 @@ const items = [
 
   @include xs {
     font-size: 20px;
+    margin-top: 20px;
   }
 }
 </style>

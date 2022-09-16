@@ -4,7 +4,7 @@ import ApplyLayout from '@/layouts/apply.vue';
 import MButton from '@/components/stories/molecules/MButton/MButton.vue';
 import OApplySelectType from '@/components/stories/organisms/OApplySelectType/OApplySelectType.vue';
 import { IStep1CorpItem } from '@/types';
-import Dummy from '@/components/composable/useDummy';
+import Dummy from '@/components/composable/useData';
 
 const radio = ref<number>(-1);
 const corpItems = ref<IStep1CorpItem[]>([]);

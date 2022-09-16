@@ -1,29 +1,28 @@
-import MCostSelectGroup from './MCostSelectGroup.vue';
-import { Meta, StoryFn } from '@storybook/vue3'
+import OApplyPayby from './OApplyPayby.vue';
+import { Meta, StoryFn } from '@storybook/vue3';
 
 export default {
-  title: 'molecules/MCostSelectGroup',
-  component: MCostSelectGroup,
+  title: 'organisms/OApplyPayby',
+  component: OApplyPayby,
   argTypes: {
-    'onUpdate:modelValue': {}
+    'onUpdate:modelValue': {},
   }
-} as Meta<typeof MCostSelectGroup>
+} as Meta<typeof OApplyPayby>
 
-const Template:StoryFn<typeof MCostSelectGroup> = (args) => ({
-  components: { MCostSelectGroup },
+const Template:StoryFn<typeof OApplyPayby> = (args) => ({
+  components: { OApplyPayby },
   setup() {
     return {
       args,
     }
   },
   template: `
-    <MCostSelectGroup v-bind="args" />
+    <OApplyPayby v-bind="args" />
   `,
 })
 
-export const GroupExample = Template.bind({})
-GroupExample.args = {
-  name: 'example',
+export const Default = Template.bind({})
+Default.args = {
   modelValue: 0,
   items: [
     {

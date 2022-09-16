@@ -50,3 +50,25 @@ export interface IExecutive {
   underage: boolean;
   foreigner: boolean;
 }
+
+export interface IBill {
+  costName: string;
+  totalCost: string;
+  details?: IBillDetail[] | undefined;
+  sale?: IBillDetail | undefined;
+}
+
+interface IBillDetail {
+  costName: string;
+  cost: string;
+  sale?: boolean;
+}
+
+export interface IBenefitItem {
+  name: string;
+  image: string;
+  title: string;
+  cost: string;
+  sale?: boolean;
+  saleCost?: string;
+}

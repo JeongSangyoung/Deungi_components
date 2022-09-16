@@ -74,6 +74,8 @@ const changeValue = (input) => {
     unit="원"
     :maxlength="16"
     @update:modelValue="changeValue"
+    :convert="true"
+    :locale="true"
   />
   <div class="input-desc display-xs">
     <p class="txt-16">* 자본금 2,800만원 까지는 등록면허세가 동일합니다.</p>

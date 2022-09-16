@@ -5,7 +5,7 @@ import MButton from '@/components/stories/molecules/MButton/MButton.vue';
 import ApplyLayout from '@/layouts/apply.vue';
 import OApplyCapital from '@/components/stories/organisms/OApplyCapital/OApplyCapital.vue';
 import OApplyExecutives from '@/components/stories/organisms/OApplyExecutives/OApplyExecutives.vue';
-import Dummy from '@/components/composable/useDummy';
+import Data from '@/components/composable/useData';
 
 const step = ref<number>(1);
 const capital = ref<number|''>('');
@@ -15,9 +15,9 @@ const verified2 = ref<boolean>(false);
 const corpName = ref<string>('');
 const executiveList = ref<IExecutive[]>([]);
 
-Dummy<string>('corpName').then(result => corpName.value = result);
-Dummy<number>('capital').then(result => capital.value = result);
-Dummy<IExecutive[]>('executives').then(result => executiveList.value = result);
+Data<string>('corpName').then(result => corpName.value = result);
+Data<number>('capital').then(result => capital.value = result);
+Data<IExecutive[]>('executives').then(result => executiveList.value = result);
 
 const capitalVerify = (data) => {
   verified1.value = data.verified;
@@ -78,5 +78,6 @@ const submit = () => {
 <style lang="scss" scoped>
 .next-btn {
   margin-top: 24px;
+  margin-bottom: 48px;
 }
 </style>
