@@ -23,7 +23,7 @@ const Template:StoryFn<typeof OApplyPayby> = (args) => ({
 
 export const Default = Template.bind({})
 Default.args = {
-  modelValue: 0,
+  modelValue: -1,
   items: [
     {
       duration: '5일',

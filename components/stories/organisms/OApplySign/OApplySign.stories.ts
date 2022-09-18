@@ -4,6 +4,10 @@ import { Meta, StoryFn } from '@storybook/vue3';
 export default {
   title: 'organisms/OApplySign',
   component: OApplySign,
+  argTypes: {
+    'onUpdate:values': {},
+    onVerify: {},
+  }
 } as Meta<typeof OApplySign>
 
 const Template:StoryFn<typeof OApplySign> = (args) => ({
@@ -20,4 +24,6 @@ const Template:StoryFn<typeof OApplySign> = (args) => ({
 
 export const Default = Template.bind({})
 Default.args = {
+  email: '',
+  applicant: '',
 }

@@ -1,6 +1,19 @@
 <script setup lang="ts">
+import { ref, watchEffect } from 'vue';
 import MCheck from '../../molecules/MCheck/MCheck.vue';
 import MQuestionIcon from '../../molecules/MQuestionIcon/MQuestionIcon.vue';
+
+const check1 = ref<boolean>(false);
+const check2 = ref<boolean>(false);
+
+const emit = defineEmits(['verify'])
+const verify = () => {
+  emit('verify', {
+    check1: check1.value,
+    check2: check2.value,
+    verified: check1.value && check2.value
+  });
+}
 
 </script>
 
@@ -11,7 +24,12 @@ import MQuestionIcon from '../../molecules/MQuestionIcon/MQuestionIcon.vue';
 
   <div>
     <div class="agree-box">
-      <MCheck class="agree-check" label="이용약관 동의 (필수)" />
+      <MCheck 
+        v-model="check1" 
+        class="agree-check" 
+        label="이용약관 동의 (필수)"
+        @update:modelValue="verify"
+      />
       <MQuestionIcon class="agree-icon">
         <p>
           이용약관 동의<br /><br />
@@ -89,7 +107,12 @@ import MQuestionIcon from '../../molecules/MQuestionIcon/MQuestionIcon.vue';
       </MQuestionIcon>  
     </div>
     <div class="agree-box">
-      <MCheck class="agree-check" label="개인정보 수집 및 이용에 대한 안내 (필수)" />
+      <MCheck
+        v-model="check2" 
+        class="agree-check" 
+        label="개인정보 수집 및 이용에 대한 안내 (필수)"
+        @update:modelValue="verify"
+      />
       <MQuestionIcon class="agree-icon">
         <p>
           개인정보 취급 방침

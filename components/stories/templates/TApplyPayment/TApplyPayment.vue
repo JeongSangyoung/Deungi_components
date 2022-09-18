@@ -10,8 +10,11 @@ import Data from '@/components/composable/useData';
 import OApplyPayby from '../../organisms/OApplyPayby/OApplyPayby.vue';
 
 const bill = ref<IBill[]>([]);
+const payItems = ref<string[]>([]);
+const pay = ref<number>(-1);
 
 Data<IBill[]>('billItems').then(result => bill.value = result);
+Data<string[]>('payItems').then(result => payItems.value = result);
 
 </script>
 
@@ -32,7 +35,7 @@ Data<IBill[]>('billItems').then(result => bill.value = result);
     <OApplySign class="payItem" />
     <OApplyAgree class="payItem" />
     <OBill2 :items="bill" class="payItem" />
-    <OApplyPayby class="payItem" />
+    <OApplyPayby v-model="pay" :items="payItems" class="payItem" />
   </div>
 </ApplyLayout>
 

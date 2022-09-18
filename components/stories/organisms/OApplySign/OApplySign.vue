@@ -1,10 +1,60 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watchEffect } from 'vue';
 import MInput from '../../molecules/MInput/MInput.vue';
 import MModal from '../../molecules/MModal/MModal.vue';
 import MButton from '../../molecules/MButton/MButton.vue';
+  
+interface PropType {
+  email?: string;
+  applicant?: string;
+  tel1?: number,
+  tel2?: number,
+  tel3?: number
+}
 
-const input = ref('');
+const props = withDefaults(defineProps<PropType>(), {}) 
+
+const email1 = ref<string>('');
+const email2 = ref<string>('');
+const email = ref<string>('');
+const password1 = ref<string>('');
+const password2 = ref<string>('');
+const applicant = ref<string>('');
+const tel1 = ref<number>();
+const tel2 = ref<number>();
+const tel3 = ref<number>();
+watchEffect(() => {
+  email.value = props.email;
+  applicant.value = props.applicant;
+  tel1.value = props.tel1;
+  tel2.value = props.tel2;
+  tel3.value = props.tel3;
+});
+
+const setEmail = (on) => {
+  // 이메일 검증 api 필요.
+  // 검증확인되면 email에 값 채워넣고 click메서드 실행 
+  email.value = email1.value + '@' + email2.value;
+  on.click();
+}
+const emit = defineEmits(['verify', 'update:values'])
+const changeValues = () => {
+  if (
+    !password1.value || !password2.value
+    || !email.value || !applicant.value  
+    || !tel1.value || !tel2.value || !tel3.value
+  ) {
+    emit('verify', { verified: false })
+  } else {
+    emit('verify', { verified: true })
+    emit('update:values', {
+      password: password2.value,
+      applicant: applicant.value,
+      email: email.value,
+      tel: tel1.value + '-' +tel2.value + '-' + tel3.value
+    })
+  }
+}
 
 </script>
 
@@ -15,10 +65,11 @@ const input = ref('');
 
   <div class="search-container">
     <MInput 
-      v-model="input" 
+      v-model="email"
       :readonly="true" 
       place-holder="조회 버튼을 클릭해주세요." 
-      class="search-input"  
+      class="search-input" 
+      @update:modelValue="changeValues" 
     />
     
     <MModal class="search-modal">
@@ -29,8 +80,6 @@ const input = ref('');
             v-on="on"
             class="search-btn"
             >
-            <!-- :disabled="!corpName" -->
-            <!-- @click="checkName" -->
             조회
           </MButton>
         </div>
@@ -43,32 +92,40 @@ const input = ref('');
           </div>
           <p class="txt-28 modal-title">절차를 안내 받으실 이메일 주소를 입력하세요.</p>
           <p class="txt-16 modal-content">입력하신 이메일 주소는 로그인 아이디로 사용됩니다</p>
-          
+
           <div class="modal-act">
             <div class="modal-act-input">
-              <MInput /> <div class="text-middle">@</div> <MInput />
+              <MInput v-model="email1" /> 
+              <div class="text-middle">@</div> 
+              <MInput v-model="email2" />
             </div>
-            
-            <MButton>조회</MButton>
+
+            <MButton :disabled="!email1 || !email2" @click="setEmail(on)">조회</MButton>
           </div>
         </div>
-          
-        
+
       </template>
   
       </MModal>
 
   </div>
 
-  <div>
-    <MInput type="password" place-holder="비밀번호 (6자리이상)" class="input-mg" />
-    <MInput type="password" place-holder="비밀번호 확인" class="input-mg" />
-    <MInput place-holder="신청자 성함" class="input-mg" />
+  <div v-if="email">
+    <MInput v-model="password1" type="password" place-holder="비밀번호 (6자리이상)" class="input-mg" @update:modelValue="changeValues" />
+    <MInput v-model="password2" type="password" place-holder="비밀번호 확인" class="input-mg" @update:modelValue="changeValues" />
+    <MInput v-model="applicant" place-holder="신청자 성함" class="input-mg" @update:modelValue="changeValues" />
 
     <div class="input-tel">
-      <MInput max-width="120px" place-holder="휴대전화" type="number" /> <div class="text-middle">-</div> 
-      <MInput max-width="120px" type="number" /> <div class="text-middle">-</div>
-      <MInput max-width="120px" type="number" />
+      <MInput 
+        v-model="tel1" 
+        max-width="120px" 
+        place-holder="휴대전화" 
+        type="number"
+        @update:modelValue="changeValues"
+      /> <div class="text-middle">-</div> 
+      <MInput v-model="tel2" max-width="120px" type="number" @update:modelValue="changeValues" /> 
+      <div class="text-middle">-</div>
+      <MInput v-model="tel3" max-width="120px" type="number" @update:modelValue="changeValues" />
     </div>
   </div>
 </div>

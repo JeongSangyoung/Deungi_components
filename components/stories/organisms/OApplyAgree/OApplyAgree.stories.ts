@@ -4,6 +4,9 @@ import { Meta, StoryFn } from '@storybook/vue3';
 export default {
   title: 'organisms/OApplyAgree',
   component: OApplyAgree,
+  argTypes: {
+    onVerify: {},
+  }
 } as Meta<typeof OApplyAgree>
 
 const Template:StoryFn<typeof OApplyAgree> = (args) => ({

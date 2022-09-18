@@ -1,22 +1,26 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue';
 
-import { IRegMethodItems } from '@/types';
 import MRadioButtonGroup from '../../molecules/MRadioButtonGroup/MRadioButtonGroup.vue';
 
 interface PropType {
   modelValue: number;
-  items: IRegMethodItems[];
+  items: string[];
 }
 
 const props = withDefaults(defineProps<PropType>(), {});
 
-const radio = ref<number>();
-const payitems = [
-  '일반 카드 결제 (다날 결제대행 방식)',
-  '5초 간편 카드등록 (카드번호 입력방식)',
-  '5초 실시간 계좌이체'
-]
+const radio = ref<number>(-1);
+const payitems = ref<string[]>([]);
+watchEffect(() => {
+  radio.value = props.modelValue;
+  payitems.value = props.items;
+});
+
+const emit = defineEmits(['update:modelValue']);
+const changeValue = (idx) => {
+  emit('update:modelValue', idx);
+}
 
 </script>
 
@@ -27,8 +31,10 @@ const payitems = [
   </p>
 
   <MRadioButtonGroup
+    v-model="radio"
     name="payby"
     :contents="payitems"
+    @update:modelValue="changeValue"
   />
 
 </div>

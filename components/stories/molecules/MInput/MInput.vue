@@ -51,10 +51,13 @@ watchEffect(() => {
 
 watch(input, newValue => {
   if (props.type !== 'number') return;
-  if (!props.locale) return;
   newValue = newValue.toString().replace(/[^0-9|?!,]/g, '' );
   newValue = newValue.toString().replace(/,/g, '');
-  input.value = newValue.toString().replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+  if (props.locale) {
+    input.value = newValue.toString().replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+  } else {
+    input.value = newValue;
+  }
 })
 
 const numberList = ['영', '일', '이', '삼', '사', '오', '육', '칠', '팔', '구'];
@@ -110,9 +113,9 @@ const emit = defineEmits(['update:modelValue']);
         @input="emit('update:modelValue', input)"
       />
       <input 
-        v-else 
+        v-else
         v-model="input"
-        type="text" 
+        type="text"
         :placeholder="placeHolder"
         :maxLength="maxlength"
         :readonly="readonly"
@@ -129,10 +132,10 @@ const emit = defineEmits(['update:modelValue']);
         @input="emit('update:modelValue', input.toString().replace(/,/g, ''))"
         />
 
-        <!-- this.value = this.value.replace(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣|a-z|A-Z]/g, '' ); -->
       <span class="mInput-unit">{{ unit }}</span>
+
   </div>
-  <div v-if="type==='number' && convert" class="unitKor">
+  <div v-if="type==='number' && props.convert" class="unitKor">
     {{ numberToKor }}
   </div>
 </div>
