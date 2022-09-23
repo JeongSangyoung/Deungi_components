@@ -1,4 +1,20 @@
-import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport'
+import { app } from '@storybook/vue3';
+import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
+
+app.directive('click-outside', {
+  mounted(el, binding) {
+    el.clickOutsideEvent = function(event) {
+      if (!(el == event.target || el.contains(event.target))) {
+        binding.value(event, el)
+      }
+    }
+    // add Event Listeners
+    document.addEventListener("click", el.clickOutsideEvent)
+  },
+  unmounted(el) {
+    document.removeEventListener("click", el.clickOutsideEvent)
+  }
+})
 
 const customViewports = {
   Us: {

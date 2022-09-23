@@ -2,7 +2,7 @@
 import { CSSProperties, computed, ref, watch, watchEffect } from 'vue';
 
 interface PropType {
-  modelValue: string | number;
+  modelValue?: string | number;
   rounded?: boolean;
   placeHolder?: string;
   unit?: string;
@@ -156,7 +156,7 @@ const emit = defineEmits(['update:modelValue']);
   input {
     border: 1px solid #e9e9e9;
     box-sizing: border-box;
-    height: 70px;
+    height: 62px;
     font-size: 20px;
     outline: none;
     width: 100%;
@@ -168,12 +168,12 @@ const emit = defineEmits(['update:modelValue']);
     }
 
     @include smAndDown {
-      height: 62px;
+      height: 52px;
       font-size: 18px;
     }
 
     @include tiny {
-      height: 52px;
+      height: 44px;
       font-size: 16px;
     }
 

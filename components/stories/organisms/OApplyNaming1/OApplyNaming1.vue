@@ -53,7 +53,7 @@ const verify = (v: boolean) => {
           <MButton 
             width="150px"
             v-on="on"
-            class="search-btn"
+            class="search-btn btn-winput"
             :disabled="!corpName"
             @click="checkName"
           >
@@ -126,19 +126,7 @@ const verify = (v: boolean) => {
     display: flex; 
     justify-content: center;
   }
-  button {
-    font-size: 20px;
-    height: 70px;
 
-    @include smAndDown {
-      height: 62px;
-    }
-
-    @include xs {
-      font-size: 18px;
-    }
-
-  }
   .search-btn {
     margin-left: 12px;
 

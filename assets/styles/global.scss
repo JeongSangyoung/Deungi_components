@@ -92,6 +92,19 @@ ul li {
   }
 }
 
+.btn-winput {
+  font-size: 20px;
+  height: 62px;
+
+  @include smAndDown {
+    height: 52px;
+  }
+
+  @include xs {
+    font-size: 18px;
+  }
+}
+
 .title-type-2 {
   font-size: 20px;
   letter-spacing: -0.7px;

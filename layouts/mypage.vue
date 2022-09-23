@@ -2,7 +2,6 @@
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
-import MApplicationStep from '@/components/stories/molecules/MApplicationStep/MApplicationStep.vue';
 import OMainFooter from '@/components/stories/organisms/OMainFooter/OMainFooter.vue';
 
 
@@ -23,16 +22,9 @@ const stepItems = [
     name: '서비스 선택',
     path: '/apply/selectService'
   },
-  { 
-    name: '간편결제',
-    path: '/apply/payment'
-  },
 ]
 
 const route = useRoute()
-console.log(route.path, '^^')
-
-const test = ref('TEST');
 
 </script>
 
@@ -41,7 +33,6 @@ const test = ref('TEST');
   <div id="nav">
     <img src="https://deungi24.com/img/logo.png" />
   </div>
-  <MApplicationStep id="step" :items="stepItems" />
   <div id="content">
     <slot></slot>
     <slot name="loading"></slot>
@@ -60,6 +51,7 @@ const test = ref('TEST');
   max-width: 1264px;
 
   margin: 48px auto;
+  // margin-bottom: 
 }
 
 #content {

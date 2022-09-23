@@ -78,7 +78,7 @@ const changeValues = () => {
           <MButton 
             width="150px"
             v-on="on"
-            class="search-btn"
+            class="search-btn btn-winput"
             >
             조회
           </MButton>
@@ -192,19 +192,7 @@ const changeValues = () => {
     display: flex; 
     justify-content: center;
   }
-  button {
-    font-size: 20px;
-    height: 70px;
 
-    @include smAndDown {
-      height: 62px;
-    }
-
-    @include xs {
-      font-size: 18px;
-    }
-
-  }
   .search-btn {
     margin-left: 12px;
 

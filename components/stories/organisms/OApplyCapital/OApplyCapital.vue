@@ -81,7 +81,7 @@ const changeValue = (input) => {
     <p class="txt-16">* 자본금 2,800만원 까지는 등록면허세가 동일합니다.</p>
     <p class="txt-16">* 자본금에 비례하여 등록면허세가 높아집니다.</p>
   </div>
-  <MButton class="input-btn" :disabled="!input" @click="clickBtn">
+  <MButton class="input-btn btn-winput" :disabled="!input" @click="clickBtn">
     입력
   </MButton>
 </div>
@@ -108,17 +108,10 @@ const changeValue = (input) => {
   }
 
   .input-btn {
-    font-size: 20px;
-    height: 70px;
     width: 150px;
     margin-left: 12px;
 
-    @include smAndDown {
-      height: 62px;
-    }
-
     @include xs {
-      font-size: 18px;
       margin: 0 auto;
       margin-top: 24px;
     }

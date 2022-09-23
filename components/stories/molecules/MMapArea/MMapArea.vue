@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { MapHighlight, mapData, thirdCityList, gwamilDongObj, gwamilSiList, gwamilIncheon, sidoDataList } from '@/apis/location';
+import { MapHighlight, mapData, thirdCityList, gwamilDongObj, gwamilSiList, gwamilIncheon, sidoDataList } from './location';
 import { ref, onMounted, watch, watchEffect } from 'vue';
 
 interface PropType {
