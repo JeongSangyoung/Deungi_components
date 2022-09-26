@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed, watchEffect, watch } from 'vue';
 import MButtonGroup from '../../molecules/MButtonGroup/MButtonGroup.vue';
 import ODateRange from '../ODateRange/ODateRange.vue';
 import MInput from '../../molecules/MInput/MInput.vue';
 import MButton from '../../molecules/MButton/MButton.vue';
 
-const btnItems = [
+import { orderItems } from '@/components/composable/useData';
+import MPage from '../../molecules/MPage/MPage.vue';
+
+const btnItems = ref([
   {
     text: '전체',
     background: '#6C757D',
@@ -19,60 +22,179 @@ const btnItems = [
   {
     text: '정보입력 대기중',
     background: '#FFC800',
-    number: 60,
+    number: 0,
   },
   {
     text: '등기매니저 확인중',
     background: '#079D05',
-    number: 16,
+    number: 0,
   },
   {
     text: '추가결제 대기중',
     background: '#523FF1',
-    number: 1,
+    number: 0,
   },
   {
     text: '최종컨펌 대기중',
     background: '#523FF1',
-    number: 2,
+    number: 0,
   },
   {
     text: '등기 준비중',
     background: '#FF4BD8',
-    number: 26,
+    number: 0,
   },
   {
     text: '등기 완료',
     background: '#121212',
-    number: 1189,
+    number: 0,
   },
   {
     text: '환불 완료',
     background: '#858585',
-    number: 146,
+    number: 0,
   },
-]
+])
 
+const radio = ref<number>(0);
+const btnState = computed(() => btnItems.value[radio.value].text);
 const corpName = ref<string>('');
+const itemTotal = ref<number>(0);
+const pageTotal = computed(() => {
+  return Math.ceil(itemTotal.value / 10);
+})
+const pageNumber = ref<number>(1);
+const orderFiltered = ref<TOrderItem[]>([]);
+const orderShow = computed(() => {
+  return orderFiltered.value.slice((pageNumber.value - 1) * 10, pageNumber.value * 10)
+});
+const pickStart = ref<Date>(new Date('2022-01-01')); 
+const pickEnd = ref<Date>(new Date());
+
+const orderObj = {
+  head: '접수번호',
+  corp: '법인명',
+  customer: '고객명',
+  email: '이메일',
+  tel: '연락처',
+  service: '주문서비스',
+  ingam: '사용인감추가',
+  status: '업무진행상태',
+  updated: '업데이트일자',
+}
+type TOrderEnum = keyof typeof orderObj;
+type TOrderItem = { 
+  [key in TOrderEnum]: string;
+}
+
+const orders = ref<TOrderItem[]>([]);
+orderItems().then((result: TOrderItem[]) => {
+  orders.value = result;
+
+  // 상태카운팅
+  result.forEach(order => {
+    btnItems.value[0].number += 1; // 전체 카운팅
+    for (let i = 0; i < btnItems.value.length; i += 1) {
+      if (order.status === btnItems.value[i].text) {
+        btnItems.value[i].number += 1;
+        break;
+      }
+    }
+  });
+
+  orderFiltered.value = result;
+  itemTotal.value = result.length;
+});
+
+/** 검색어, 날짜, 카테고리 필터링 */
+const changeState = () => {
+  pageNumber.value = 1;
+  // 카테고리 -> 날짜 -> 검색어 순으로 필터링
+  const startTime = pickStart.value.getTime();
+  const endTime = pickEnd.value.getTime();
+  orderFiltered.value = orders.value.filter(order => {
+    if (order.status === btnState.value || btnState.value === '전체') {
+      const orderTime = new Date(order.updated).getTime();
+      if (startTime <= orderTime && endTime >= orderTime) {
+        if (order.corp.includes(corpName.value)) {
+          return order
+        }
+      }
+    }
+  });
+  itemTotal.value = orderFiltered.value.length;
+  pageNumber.value = 1;
+}
+
+const updateStart = (date) => {
+  pickStart.value = date;
+}
+const updateEnd = (date) => {
+  pickEnd.value = date;
+}
+watch(btnState, _ => {
+  changeState()
+});
+watch(pickStart, _ => {
+  changeState();
+});
+watch(corpName, _ => {
+  changeState();
+})
+
+
+const orderHeads = computed(() => {
+  return Object.values(orderObj).map(item => {
+    return item;
+  });
+});
 
 </script>
 
 <template>
 <div>
+  {{ btnState }}, {{ corpName }}
   <MButtonGroup
     :items="btnItems"
+    v-model="radio"
     class="btngroup"
   />
   <div class="search">
-    <ODateRange class="search-date" />
+    <ODateRange
+      :pick-start="pickStart"
+      :pick-end="pickEnd"
+      class="search-date"
+      @update:start="updateStart"
+      @update:end="updateEnd"
+    />
     <MInput class="search-input" v-model="corpName" width="250px" place-holder="법인명" />
-    <MButton class="search-btn"> 검색</MButton>
+    <!-- <MButton class="search-btn"> 검색</MButton> -->
     <MButton class="search-excel" background-color="grey">엑셀다운로드</MButton>
   </div>
 
-  <div class="orderTable">
-    
+  <div>
+    Total : {{ itemTotal }}
   </div>
+  <div class="orderTable">
+    <table>
+      <thead>
+        <tr>
+          <th v-for="head in orderHeads">
+            {{ head }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="order in orderShow">
+          <td v-for="value in Object.values(order)">
+            {{ value }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <MPage v-model="pageNumber" :total="pageTotal"  class="orderPage" />
+
 </div>
 
 </template>
@@ -83,6 +205,7 @@ const corpName = ref<string>('');
 }
 .search {
   display: flex;
+  margin-bottom: 24px;
 
   @include smAndDown {
     flex-direction: column;
@@ -129,8 +252,38 @@ const corpName = ref<string>('');
       width: 250px;
     }
   }
-
-
 }
 
+.orderTable {
+  margin-bottom: 24px;
+  table {
+    width: 100%;
+    font-size: 14px;
+    // border-top: 1px solid #6c757d;
+    border-collapse: collapse;
+    thead {
+      background: #eee;
+      th, td {
+        padding: 12px;
+      }
+    }
+
+    tbody {
+      color: #6c757d;
+
+      th, td {
+        padding: 12px;
+        border-bottom: 1px solid #6c757d;
+        max-width: 180px;
+        text-align: center;
+        word-break: break-all;
+      }
+    }
+  }
+}
+
+.orderPage {
+  display: flex;
+  justify-content: center;
+}
 </style>

@@ -1,14 +1,19 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, watchEffect } from 'vue';
 
-// interface PropType {
+interface PropType {
+  modelValue: number;
+  total: number;
+}
 
-// }
+const props = withDefaults(defineProps<PropType>(), {
+  total: 0
+});
 
-// const props = withDefaults(defineProps<PropType>(), {});
-
-const total = ref<number>(161);
 const curNum = ref<number>(1);
+watchEffect(() => {
+  curNum.value = props.modelValue;
+})
 
 const emit = defineEmits(['update:modelValue']);
 watch(curNum, newValue => {
@@ -30,7 +35,7 @@ const range = computed(() => {
   if (gap >= 10) {
     return 10;
   }
-  return total.value % 10;
+  return props.total % 10;
 });
 
 const checkLast = computed(() => {
@@ -48,7 +53,7 @@ const getGap = () => {
   if (curNum.value % 10 === 0) {
     curShare -= 1;
   }
-  return total.value - curShare * 10;
+  return props.total - curShare * 10;
 }
 const getIdx = (idx) => {
   let curShare = parseInt((curNum.value / 10).toString(), 10);
@@ -71,7 +76,7 @@ const toFirst = () => {
   curNum.value = 1;
 }
 const toLast = () => {
-  curNum.value = total.value;
+  curNum.value = props.total;
 }
 const setIdx = (idx) => {
   let curShare = parseInt((curNum.value / 10).toString(), 10);

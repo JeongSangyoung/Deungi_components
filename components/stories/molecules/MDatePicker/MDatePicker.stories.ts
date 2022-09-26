@@ -5,8 +5,8 @@ export default {
   title: 'molecules/MDatePicker',
   component: MDatePicker,
   argTypes: {
-    'onUpdate:start': {},
-    'onUpdate:end': {},
+    'onUpdate:pickStart': {},
+    'onUpdate:pickEnd': {},
   }
 } as Meta<typeof MDatePicker>
 

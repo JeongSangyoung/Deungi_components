@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue';
+import { ref, watchEffect, watch, computed } from 'vue';
 import { format2, getCalendar } from './datePicker';
 import CustomInput from './CustomInput.vue';
+import { format } from 'path';
 
 interface PropType {
   mode: string;
@@ -23,22 +24,57 @@ const dayList = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const showPicker = ref<boolean>(false);
 const date = ref<Date>(new Date());
 const today = ref<Date>(new Date());
-
-const datePicker = ref<Day[][]>(getCalendar(date.value));
-const inputTime = ref<string>(format2(new Date()));
 const pickStart = ref<Date>(new Date());
 const pickEnd = ref<Date>(new Date());
+// const formatDate = computed(() => {
+//   if (props.mode === 'start') {
+//     return format2(pickStart.value)
+//   } else if (props.mode === 'end') {
+//     return format2(pickEnd.value)
+//   }
+// })
+const datePicker = ref<Day[][]>(getCalendar(date.value));
+const changeDate = (year, month, datet) => {
+  date.value.setFullYear(year)
+  date.value.setMonth(month)
+  date.value.setDate(datet)
+  date.value = new Date(year, month, datet);
+}
+const changeDateState = (mode, datet: Date) => {
+  if (mode === 'start') {
+    pickStart.value.setFullYear(datet.getFullYear())
+    pickStart.value.setMonth(datet.getMonth())
+    pickStart.value.setDate(datet.getDate())
+    pickStart.value = datet;
+  } else if (mode === 'end') {
+    pickEnd.value.setFullYear(datet.getFullYear())
+    pickEnd.value.setMonth(datet.getMonth())
+    pickEnd.value.setDate(datet.getDate())
+    pickEnd.value = datet;
+  }
+  if (pickEnd.value.getTime() <= pickStart.value.getTime()) {
+    date.value = pickStart.value;
+    pickEnd.value = pickStart.value;
+  }
+}
 
 watchEffect(() => {
-  pickStart.value = props.pickStart;
-  pickEnd.value = props.pickEnd;
-  if (props.mode === 'start') {
-    date.value = pickStart.value
-  } else if (props.mode === 'end') {
-    date.value = pickEnd.value
-  }
   datePicker.value = getCalendar(date.value);
+  changeDateState('start', props.pickStart)
+  changeDateState('end', props.pickEnd)
 });
+
+
+
+const emit = defineEmits(['update:pickStart', 'update:pickEnd'])
+watch(date, newDate => {
+  if (props.mode === 'start') {
+    emit('update:pickStart', newDate);
+  } else if (props.mode === 'end') {
+    emit('update:pickEnd', newDate);
+  }
+})
+
 
 const showCalendar = () => {
   setTimeout(() => {
@@ -57,11 +93,12 @@ const monthDisabled = () => {
   return false;
 }
 const prevMonth = () => {
-  date.value.setMonth(date.value.getMonth() - 1);
+  // date.value.setMonth(date.value.getMonth() - 1);
+  changeDate(date.value.getFullYear(), date.value.getMonth() - 1, date.value.getDate());
   datePicker.value = getCalendar(date.value);
 }
 const nextMonth = () => {
-  date.value.setMonth(date.value.getMonth() + 1);
+  changeDate(date.value.getFullYear(), date.value.getMonth() + 1, date.value.getDate());
   datePicker.value = getCalendar(date.value);
 }
 const dateDisableCheck = ({ day, month, year, inMonth }: Day) => {
@@ -76,18 +113,10 @@ const dateDisableCheck = ({ day, month, year, inMonth }: Day) => {
   return false;
 }
 
-const emit = defineEmits(['update:start', 'update:end'])
 const dateClick = ({ day, month, year }: Day) => {
   showPicker.value = false;
-  date.value = new Date(year, month, day);
+  changeDate(year, month, day);
   datePicker.value = getCalendar(date.value);
-  console.log(day, month, year)
-  if (props.mode === 'start') {
-    emit('update:start', new Date(year, month, day))
-  } else if (props.mode === 'end') {
-    // this.$emit('end', new Date(year, month, day, this.hours, this.minutes));
-    emit('update:end', new Date(year, month, day))
-  }
 }
 const checkInnerDate = ({ day, month, year }: Day) => {
   const d = new Date(year, month, day);
@@ -120,8 +149,11 @@ const checkDate = ({ day, month, year }: Day, mode: string) => {
 
 <template>
 <div :style="{ position: 'relative' }">
+  {{ date }} <br />
+  {{ pickStart }} <br />
+  {{ pickEnd }} <br />
+
   <CustomInput
-    v-model="inputTime"
     :place-holder="format2(date)"
     :read-only="true"
     width="150px"
@@ -134,12 +166,12 @@ const checkDate = ({ day, month, year }: Day, mode: string) => {
         :disabled="monthDisabled()"
         @click="prevMonth"
       >
-        <!-- <font-awesome-icon icon="chevron-left" /> -->
+
         &lt;
       </button>
       <span> {{ date.getFullYear() }}. {{ date.getMonth() + 1 }} </span>
       <button class="picker__button--circle" @click="nextMonth">
-        <!-- <font-awesome-icon icon="chevron-right" /> -->
+
         &gt;
       </button>
     </div>

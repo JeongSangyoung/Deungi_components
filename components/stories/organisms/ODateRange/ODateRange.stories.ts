@@ -5,8 +5,8 @@ export default {
   title: 'organisms/ODateRange',
   component: ODateRange,
   argTypes: {
-    'onUpdate:start': {},
-    'onUpdate:end': {},
+    'onUpdate:pickStart': {},
+    'onUpdate:pickEnd': {},
   }
 } as Meta<typeof ODateRange>
 
@@ -23,3 +23,7 @@ const Template:StoryFn<typeof ODateRange> = (args) => ({
 })
 
 export const Main = Template.bind({})
+Main.args = {
+  pickStart: new Date('2022-1-2'),
+  pickEnd: new Date(),
+}

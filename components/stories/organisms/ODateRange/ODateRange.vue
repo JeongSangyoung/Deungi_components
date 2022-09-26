@@ -1,40 +1,67 @@
 <script setup lang="ts">
-import { ref } from 'vue'; 
+import { ref, watchEffect } from 'vue'; 
 import MDatePicker from '@/components/stories/molecules/MDatePicker/MDatePicker.vue';
+
+interface PropType {
+  pickStart: Date;
+  pickEnd: Date;
+}
+const props = withDefaults(defineProps<PropType>(), {});
 
 const pickStart = ref<Date>(new Date());
 const pickEnd = ref<Date>(new Date());
+const changeDateState = (mode, date: Date) => {
+  if (mode === 'start') {
+    pickStart.value.setFullYear(date.getFullYear())
+    pickStart.value.setMonth(date.getMonth())
+    pickStart.value.setDate(date.getDate())
+    pickStart.value = date;
+  } else if (mode === 'end') {
+    pickEnd.value.setFullYear(date.getFullYear())
+    pickEnd.value.setMonth(date.getMonth())
+    pickEnd.value.setDate(date.getDate())
+    pickEnd.value = date;
+  }
+}
+watchEffect(() => {
+  changeDateState('start', props.pickStart);
+  changeDateState('end', props.pickEnd);
+})
 
-const emit = defineEmits(['update:start', 'update:end'])
+const emit = defineEmits(['update:pickStart', 'update:pickEnd'])
 const setStartTime = (date: Date) => {
-  pickStart.value = date
-  emit('update:start', pickStart.value)
-  if (pickStart.value > pickEnd.value) {
-    pickEnd.value = pickStart.value;
-    emit('update:end', pickEnd.value)
+  changeDateState('start', date);
+  emit('update:pickStart', pickStart.value)
+
+  if (pickStart.value.getTime() >= pickEnd.value.getTime()) {
+    changeDateState('end', pickStart.value);
+    emit('update:pickEnd', pickEnd.value)
   }
 }
 const setEndTime = (date) => {
-  pickEnd.value = date
-  emit('update:end', pickEnd.value)
+  changeDateState('end', date);
+  emit('update:pickEnd', pickEnd.value)
 }
 </script>
 
 <template>
 <div class="pickers">
+  {{ pickStart}} <br />
+  {{ pickEnd }}
   <MDatePicker 
     mode="start" 
     :pick-start="pickStart" 
     :pick-end="pickEnd"
-    @update:start="setStartTime" 
+    @update:pickStart="setStartTime"
   />
   <div class="pickers-center"> ~ </div>
   <MDatePicker 
     mode="end" 
     :pick-start="pickStart" 
     :pick-end="pickEnd"
-    @update:end="setEndTime"
+    @update:pickEnd="setEndTime"
   />
+  
 </div>
 
 </template>

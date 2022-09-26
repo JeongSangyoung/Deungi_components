@@ -204,8 +204,60 @@ export const dummy = {
     '5초 실시간 계좌이체'
   ],
   payWay: '일반 카드 결제'
-  
-  
+}
+
+function dateFormat(date) {
+  let month = date.getMonth() + 1;
+  let day = date.getDate();
+  let hour = date.getHours();
+  let minute = date.getMinutes();
+
+  month = month >= 10 ? month : '0' + month;
+  day = day >= 10 ? day : '0' + day;
+  hour = hour >= 10 ? hour : '0' + hour;
+  minute = minute >= 10 ? minute : '0' + minute;
+
+  return date.getFullYear() + '-' + month + '-' + day + ' ' + hour + ':' + minute;
+}
+
+function getRandomInt(number) {
+  const max = Math.floor(number);
+  return Math.floor(Math.random() * (max));
+}
+function getRandomDate(minDate) {
+  const date = new Date(minDate).getTime();
+  const today = new Date().getTime();
+  const randDate = new Date(Math.floor(Math.random() * (today - date) + date));
+  return dateFormat(randDate)
+}
+const randCorp = [
+  '조율', '송정네트', '보로노이', 'sk하이닉스', '삼기', '대원', '대웅', '선광', 'RFHIC', 'TOWO', 'ABCDCOMP'
+]
+const randState = [
+  '정보입력 대기중', '담당자 배정대기', '등기매니저 확인중', '추가결제 대기중', '최종컨펌 대기중', '등기 준비중', '등기 완료', '환불 완료'
+]
+export const orderItems = async () => {
+  const ret = []
+  for (let i = 0; i < 1000; i += 1) {
+    const corpRand = randCorp[getRandomInt(randCorp.length)];
+    const corp = getRandomInt(2) - 1 ? '주식회사 ' + corpRand : corpRand + ' 주식회사'
+    const status = randState[getRandomInt(randState.length)];
+    ret.push({
+      head: String(i + 1),
+      corp,
+      customer: '테스터',
+      email: 'mycampground@daum.net',
+      tel: '010-3002-4391',
+      service: getRandomInt(2) - 1  ? '전자등기' : '서류등기',
+      ingam: getRandomInt(2) - 1  ? '예' : '아니오',
+      status,
+      updated: getRandomDate('2021-10-11 00:00')
+    });
+  }
+  const reversed = ret.reverse();
+  return await new Promise((resolve) => {
+    setTimeout(() => resolve(reversed), 1500)
+  })
 }
 
 export default async function Data<T>(key: keyof typeof dummy) {
