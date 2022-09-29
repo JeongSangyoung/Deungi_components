@@ -1,5 +1,6 @@
 import MDatePicker from './MDatePicker.vue';
 import { Meta, StoryFn } from '@storybook/vue3';
+import { format } from './datePicker';
 
 export default {
   title: 'molecules/MDatePicker',
@@ -25,6 +26,6 @@ const Template:StoryFn<typeof MDatePicker> = (args) => ({
 export const Main = Template.bind({})
 Main.args = {
   mode: 'start',
-  pickStart: new Date(),
-  pickEnd: new Date(),
+  pickStart: format(new Date()),
+  pickEnd: format(new Date()),
 }

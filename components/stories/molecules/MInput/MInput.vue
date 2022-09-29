@@ -164,7 +164,7 @@ const emit = defineEmits(['update:modelValue']);
 
     &:read-only {
       background: #eee;
-      cursor: default;
+      // cursor: default;
     }
 
     @include smAndDown {

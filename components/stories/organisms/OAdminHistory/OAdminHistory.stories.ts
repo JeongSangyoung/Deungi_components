@@ -5,7 +5,6 @@ export default {
   title: 'organisms/OAdminHistory',
   component: OAdminHistory,
   argTypes: {
-    onVerify: {},
   }
 } as Meta<typeof OAdminHistory>
 

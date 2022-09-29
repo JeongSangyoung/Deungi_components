@@ -4,6 +4,7 @@ import MButtonGroup from '../../molecules/MButtonGroup/MButtonGroup.vue';
 import ODateRange from '../ODateRange/ODateRange.vue';
 import MInput from '../../molecules/MInput/MInput.vue';
 import MButton from '../../molecules/MButton/MButton.vue';
+import { format } from '@/components/stories/molecules/MDatePicker/datePicker';
 
 import { orderItems } from '@/components/composable/useData';
 import MPage from '../../molecules/MPage/MPage.vue';
@@ -54,22 +55,24 @@ const btnItems = ref([
     background: '#858585',
     number: 0,
   },
-])
+]);
 
 const radio = ref<number>(0);
 const btnState = computed(() => btnItems.value[radio.value].text);
 const corpName = ref<string>('');
 const itemTotal = ref<number>(0);
+const viewTotal = ref<number>(10);
 const pageTotal = computed(() => {
-  return Math.ceil(itemTotal.value / 10);
-})
+  return Math.ceil(itemTotal.value / viewTotal.value);
+});
 const pageNumber = ref<number>(1);
 const orderFiltered = ref<TOrderItem[]>([]);
 const orderShow = computed(() => {
-  return orderFiltered.value.slice((pageNumber.value - 1) * 10, pageNumber.value * 10)
+  return orderFiltered.value.slice((pageNumber.value - 1) * viewTotal.value, pageNumber.value * viewTotal.value)
 });
-const pickStart = ref<Date>(new Date('2022-01-01')); 
-const pickEnd = ref<Date>(new Date());
+const pickStart = ref<string>(''); 
+const pickEnd = ref<string>('');
+const allCheck = ref<boolean>(false);
 
 const orderObj = {
   head: '접수번호',
@@ -110,38 +113,75 @@ orderItems().then((result: TOrderItem[]) => {
 const changeState = () => {
   pageNumber.value = 1;
   // 카테고리 -> 날짜 -> 검색어 순으로 필터링
-  const startTime = pickStart.value.getTime();
-  const endTime = pickEnd.value.getTime();
-  orderFiltered.value = orders.value.filter(order => {
-    if (order.status === btnState.value || btnState.value === '전체') {
-      const orderTime = new Date(order.updated).getTime();
-      if (startTime <= orderTime && endTime >= orderTime) {
+  if (pickStart.value && pickEnd.value) {
+    orderFiltered.value = orders.value.filter(order => {
+      if (order.status === btnState.value || btnState.value === '전체') {
+        const startTime = new Date(pickStart.value);
+        const endTime = new Date(pickEnd.value);
+        endTime.setHours(23);
+        endTime.setMinutes(59);
+        const orderTime = new Date(order.updated);
+        if (startTime <= orderTime && endTime >= orderTime) {
+          if (order.corp.includes(corpName.value)) {
+            return order
+          }
+        }
+      }
+    });
+  } else {
+    orderFiltered.value = orders.value.filter(order => {
+      if (order.status === btnState.value || btnState.value === '전체') {
         if (order.corp.includes(corpName.value)) {
           return order
         }
       }
-    }
-  });
+    })
+  }
   itemTotal.value = orderFiltered.value.length;
   pageNumber.value = 1;
 }
 
-const updateStart = (date) => {
-  pickStart.value = date;
-}
-const updateEnd = (date) => {
-  pickEnd.value = date;
-}
-watch(btnState, _ => {
-  changeState()
+watch(corpName, _ => {
+  changeState();
+});
+watch(radio, _ => {
+  allCheck.value = false;
+  changeState();
 });
 watch(pickStart, _ => {
   changeState();
 });
-watch(corpName, _ => {
+watch(pickEnd, _ => {
   changeState();
+});
+watch(viewTotal, _ => {
+  allCheck.value = false;
+  changeState();
+});
+watch(pageNumber, _ => {
+  allCheck.value = false;
+});
+watch(allCheck, newValue => {
+  const checkElements = document.querySelectorAll('.orderTable tbody input');
+  if (newValue) {
+    checkElements.forEach(element => {
+      if (element != null) {
+        (element as HTMLInputElement ).checked = true;
+      }
+    })
+  } else {
+    checkElements.forEach(element => {
+      if (element != null) {
+        (element as HTMLInputElement ).checked = false;
+      }
+    })
+  }
 })
 
+const setDate = () => {
+  pickStart.value = format(new Date());
+  pickEnd.value = format(new Date());
+}
 
 const orderHeads = computed(() => {
   return Object.values(orderObj).map(item => {
@@ -149,27 +189,60 @@ const orderHeads = computed(() => {
   });
 });
 
+const downloadExcel = () => {
+  const checkList = [];
+  const checkElements = document.querySelectorAll('.orderTable tbody input');
+  const acceptTrElements = document.querySelectorAll('.orderTable tbody tr');
+  if (checkElements === null || acceptTrElements === null) return;
+  if (checkElements.length !== acceptTrElements.length) return;
+  checkElements.forEach((element, idx) => {
+    if (element != null) {
+      if ((element as HTMLInputElement ).checked) {
+        checkList.push(
+          acceptTrElements[idx].querySelectorAll('td')[1].innerText
+        )
+      }
+    }
+  });
+  console.log(checkList);
+}
+
+const clickTd = (order: TOrderItem) => {
+  console.log(order)
+}
 </script>
 
 <template>
 <div>
-  {{ btnState }}, {{ corpName }}
+  <p class="title-type-1">
+    주문내역
+  </p>
+
   <MButtonGroup
     :items="btnItems"
     v-model="radio"
     class="btngroup"
   />
   <div class="search">
+    <select v-model="viewTotal" class="search-select">
+      <option
+        v-for="num in [5, 10, 15, 20, 25, 30, 50, 100]"
+        :value="num"
+        :key="num"
+      >
+        {{ num }}
+      </option>
+
+    </select>
     <ODateRange
-      :pick-start="pickStart"
-      :pick-end="pickEnd"
+      v-model:pick-start="pickStart"
+      v-model:pick-end="pickEnd"
       class="search-date"
-      @update:start="updateStart"
-      @update:end="updateEnd"
+      @click.once="setDate"
     />
     <MInput class="search-input" v-model="corpName" width="250px" place-holder="법인명" />
     <!-- <MButton class="search-btn"> 검색</MButton> -->
-    <MButton class="search-excel" background-color="grey">엑셀다운로드</MButton>
+    <MButton class="search-excel" background-color="grey" @click="downloadExcel">엑셀다운로드</MButton>
   </div>
 
   <div>
@@ -179,15 +252,25 @@ const orderHeads = computed(() => {
     <table>
       <thead>
         <tr>
-          <th v-for="head in orderHeads">
-            {{ head }}
+            <th v-for="idx in orderHeads.length + 1">
+              <input v-if="idx === 1" v-model="allCheck" type="checkbox" style="margin: 0;" />
+              <span v-else>
+                {{ orderHeads[idx - 2] }}
+              </span>
           </th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="order in orderShow">
-          <td v-for="value in Object.values(order)">
-            {{ value }}
+          <td v-for="idx in Object.values(order).length + 1">
+            <input v-if="idx === 1" type="checkbox" style="margin: 0;"/>
+            <span 
+              v-else
+              :class="{'orderTable-tdCorp' : orderHeads[idx - 2] === '법인명'}"
+              @click="clickTd(order)"
+            >
+              {{ Object.values(order)[idx - 2] }}
+            </span>
           </td>
         </tr>
       </tbody>
@@ -200,6 +283,9 @@ const orderHeads = computed(() => {
 </template>
 
 <style lang="scss" scoped>
+.title-type-1 {
+  margin-bottom: 24px;
+}
 .btngroup {
   margin-bottom: 16px;
 }
@@ -209,6 +295,18 @@ const orderHeads = computed(() => {
 
   @include smAndDown {
     flex-direction: column;
+  }
+
+  &-select {
+    margin-right: 20px;
+    font-size: 18px;
+
+    @include smAndDown {
+      height: 52px;
+      font-size: 16px;
+      margin-bottom: 16px;
+      width: 150px;
+    }
   }
 
   &-date {
@@ -279,6 +377,12 @@ const orderHeads = computed(() => {
         word-break: break-all;
       }
     }
+  }
+
+  &-tdCorp {
+    color: $color-basic;
+    font-weight: bold;
+    cursor: pointer;
   }
 }
 

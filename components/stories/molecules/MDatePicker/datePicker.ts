@@ -5,7 +5,18 @@ interface Day {
   inMonth: boolean;
 }
 
-export function getCalendar(date: Date): Day[][] {
+export function getMonth(strDate: string) {
+  return Number(strDate.split('-')[1])
+}
+export function getDate(strDate: string) {
+  return Number(strDate.split('-')[2])
+}
+export function getYear(strDate: string) {
+  return Number(strDate.split('-')[0])
+}
+
+export function getCalendar(strDate: string): Day[][] {
+  const date = new Date(strDate)
   const leapYear = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   const notLeapYear = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   const first = new Date(date.getFullYear(), date.getMonth(), 1);
@@ -58,25 +69,7 @@ export function getCalendar(date: Date): Day[][] {
   return ret1;
 }
 
-
-export const format1 = (date: Date): string => {
-  let ret = '';
-  ret += date.getFullYear();
-  ret += '/';
-  ret +=
-    date.getMonth() < 9
-      ? '0' + Number(date.getMonth() + 1)
-      : Number(date.getMonth() + 1);
-  ret += '/';
-  ret += date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
-  ret += ' ';
-  ret += date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
-  ret += ':';
-  ret += date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
-  return ret;
-};
-
-export const format2 = (date: Date): string => {
+export const format = (date: Date): string => {
   let ret = '';
   ret += date.getFullYear();
   ret += '-';

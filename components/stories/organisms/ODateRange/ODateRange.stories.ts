@@ -1,5 +1,6 @@
 import ODateRange from './ODateRange.vue';
 import { Meta, StoryFn } from '@storybook/vue3';
+import { format } from '@/components/stories/molecules/MDatePicker/datePicker';
 
 export default {
   title: 'organisms/ODateRange',
@@ -24,6 +25,6 @@ const Template:StoryFn<typeof ODateRange> = (args) => ({
 
 export const Main = Template.bind({})
 Main.args = {
-  pickStart: new Date('2022-1-2'),
-  pickEnd: new Date(),
+  pickStart: format(new Date()),
+  pickEnd: format(new Date()),
 }

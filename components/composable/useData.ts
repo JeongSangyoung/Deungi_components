@@ -231,7 +231,8 @@ function getRandomDate(minDate) {
   return dateFormat(randDate)
 }
 const randCorp = [
-  '조율', '송정네트', '보로노이', 'sk하이닉스', '삼기', '대원', '대웅', '선광', 'RFHIC', 'TOWO', 'ABCDCOMP'
+  '조율', '송정네트', '보로노이', 'sk하이닉스', '삼기', '대원', '대웅', '선광', 'RFHIC', 'TOWO', 'ABCDCOMP', '보노보노', '토르',
+  'LG에너지', '기아', '코카인', '하나금융', 'KB금융', '포스코딱지', '네버랜드'
 ]
 const randState = [
   '정보입력 대기중', '담당자 배정대기', '등기매니저 확인중', '추가결제 대기중', '최종컨펌 대기중', '등기 준비중', '등기 완료', '환불 완료'
@@ -262,5 +263,5 @@ export const orderItems = async () => {
 
 export default async function Data<T>(key: keyof typeof dummy) {
   return await new Promise((resolve) => {
-      setTimeout(() => resolve(dummy[key] as T), 2000)}) as T
+    setTimeout(() => resolve(dummy[key] as T), 2000)}) as T
 }
