@@ -26,7 +26,7 @@ import OMainFooter from '@/components/stories/organisms/OMainFooter/OMainFooter.
   }
 }
 #header {
-  @include smAndUp {
+  @include mdAndUp {
     width: 32%;
   }
   @include smAndDown {
@@ -34,7 +34,7 @@ import OMainFooter from '@/components/stories/organisms/OMainFooter/OMainFooter.
   }
 }
 #content {
- @include smAndUp {
+ @include mdAndUp {
     width: 68%;
   }
   @include smAndDown {

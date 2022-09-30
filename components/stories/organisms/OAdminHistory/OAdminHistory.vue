@@ -292,6 +292,7 @@ const clickTd = (order: TOrderItem) => {
 .search {
   display: flex;
   margin-bottom: 24px;
+  position: relative;
 
   @include smAndDown {
     flex-direction: column;

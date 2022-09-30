@@ -73,6 +73,7 @@ const businessItems = ['부동산 경매 및 공매 입찰업', '부동산 매�
         </div>
         <div class="hDetail-table">
           <div class="hDetail-table-title">
+            
             1주당 금액(원)
           </div>
           <div class="hDetail-table-content">
