@@ -7,6 +7,7 @@ interface PropType {
   contents: string[];
   noCheckIcon?: boolean;
   setInline?: boolean;
+  setInlineBlock?: boolean;
   rearImages?: {
     unchecked: string;
     checked: string;
@@ -20,6 +21,7 @@ const props = withDefaults(defineProps<PropType>(), {
   modelValue: -1,
   noCheckIcon: false,
   setInline: false,
+  setInlineBlock: false,
   rearImages: () => [
     {
       unchecked: '',
@@ -46,16 +48,17 @@ const emit = defineEmits(['update:modelValue']);
 
 <template>
   <ul 
-    class="mRadioButtonGroup" 
-    :class="{ setInline: setInline }" 
-    :style="computedStyled"
-  >
+    class="mRadioButtonGroup"
+    :class="{ setInline: setInline }"
+    >
     <li 
       v-for="(content, content_idx) in contents" 
       :key="content"
+      :style="computedStyled"
+      :class="{ setInlineBlock: setInlineBlock }"
     >
       <div class="mLabel">
-        <input 
+        <input
           type="radio" 
           :id="content" 
           :value="content_idx" 
@@ -242,6 +245,11 @@ const emit = defineEmits(['update:modelValue']);
 
 .setInline {
   display: flex !important;
+  // display: inline-block !important;
+}
+.setInlineBlock {
+  display: inline-block !important;
+  margin-right: 16px;
 }
 .setInline li {
   flex: 1;

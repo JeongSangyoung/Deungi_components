@@ -34,7 +34,7 @@ SetInline.args = {
   name: 'example4',
   contents: ['임원', '임원 아닌 주주'],
   setInline: true,
-  maxWidth: '700px'
+  maxWidth: '700px',
 }
 
 export const NoIcon = Template.bind({})

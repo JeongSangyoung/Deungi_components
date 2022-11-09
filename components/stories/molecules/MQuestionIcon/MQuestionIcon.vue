@@ -42,8 +42,8 @@ const toggleShow = () => {
     text-align: left;
     background-color: #333;
     position: absolute;
-    transform: translateX(calc(-100% + 24px));
-    width: 500px;
+    // transform: translateX(calc(-100% + 24px));
+    // width: 500px;
     transition: .5s all;
     color: white;
     padding: 12px;
