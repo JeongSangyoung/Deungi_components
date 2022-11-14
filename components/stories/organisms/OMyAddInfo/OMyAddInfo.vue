@@ -168,6 +168,7 @@ const selectItems2 = [
       </div>
     </div>
 
+    <!-- 주주 및 임원 정보 -->
     <div class="infoTable-row">
       <div class="infoTable-col">
         <div class="infoTable-title">
@@ -187,13 +188,21 @@ const selectItems2 = [
         </div>
       </div>
     </div>
-
+    
+    <!-- 사업목적 -->
     <div class="infoTable-row">
       <div class="infoTable-col">
         <div class="infoTable-title">
           <p>
             사업 목적 (<span>*</span>)
           </p>
+          <div class="title-desc">
+            카테고리를 선택하시면 등기24가 엄선한 사업목적 리스트를 확인하실 수 있습니다.  원하는 사업목적이 없다면, 표준산업분류를 조회하여 살펴보신 후 직접 추가하기를 해주세요
+            <br />
+            <a>사업목적 정할 때 주의사항 알아보기</a> 
+            <br />
+            <a>>>> 표준산업분류 조회 바로가기</a> 
+          </div>
         </div>
         <div class="infoTable-content">
           <div class="inner">
@@ -217,12 +226,14 @@ const selectItems2 = [
                 </div>
               </div>
             </div>
+            
 
           </div>
         </div>
       </div>
     </div>
 
+    <!-- 공고방법 -->
     <div class="infoTable-row">
       <div class="infoTable-col">
         <div class="infoTable-title">
@@ -250,7 +261,7 @@ const selectItems2 = [
               </div>
             </div>
             <div class="inner-row">
-              <div class="inner-col"  style="margin-top: 36px;">
+              <div class="inner-col"  style="margin-top: 20px;">
                 <div class="inner-title">
                   • 홈페이지 주소
                   <MQuestionIcon style="margin-left: 4px; display: inline-block">
@@ -270,10 +281,231 @@ const selectItems2 = [
               </div>
             </div>
           </div>
-          
         </div>
       </div>
     </div>
+
+    <!-- 정관특약 -->
+    <div class="infoTable-row">
+      <div class="infoTable-col">
+        <div class="infoTable-title">
+          <p>
+            정관 특약 (<span>*</span>)
+          </p>
+        </div>
+        <div class="infoTable-content">
+          <div class="inner">
+            <div class="inner-row">
+              <div class="inner-col">
+                <div class="inner-title">
+                  • 주식양도제한 규정포함
+                </div>
+                <div class="infoTable-inner">
+                  <MRadioGroup v-model="radio" :contents="['네', '아니오']" set-inline />
+                  <div class="warningBox">
+                  주식 양도시 주주총회/이사회 동의를 얻도록 하는 규정. 동업자 배신/기만방지에 효과적임. 외부투자 받아야 하는 경우 "아니오"를 추천
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="inner-row">
+              <div class="inner-col" style="margin-top: 20px;">
+                <div class="inner-title">
+                  • 주식매수 선택권 부여
+                </div>
+                <div class="infoTable-inner">
+                  <MRadioGroup v-model="radio" :contents="['네', '아니오']" set-inline />
+                  <div class="warningBox">
+                    일명 스톡옵션으로, 회사가 인재영입시 주식을 부여할 수 있는 권리   
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 잔고증명서 정보 -->
+    <div class="infoTable-row">
+      <div class="infoTable-col">
+        <div class="infoTable-title">
+          <p>
+            잔고증명서 정보 (<span>*</span>)
+          </p>
+        </div>
+        <div class="infoTable-content">
+          <div class="inner">
+            <div class="inner-row">
+              <div class="inner-col">
+                <div class="inner-title">
+                  • 잔고증명 발급은행
+                </div>
+                <div class="infoTable-inner">
+                  <MSelection v-model="selection1" :contents="selectItems1" placeholder="카테고리 선택" class="select_in1" />
+                </div>
+              </div>
+            </div>
+            <div class="inner-row">
+              <div class="inner-col" style="margin-top: 20px;">
+                <div class="inner-title">
+                  • 잔고증명 기준일
+                </div>
+                <div class="infoTable-inner">
+                  <MInput />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- 사용인감 디자인 -->
+    <div class="infoTable-row">
+      <div class="infoTable-col">
+        <div class="infoTable-title">
+          <p>
+            사용인감디자인
+          </p>
+        </div>
+        <div class="infoTable-content">
+          <div class="inner">
+            <div class="inner-row">
+              <div class="inner-col">
+                <div class="inner-title">
+                  • 사용인감 추가
+                </div>
+                <div class="infoTable-inner">
+                  <MRadioGroup v-model="radio" :contents="['네', '아니오']" set-inline />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 인감카드 비밀번호 -->
+    <div class="infoTable-row">
+      <div class="infoTable-col">
+        <div class="infoTable-title">
+          <p>인감카드비밀번호 (<span>*</span>)</p>
+        </div>
+        <div class="infoTable-content">
+          <MInput maxlength="6" type="password" width="75px" />
+        </div>
+      </div>
+    </div>
+
+    <!-- 우편송달주소 -->
+    <div class="infoTable-row">
+      <div class="infoTable-col">
+        <div class="infoTable-title">
+          <p>
+            우편송달주소 (<span>*</span>)
+          </p>
+        </div>
+        <div class="infoTable-content">
+          <div class="inner">
+            <div class="inner-row">
+              <div class="inner-col">
+                <div class="inner-title">
+                  • 받으실 분
+                </div>
+                <div class="infoTable-inner">
+                  <MInput />
+                </div>
+              </div>
+            </div>
+
+            <div class="inner-row">
+              <div class="inner-col">
+                <div class="inner-title">
+                  • 연락처
+                </div>
+                <div class="infoTable-inner">
+                  <div style="display: flex; align-items: center;">
+                    <MInput width="100px" /> <span>-</span>
+                    <MInput width="100px" /> <span>-</span>
+                    <MInput width="100px" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="inner-row">
+              <div class="inner-col">
+                <div class="inner-title">
+                  • 주소
+                </div>
+                <div class="infoTable-inner">
+                  <div>
+                  <MInput class="infoTable-input" place-holder="주소를 입력해주세요" /> 
+                  <MInput class="infoTable-input" place-holder="나머지 주소" /> 
+                  <MButton class="infoTable-btn">주소검색</MButton>
+                </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 파일첨부 -->
+    <div class="infoTable-row">
+      <div class="infoTable-col">
+        <div class="infoTable-title">
+          <p>
+            파일첨부 (<span>*</span>)
+          </p>
+        </div>
+        <div class="infoTable-content">
+          <div class="inner">
+
+            <div class="inner-row">
+              <div class="inner-col">
+                <div class="inner-title">
+                  • 잔고증명서
+                </div>
+                <div class="infoTable-inner">
+                  <MInput />
+                  <MButton>파일선택</MButton>
+                </div>
+              </div>
+            </div>
+
+            <div class="inner-row">
+              <div class="inner-col">
+                <div class="inner-title">
+                  • 정상영 주민등록등본
+                </div>
+                <div class="infoTable-inner">
+                  <MInput />
+                  <MButton>파일선택</MButton>
+                </div>
+              </div>
+            </div>
+
+            <div class="inner-row">
+              <div class="inner-col">
+                <div class="inner-title">
+                  • 기타서류(선택)
+                </div>
+                <div class="infoTable-inner">
+                  <MInput />
+                  <MButton>파일선택</MButton>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
 
 
   </div>
